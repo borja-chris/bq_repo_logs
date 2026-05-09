@@ -18,3 +18,8 @@
 - Preferred rhythm: 6 days/week
 - Long runs: mostly 13-15 miles
 - Main workout emphasis: threshold, stamina, and half-marathon-pace work
+
+## Plan Files
+
+- `01_pre_block_ramp.md`: ramp into the block
+- `02_18_week_hanson_inspired_plan.md`: full daily 18-week training plan
