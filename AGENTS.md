@@ -36,6 +36,7 @@ When Hanson-specific plan structure is needed, also read:
 When repo setup, workflow, or prior chat context is needed, also read:
 
 5. `sources/05_chat_handoff_summary.md`
+6. `docs/repo_workflow.md`
 
 If these files do not exist yet, say which are missing and proceed from the available context.
 
@@ -137,6 +138,9 @@ bq_repo_log/
   README.md
   AGENTS.md
 
+  docs/
+    repo_workflow.md
+
   sources/
     01_current_operating_plan_2026_half.md
     02_runner_background_and_bq_arc.md
@@ -148,6 +152,7 @@ bq_repo_log/
     2026-half-marathon/
       00_overview.md
       01_pre_block_ramp.md
+      02_18_week_hanson_inspired_plan.md
       week_01_2026-06-01.md
       week_02_2026-06-08.md
       week_03_2026-06-15.md
@@ -173,5 +178,9 @@ bq_repo_log/
 
   data/
     coros_exports/
+      COROS_export_YYYY-MM-DD/
     processed/
+
+  scripts/
+    summarize_coros_fit.py
 ```

@@ -31,3 +31,6 @@
 
 - `01_pre_block_ramp.md`: ramp into the block
 - `02_18_week_hanson_inspired_plan.md`: full daily 18-week training plan
+- `week_01_2026-06-01.md` through `week_18_2026-09-28.md`: week-level working files for adjustments, logs, and review
+
+Use the full 18-week plan as the block reference. Use the individual weekly files as the operational layer once training is underway.

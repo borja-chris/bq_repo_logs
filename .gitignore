@@ -1,0 +1,10 @@
+# Platform metadata
+*:Zone.Identifier
+
+# Local scratch/output
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Keep generated summaries reviewable, but avoid accidental bulk exports at root.
+/COROS_export_*/
