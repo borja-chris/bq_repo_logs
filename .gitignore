@@ -5,6 +5,7 @@
 .DS_Store
 Thumbs.db
 *.tmp
+.venv/
 
 # Keep generated summaries reviewable, but avoid accidental bulk exports at root.
 /COROS_export_*/

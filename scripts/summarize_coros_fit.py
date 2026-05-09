@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import warnings
 from pathlib import Path
 from typing import Any
 
@@ -24,6 +25,8 @@ FIELDS = [
     "avg_hr",
     "max_hr",
     "ascent_m",
+    "parser",
+    "parse_error",
 ]
 
 
@@ -54,19 +57,49 @@ def parse_fit(path: Path) -> dict[str, str]:
     row = {field: "" for field in FIELDS}
     row["source_file"] = path.name
 
-    fit_file = FitFile(str(path))
-    for message in fit_file.get_messages():
-        if message.name == "session":
-            values = field_map(message)
-            row["start_time"] = str(values.get("start_time", ""))
-            row["sport"] = str(values.get("sport", ""))
-            row["sub_sport"] = str(values.get("sub_sport", ""))
-            row["distance_mi"] = miles(values.get("total_distance"))
-            row["duration_s"] = seconds(values.get("total_elapsed_time"))
-            row["avg_hr"] = str(values.get("avg_heart_rate", "") or "")
-            row["max_hr"] = str(values.get("max_heart_rate", "") or "")
-            row["ascent_m"] = str(values.get("total_ascent", "") or "")
-            break
+    def apply_values(values: dict[str, Any], parser_name: str) -> None:
+        row["start_time"] = str(values.get("start_time", ""))
+        row["sport"] = str(values.get("sport", ""))
+        row["sub_sport"] = str(values.get("sub_sport", ""))
+        row["distance_mi"] = miles(values.get("total_distance"))
+        row["duration_s"] = seconds(values.get("total_elapsed_time"))
+        row["avg_hr"] = str(values.get("avg_heart_rate", "") or "")
+        row["max_hr"] = str(values.get("max_heart_rate", "") or "")
+        row["ascent_m"] = str(values.get("total_ascent", "") or "")
+        row["parser"] = parser_name
+
+    try:
+        fit_file = FitFile(str(path))
+        for message in fit_file.get_messages():
+            if message.name == "session":
+                apply_values(field_map(message), "fitparse")
+                break
+    except Exception as fitparse_exc:
+        try:
+            import fitdecode
+        except ImportError:
+            row["parse_error"] = f"{type(fitparse_exc).__name__}: {fitparse_exc}"
+            return row
+
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                with fitdecode.FitReader(str(path)) as fit_file:
+                    for frame in fit_file:
+                        if (
+                            frame.frame_type == fitdecode.FIT_FRAME_DATA
+                            and frame.name == "session"
+                        ):
+                            apply_values(
+                                {field.name: field.value for field in frame.fields},
+                                "fitdecode",
+                            )
+                            break
+        except Exception as fitdecode_exc:
+            row["parse_error"] = (
+                f"fitparse {type(fitparse_exc).__name__}: {fitparse_exc}; "
+                f"fitdecode {type(fitdecode_exc).__name__}: {fitdecode_exc}"
+            )
 
     return row
 

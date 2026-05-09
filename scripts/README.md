@@ -17,6 +17,6 @@ Example:
 python scripts/summarize_coros_fit.py data/coros_exports/COROS_export_2026-05-09 data/processed/coros_export_2026-05-09_summary.csv
 ```
 
-It requires the optional `fitparse` package.
+It requires the optional `fitparse` package. Installing `fitdecode` as a fallback improves support for COROS files with vendor-specific FIT records.
 
 Keep scripts small and reviewable. The Markdown files remain the system of record.
