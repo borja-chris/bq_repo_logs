@@ -19,6 +19,14 @@
 - Long runs: mostly 13-15 miles
 - Main workout emphasis: threshold, stamina, and half-marathon-pace work
 
+## Early Fit Check
+
+- Scheduled race: 2026-06-06 5K
+- Purpose: use as an early fit check, not a referendum on the full half-marathon cycle
+- Planning rule: treat the 5K as the primary quality session for week 1
+- Interpretation rule: the race gets one vote; the next 7-10 days of consistency and recovery get the deciding vote
+- Adjustment rule: use the result to refine early workout paces, not to trigger an automatic mileage escalation
+
 ## Plan Files
 
 - `01_pre_block_ramp.md`: ramp into the block
