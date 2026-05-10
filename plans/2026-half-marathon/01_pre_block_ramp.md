@@ -44,23 +44,23 @@ Do not force 35 miles/week before the block. Arriving healthy, consistent, and s
 | --- | --- | --- | --- |
 | Monday | 3 mi easy | Recovery / easy | Very easy after Sunday. |
 | Tuesday | 5-6 mi easy | Easy aerobic | Optional 4-6 x 20 sec strides. |
-| Wednesday | Off | Recovery | Keep the break clean. |
+| Wednesday | 4 mi easy | Easy aerobic | Keep this controlled; no workout effort. |
 | Thursday | 6 mi easy | Easy aerobic | No workout effort. |
 | Friday | 4 mi easy | Recovery / easy | Keep this comfortable. |
-| Saturday | 4 mi easy | Easy aerobic | Add only if legs feel normal. |
-| Sunday | 7-8 mi easy | Long run | Fully aerobic. |
+| Saturday | 7-8 mi easy | Long run | Shifted earlier for embarkation day. Fully aerobic. |
+| Sunday | Off or 3 mi easy | Flex / embarkation day | Run only if logistics and recovery make it easy; no makeup mileage. |
 
 ## Week of 2026-05-25
 
-- Target mileage: about 30-32
-- Primary purpose: arrive block-ready
+- Target mileage: about 27-29
+- Primary purpose: arrive block-ready while preserving rhythm during cruise travel
 
 | Day | Run | Purpose | Notes |
 | --- | --- | --- | --- |
 | Monday | 3-4 mi easy | Recovery / easy | Start the week controlled. |
-| Tuesday | 6 mi easy | Easy aerobic | Optional 4-6 x 20 sec strides. |
-| Wednesday | Off | Recovery | Last full Wednesday break before the block. |
-| Thursday | 6 mi easy | Easy aerobic | Keep it easy even if you feel good. |
+| Tuesday | 5 mi easy | Easy aerobic | Optional 4 x 20 sec strides if setup is good. |
+| Wednesday | 3-4 mi easy | Frequency | Definitely run, but keep it very easy. |
+| Thursday | 5-6 mi easy | Easy aerobic | Best normal-volume day of the week. |
 | Friday | 4-5 mi easy | Recovery / easy | No makeup mileage. |
-| Saturday | 4 mi easy | Easy aerobic | Relaxed. |
-| Sunday | 8-9 mi easy | Long run | Should leave you ready for Week 1. |
+| Saturday | 6-7 mi easy | Shifted long-ish run | Replaces Sunday long run. Finish fresh. |
+| Sunday | Off | Flight day | No running. Walk or mobility only if convenient. |
