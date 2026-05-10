@@ -25,3 +25,5 @@ The short version:
 5. Record meaningful changes in `decisions/`.
 
 Raw COROS exports belong under `data/coros_exports/`. Processed summaries belong under `data/processed/`.
+
+Aim to make this as Ai Tool Agnostic as possible.
