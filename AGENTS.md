@@ -120,12 +120,14 @@ Major decisions include:
 ## File Editing Rules
 
 - Do not edit files unless explicitly asked.
+- For planning changes, propose the exact text in chat first and wait for approval before editing files.
 - When editing, make small, reviewable changes.
 - Preserve existing naming conventions.
 - Prefer Markdown files unless there is a clear reason otherwise.
 - When adding plans, logs, retros, or decisions, use the templates in `templates/`.
 - When changing a plan because of a decision, add or update a decision record in `decisions/`.
 - When changing weekly training, update the relevant weekly plan file and note the reason.
+- When changing the live current week, check whether `README.md` mirrors that week and sync it before commit/push if needed.
 - Do not silently overwrite historical logs or retros.
 - If replacing old content, preserve meaningful prior context unless the user explicitly asks to delete it.
 
