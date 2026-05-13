@@ -14,7 +14,7 @@ Use `sources/` for durable planning context, `plans/` for upcoming training, `lo
 
 ## Current Week
 
-Source: [plans/2026-half-marathon/01_pre_block_ramp.md](/home/kelik/projects/bq_repo_logs/plans/2026-half-marathon/01_pre_block_ramp.md)
+Source: [plans/2026-half-marathon/01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 
 Week of `2026-05-11`
 
@@ -35,7 +35,7 @@ The 18-week half-marathon block starts on `2026-06-01`. Until then, this pre-blo
 
 ## Workflow
 
-Use [docs/repo_workflow.md](/home/kelik/projects/bq_repo_logs/docs/repo_workflow.md) as the operating loop for normal usage.
+Use [docs/repo_workflow.md](docs/repo_workflow.md) as the operating loop for normal usage.
 
 The short version:
 
