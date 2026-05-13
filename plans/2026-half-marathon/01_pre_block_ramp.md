@@ -37,30 +37,31 @@ Do not force 35 miles/week before the block. Arriving healthy, consistent, and s
 
 ## Week of 2026-05-18
 
-- Target mileage: about 27-29
-- Primary purpose: add easy volume
+- Target mileage: about 23-25 if Sunday is off, about 26-28 if Sunday becomes 3 mi easy
+- Primary purpose: add easy volume while keeping Monday recovery-first and building in two rest opportunities around embarkation
 
 | Day | Run | Purpose | Notes |
 | --- | --- | --- | --- |
-| Monday | 3 mi easy | Recovery / easy | Very easy after Sunday. |
+| Monday | 3 mi easy | Recovery / easy | Recovery-first day after the Sunday long run. Keep it very easy. |
 | Tuesday | 5-6 mi easy | Easy aerobic | Optional 4-6 x 20 sec strides. |
 | Wednesday | 4 mi easy | Easy aerobic | Keep this controlled; no workout effort. |
 | Thursday | 6 mi easy | Easy aerobic | No workout effort. |
-| Friday | 4 mi easy | Recovery / easy | Keep this comfortable. |
+| Friday | Off | Recovery | Second rest day. No makeup mileage. |
 | Saturday | 7-8 mi easy | Long run | Shifted earlier for embarkation day. Fully aerobic. |
-| Sunday | Off or 3 mi easy | Flex / embarkation day | Run only if logistics and recovery make it easy; no makeup mileage. |
+| Sunday | Off or 3 mi easy | Flex / embarkation day | Run only if logistics and recovery make it easy. No makeup mileage. |
 
 ## Week of 2026-05-25
 
-- Target mileage: about 27-29
-- Primary purpose: arrive block-ready while preserving rhythm during cruise travel
+- Target mileage: about 25-27
+- Primary purpose: arrive block-ready with two rest days before shifting into the six-day block rhythm
+- Planning note: keep Monday as a recovery-first run because it builds directly off the Sunday long run
 
 | Day | Run | Purpose | Notes |
 | --- | --- | --- | --- |
-| Monday | 3-4 mi easy | Recovery / easy | Start the week controlled. |
+| Monday | 4 mi easy | Recovery / easy | Recovery-first day after the Sunday long run. Keep it deliberately light. |
 | Tuesday | 5 mi easy | Easy aerobic | Optional 4 x 20 sec strides if setup is good. |
-| Wednesday | 3-4 mi easy | Frequency | Definitely run, but keep it very easy. |
-| Thursday | 5-6 mi easy | Easy aerobic | Best normal-volume day of the week. |
-| Friday | 4-5 mi easy | Recovery / easy | No makeup mileage. |
-| Saturday | 6-7 mi easy | Shifted long-ish run | Replaces Sunday long run. Finish fresh. |
-| Sunday | Off | Flight day | No running. Walk or mobility only if convenient. |
+| Wednesday | 4 mi easy | Frequency | Definitely run, but keep it very easy. |
+| Thursday | 6 mi easy | Easy aerobic | Best normal-volume day of the week. |
+| Friday | Off | Recovery | First pre-block rest day. No makeup mileage. |
+| Saturday | 7 mi easy | Shifted long-ish run | Replaces Sunday long run. Finish fresh. |
+| Sunday | Off | Flight day / recovery | Second pre-block rest day. No running. Walk or mobility only if convenient. |
