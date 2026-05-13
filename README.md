@@ -49,4 +49,11 @@ The short version:
 
 Raw COROS exports belong under `data/coros_exports/`. Processed summaries belong under `data/processed/`.
 
+COROS data workflow:
+
+1. Drop new `.fit` files in the repo root.
+2. Move them into a dated batch folder under `data/coros_exports/`.
+3. Generate processed summaries in `data/processed/`.
+4. Archive completed prior-month raw batches into `fit_files.tar.gz` after verification.
+
 Aim to make this as Ai Tool Agnostic as possible.

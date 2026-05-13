@@ -14,3 +14,11 @@ The repository structure has been initialized for planning, logs, retros, decisi
 - Store raw and processed training data in `data/`.
 - Use `docs/repo_workflow.md` for the weekly operating loop.
 - Use weekly files in `plans/2026-half-marathon/` for normal week-by-week adjustments.
+
+## Operational Learnings
+
+- For COROS imports, the user should be able to drop raw `.fit` files in the repo root and let Codex handle sorting, hashing, summary generation, and archiving.
+- Processed summaries are the working layer. Prefer both reviewable CSV and machine-readable JSONL when parser support is available.
+- Raw FIT data should remain preserved as the canonical source, but prior-month completed batches can be compressed into `fit_files.tar.gz` to reduce clutter.
+- Archive only after processed summaries exist, counts match, and archive membership verification passes.
+- When loose FIT files are removed, processed JSONL should retain enough archive metadata to find the original source later.

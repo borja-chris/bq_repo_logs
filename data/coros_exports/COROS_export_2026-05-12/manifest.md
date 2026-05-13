@@ -7,13 +7,21 @@
 - Imported on: 2026-05-12
 - FIT files: 1
 - FIT payload bytes: 152,554
-- Folder bytes after adding this manifest and hashes: 153,200
+- Archived FIT payload: `fit_files.tar.gz`
+- Archive bytes: 91,020
+- Folder bytes after archiving FIT files: 91,728
 - Removed sidecars: 0 `*:Zone.Identifier` files
 
 ## Integrity
 
 - Hash file: `SHA256SUMS.txt`
 - Hash entries: 1
+
+## Archive
+
+- Archive path: `data/coros_exports/COROS_export_2026-05-12/fit_files.tar.gz`
+- Archive members: 1 `.fit` file
+- Loose `.fit` files removed after archive verification: yes
 
 ## Notes
 

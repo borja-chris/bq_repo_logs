@@ -62,12 +62,33 @@ Use a decision record before:
 
 For a new COROS export:
 
-1. Put raw FIT files under `data/coros_exports/COROS_export_YYYY-MM-DD/`.
-2. Do not keep `*:Zone.Identifier` files.
-3. Add or update a manifest for the import.
-4. Add hashes for dedupe.
-5. Put derived summaries in `data/processed/`.
+1. Drop new raw `.fit` files in the repo root.
+2. Move those files into `data/coros_exports/COROS_export_YYYY-MM-DD/` for the import date.
+3. Do not keep `*:Zone.Identifier` files.
+4. Add or update `SHA256SUMS.txt` for the loose `.fit` files.
+5. Add or update a manifest for the import.
+6. Put derived summaries in `data/processed/`.
+7. Write both a reviewable CSV summary and a machine-readable `.jsonl` summary when parser support is available.
+8. Verify that summary row count matches the batch FIT count before treating the import as complete.
+9. Keep current-month loose `.fit` files available for repair, reparse, or enrichment.
+
+## Data Archive Loop
+
+For completed prior-month COROS export batches:
+
+1. Archive only batches whose processed summaries already exist.
+2. Create `fit_files.tar.gz` inside the batch folder.
+3. Verify archive membership before removing loose `.fit` files.
+4. Update processed JSONL rows with `source_archive_relpath` and `source_archive_member`.
+5. Remove loose `.fit` files only after archive verification succeeds.
+6. Keep `manifest.md`, `SHA256SUMS.txt`, processed summaries, and `fit_files.tar.gz`.
+7. Update the manifest to record archive size, member count, and that loose FIT files were removed.
+
+## Monthly Archive Rule
+
+- On the first repo maintenance pass of a new month, archive all completed COROS export batches from the previous month.
 
 Use `scripts/summarize_coros_fit.py` when the optional FIT parser dependency is available.
+Use `scripts/archive_coros_export.py` for batch archiving after summaries exist.
 
 Raw FIT files may include GPS, timestamps, heart rate, and device metadata. Treat them as private training data unless you intentionally publish them.

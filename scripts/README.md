@@ -9,7 +9,14 @@ Near-term candidates:
 
 ## FIT Summaries
 
-`summarize_coros_fit.py` reads FIT files from an import directory and writes a CSV summary to `data/processed/`.
+The expected operator flow is:
+
+1. Drop new `.fit` files in the repo root.
+2. Move them into a dated batch folder under `data/coros_exports/`.
+3. Run `summarize_coros_fit.py` to produce processed summaries.
+4. Archive completed prior-month batches later with `archive_coros_export.py`.
+
+`summarize_coros_fit.py` reads FIT files from an import directory and writes a CSV summary to `data/processed/`. It can also write newline-delimited JSON (`.jsonl`) with stable machine-oriented fields such as the import batch, repo-relative source path, FIT activity ID, and SHA-256 hash.
 
 Example:
 
@@ -17,7 +24,30 @@ Example:
 python scripts/summarize_coros_fit.py data/coros_exports/COROS_export_2026-05-09 data/processed/coros_export_2026-05-09_summary.csv
 ```
 
+```bash
+python scripts/summarize_coros_fit.py \
+  data/coros_exports/COROS_export_2026-05-09 \
+  data/processed/coros_export_2026-05-09_summary.csv \
+  --jsonl data/processed/coros_export_2026-05-09_summary.jsonl
+```
+
 It requires the optional `fitparse` package. Installing `fitdecode` as a fallback improves support for COROS files with vendor-specific FIT records.
+
+## FIT Archiving
+
+`archive_coros_export.py` packs the loose FIT files in one export batch into `fit_files.tar.gz`, updates the matching processed JSONL sidecar with archive metadata, verifies archive membership, and then removes the loose `.fit` files.
+
+Archive policy:
+
+- Keep current-month FIT files loose after import.
+- On the first maintenance pass of a new month, archive completed batches from the previous month.
+- Do not archive a batch until its processed summaries already exist.
+
+Example:
+
+```bash
+python scripts/archive_coros_export.py data/coros_exports/COROS_export_2026-05-09
+```
 
 Keep scripts small and reviewable. The Markdown files remain the system of record.
 
