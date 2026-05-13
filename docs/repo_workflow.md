@@ -24,6 +24,7 @@ During the week:
 - Add daily logs only when there is useful signal.
 - Record distance, effort, soreness, sleep/stress, and warning signs.
 - Do not backfill noise just to make the repo look complete.
+- If repo Markdown changed, run `python scripts/check_markdown_links.py` before commit.
 
 After each week:
 
