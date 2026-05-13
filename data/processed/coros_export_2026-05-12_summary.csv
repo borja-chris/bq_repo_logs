@@ -1,0 +1,2 @@
+source_file,start_time,sport,sub_sport,distance_mi,duration_s,avg_hr,max_hr,ascent_m,parser,parse_error
+477448262486360264.fit,2026-05-12 21:28:32+00:00,running,,5.80,4193,145,166,78,fitdecode,

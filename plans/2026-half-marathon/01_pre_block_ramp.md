@@ -27,9 +27,9 @@ Do not force 35 miles/week before the block. Arriving healthy, consistent, and s
 
 | Day | Run | Purpose | Notes |
 | --- | --- | --- | --- |
-| Monday | 3 mi easy | Recovery / easy | Keep it deliberately light. |
+| Monday | Rest | Recovery | Took rest after the Sunday bike ride ended up less recovery-like than intended. |
 | Tuesday | 5 mi easy | Easy aerobic | Optional 4-6 x 20 sec strides if legs feel good. |
-| Wednesday | Off | Recovery | Default Hanson-style break. |
+| Wednesday | 3 mi very easy | Recovery / easy | Replaces Monday's easy run. No strides. Keep it controlled if the right glute is still sore. |
 | Thursday | 5 mi easy | Easy aerobic | No steady finish; keep it conversational. |
 | Friday | 3 mi easy | Recovery / easy | Can flip with Monday or Wednesday if needed. |
 | Saturday | 3-4 mi easy | Easy aerobic | Stay relaxed. |
