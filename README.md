@@ -12,9 +12,30 @@ Current working frame:
 
 Use `sources/` for durable planning context, `plans/` for upcoming training, `logs/` for completed work, `retros/` for reviews, and `decisions/` for meaningful changes to the plan.
 
+## Current Week
+
+Source: [plans/2026-half-marathon/01_pre_block_ramp.md](/home/kelik/projects/bq_repo_logs/plans/2026-half-marathon/01_pre_block_ramp.md)
+
+Week of `2026-05-11`
+
+- Target mileage: about `24-26`
+- Primary purpose: settle into rhythm
+
+| Day | Run | Purpose | Notes |
+| --- | --- | --- | --- |
+| Monday | Rest | Recovery | Took rest after the Sunday bike ride ended up less recovery-like than intended. |
+| Tuesday | 5 mi easy | Easy aerobic | Optional 4-6 x 20 sec strides if legs feel good. |
+| Wednesday | 3 mi very easy | Recovery / easy | Replaces Monday's easy run. No strides. Keep it controlled if the right glute is still sore. |
+| Thursday | 5 mi easy | Easy aerobic | No steady finish; keep it conversational. |
+| Friday | 3 mi easy | Recovery / easy | Can flip with Monday or Wednesday if needed. |
+| Saturday | 3-4 mi easy | Easy aerobic | Stay relaxed. |
+| Sunday | 6-7 mi easy | Long run | Finish fresh. |
+
+The 18-week half-marathon block starts on `2026-06-01`. Until then, this pre-block ramp week is the live reference.
+
 ## Workflow
 
-Use [docs/repo_workflow.md](/home/blk_h/bq_repo_logs/docs/repo_workflow.md) as the operating loop for normal usage.
+Use [docs/repo_workflow.md](/home/kelik/projects/bq_repo_logs/docs/repo_workflow.md) as the operating loop for normal usage.
 
 The short version:
 
