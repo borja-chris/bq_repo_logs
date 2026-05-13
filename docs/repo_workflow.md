@@ -27,6 +27,8 @@ During the week:
 - Do not backfill noise just to make the repo look complete.
 - If repo Markdown changed, run `python scripts/check_markdown_links.py` before commit.
 - If the live current week changed, check whether `README.md` needs a matching summary update before commit/push.
+- Before updating live current-week status in `README.md`, verify completed work from `logs/daily/` first, then `logs/weekly/`, then `data/processed/` if a COROS import may have landed before the Markdown was updated.
+- When a request could mean either a training retrospective or a work-session retrospective, label it explicitly before writing.
 
 After each week:
 

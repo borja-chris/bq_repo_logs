@@ -19,17 +19,19 @@ Source: [plans/2026-half-marathon/01_pre_block_ramp.md](plans/2026-half-marathon
 Week of `2026-05-11`
 
 - Target mileage: about `22-25`
+- Actual mileage so far: `5.80`
 - Primary purpose: settle into rhythm while accommodating travel logistics
+- Week status: `Tuesday run logged`
 
-| Day | Run | Purpose | Notes |
+| Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | Rest | Recovery | Took rest after the Sunday bike ride ended up less recovery-like than intended. |
-| Tuesday | 5 mi easy | Easy aerobic | Optional 4-6 x 20 sec strides if legs feel good. |
-| Wednesday | 4 mi very easy | Recovery / easy | Replaces Monday's easy run. No strides. Keep it controlled. |
-| Thursday | 5 mi easy | Easy aerobic | No steady finish; keep it conversational. |
-| Friday | Off | Recovery / travel prep | Packing and last-minute errands. No makeup mileage. |
-| Saturday | 3-4 mi easy | Easy aerobic / travel shakeout | Use this to loosen up after the flight. Stay relaxed. |
-| Sunday | 6-7 mi easy | Long run | Finish fresh. |
+| Monday | Rest | Rest | Took rest after the Sunday bike ride ended up less recovery-like than intended. |
+| Tuesday | 5 mi easy | 5.80 mi easy | 1:09:53 at 12:03/mi. Right glute still sore from the weekend 5K and noticeable during strides. |
+| Wednesday | 4 mi very easy | x | Replaces Monday's easy run. No strides. Keep it controlled. |
+| Thursday | 5 mi easy | x | No steady finish; keep it conversational. |
+| Friday | Off | x | Packing and last-minute errands. No makeup mileage. |
+| Saturday | 3-4 mi easy | x | Use this to loosen up after the flight. Stay relaxed. |
+| Sunday | 6-7 mi easy | x | Finish fresh. |
 
 The 18-week half-marathon block starts on `2026-06-01`. Until then, this pre-block ramp week is the live reference.
 
