@@ -16,6 +16,16 @@ import warnings
 from pathlib import Path
 from typing import Any
 
+try:
+    from fitparse import FitFile as FITPARSE_FILE
+except ImportError:
+    FITPARSE_FILE = None
+
+try:
+    import fitdecode as FITDECODE
+except ImportError:
+    FITDECODE = None
+
 
 FIELDS = [
     "import_batch",
@@ -67,18 +77,18 @@ def repo_relpath(path: Path) -> str:
         return str(path)
 
 
-def parse_fit(path: Path) -> dict[str, str]:
-    try:
-        from fitparse import FitFile
-    except ImportError:
-        FitFile = None
-
+def build_row(path: Path) -> dict[str, str]:
     row = {field: "" for field in FIELDS}
     row["import_batch"] = path.parent.name
     row["source_file"] = path.name
     row["source_relpath"] = repo_relpath(path)
     row["source_sha256"] = sha256(path)
     row["activity_id"] = path.stem
+    return row
+
+
+def parse_fit(path: Path, row: dict[str, str] | None = None) -> dict[str, str]:
+    row = build_row(path) if row is None else row
 
     def apply_values(values: dict[str, Any], parser_name: str) -> None:
         row["start_time"] = str(values.get("start_time", ""))
@@ -92,9 +102,9 @@ def parse_fit(path: Path) -> dict[str, str]:
         row["parser"] = parser_name
 
     fitparse_exc: Exception | None = None
-    if FitFile is not None:
+    if FITPARSE_FILE is not None:
         try:
-            fit_file = FitFile(str(path))
+            fit_file = FITPARSE_FILE(str(path))
             for message in fit_file.get_messages():
                 if message.name == "session":
                     apply_values(field_map(message), "fitparse")
@@ -103,9 +113,7 @@ def parse_fit(path: Path) -> dict[str, str]:
             fitparse_exc = exc
 
     if not row["parser"]:
-        try:
-            import fitdecode
-        except ImportError:
+        if FITDECODE is None:
             if fitparse_exc is not None:
                 row["parse_error"] = f"{type(fitparse_exc).__name__}: {fitparse_exc}"
             else:
@@ -115,10 +123,10 @@ def parse_fit(path: Path) -> dict[str, str]:
         try:
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
-                with fitdecode.FitReader(str(path)) as fit_file:
+                with FITDECODE.FitReader(str(path)) as fit_file:
                     for frame in fit_file:
                         if (
-                            frame.frame_type == fitdecode.FIT_FRAME_DATA
+                            frame.frame_type == FITDECODE.FIT_FRAME_DATA
                             and frame.name == "session"
                         ):
                             apply_values(
@@ -138,6 +146,10 @@ def parse_fit(path: Path) -> dict[str, str]:
                 )
 
     return row
+
+
+def parse_fit_files(paths: list[Path]) -> list[dict[str, str]]:
+    return [parse_fit(path, row=build_row(path)) for path in paths]
 
 
 def write_jsonl(output_path: Path, rows: list[dict[str, str]]) -> None:
@@ -161,7 +173,7 @@ def main() -> int:
 
     fit_files = sorted(args.input_dir.glob("*.fit"))
     args.output_csv.parent.mkdir(parents=True, exist_ok=True)
-    rows = [parse_fit(path) for path in fit_files]
+    rows = parse_fit_files(fit_files)
 
     with args.output_csv.open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=FIELDS)

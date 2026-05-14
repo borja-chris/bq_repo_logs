@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import hashlib
 import json
 import re
 from dataclasses import dataclass
@@ -134,14 +133,6 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def format_int(value: int) -> str:
     return f"{value:,}"
 
@@ -191,20 +182,21 @@ def import_loose_fit_files(import_date: date) -> tuple[Path, list[Path], int]:
     return export_dir, moved_files, removed_sidecars
 
 
-def write_sha256s(export_dir: Path) -> int:
-    fit_files = sorted(export_dir.glob("*.fit"))
+def write_sha256s(export_dir: Path, rows: Iterable[dict[str, str]]) -> int:
     hash_path = export_dir / "SHA256SUMS.txt"
     with hash_path.open("w") as handle:
-        for path in fit_files:
-            handle.write(f"{sha256(path)}  {summarize.repo_relpath(path)}\n")
-    return len(fit_files)
+        count = 0
+        for row in rows:
+            handle.write(f"{row['source_sha256']}  {row['source_relpath']}\n")
+            count += 1
+    return count
 
 
 def generate_summaries(export_dir: Path) -> tuple[Path, Path, list[dict[str, str]]]:
     import_date = export_dir.name.removeprefix("COROS_export_")
     output_csv, output_jsonl = processed_paths_for(date.fromisoformat(import_date))
     fit_files = sorted(export_dir.glob("*.fit"))
-    rows = [summarize.parse_fit(path) for path in fit_files]
+    rows = summarize.parse_fit_files(fit_files)
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     with output_csv.open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=summarize.FIELDS)
@@ -264,11 +256,13 @@ def upsert_daily_log(activity: Activity) -> Path:
     return log_path
 
 
-def parse_day_logs() -> dict[date, dict[str, str]]:
-    daily_dir = REPO_ROOT / "logs" / "daily"
+def parse_day_logs(week_start: date) -> dict[date, dict[str, str]]:
     result: dict[date, dict[str, str]] = {}
-    for path in sorted(daily_dir.glob("*.md")):
-        day_date = date.fromisoformat(path.stem)
+    for offset in range(7):
+        day_date = week_start + timedelta(days=offset)
+        path = REPO_ROOT / "logs" / "daily" / f"{day_date.isoformat()}.md"
+        if not path.exists():
+            continue
         fields = {
             "completed": "",
             "time": "",
@@ -619,13 +613,25 @@ def load_processed_activities_for_week(week_start: date) -> list[Activity]:
     return activities
 
 
-def sync_records(today: date, update_logs: bool, update_readme_flag: bool) -> dict[str, object]:
+def sync_records(
+    today: date,
+    update_logs: bool,
+    update_readme_flag: bool,
+    recent_activities: list[Activity] | None = None,
+) -> dict[str, object]:
+    week_start = monday_of(today)
+    week_end = week_start + timedelta(days=6)
     synced_daily_paths: list[Path] = []
     if update_logs:
-        for activity in load_processed_activities_for_week(monday_of(today)):
+        activities = recent_activities
+        if activities is None:
+            activities = load_processed_activities_for_week(week_start)
+        for activity in activities:
+            if not (week_start <= activity.local_date <= week_end):
+                continue
             synced_daily_paths.append(upsert_daily_log(activity))
-    day_logs = parse_day_logs()
-    week_plan = load_week_plan(monday_of(today))
+    day_logs = parse_day_logs(week_start)
+    week_plan = load_week_plan(week_start)
     rows, total_miles, status = build_week_rows(week_plan, day_logs)
     weekly_path: Path | None = None
     if update_logs:
@@ -654,12 +660,13 @@ def main() -> int:
     output_csv, output_jsonl = processed_paths_for(today)
     manifest_path: Path | None = None
     daily_paths: list[Path] = []
+    activities: list[Activity] = []
 
     if not args.sync_only:
         export_dir, moved_files, removed_sidecars = import_loose_fit_files(today)
         if moved_files:
-            fit_count = write_sha256s(export_dir)
             output_csv, output_jsonl, rows = generate_summaries(export_dir)
+            fit_count = write_sha256s(export_dir, rows)
             activities = load_activities(rows)
             if update_logs:
                 for activity in activities:
@@ -673,7 +680,12 @@ def main() -> int:
                 output_jsonl,
                 rows,
             )
-    sync_result = sync_records(today, update_logs=update_logs, update_readme_flag=update_readme_flag)
+    sync_result = sync_records(
+        today,
+        update_logs=update_logs,
+        update_readme_flag=update_readme_flag,
+        recent_activities=activities or None,
+    )
 
     print(f"Import date: {today.isoformat()}")
     print(f"Moved FIT files: {len(moved_files)}")
