@@ -12,9 +12,34 @@ Near-term candidates:
 The expected operator flow is:
 
 1. Drop new `.fit` files in the repo root.
-2. Move them into a dated batch folder under `data/coros_exports/`.
-3. Run `summarize_coros_fit.py` to produce processed summaries.
-4. Archive completed prior-month batches later with `archive_coros_export.py`.
+2. Run `ingest_coros_fit.py` to move them into a dated batch folder under `data/coros_exports/`, produce processed summaries, and sync the repo records.
+3. Archive completed prior-month batches later with `archive_coros_export.py`.
+
+Primary command:
+
+```bash
+python scripts/ingest_coros_fit.py
+```
+
+Optional flags:
+
+```bash
+python scripts/ingest_coros_fit.py --sync-only
+python scripts/ingest_coros_fit.py --date 2026-05-14
+python scripts/ingest_coros_fit.py --no-readme
+python scripts/ingest_coros_fit.py --no-logs
+```
+
+`ingest_coros_fit.py` is the operator-facing entry point. It handles:
+
+- moving loose root-level `.fit` files into the dated batch folder
+- removing `:Zone.Identifier` sidecars
+- writing `SHA256SUMS.txt`
+- generating CSV and JSONL processed summaries
+- upserting matching daily logs from objective FIT fields
+- refreshing `logs/weekly/`
+- refreshing the managed current-week block in `README.md`
+- writing the batch manifest
 
 `summarize_coros_fit.py` reads FIT files from an import directory and writes a CSV summary to `data/processed/`. It can also write newline-delimited JSON (`.jsonl`) with stable machine-oriented fields such as the import batch, repo-relative source path, FIT activity ID, and SHA-256 hash.
 
@@ -32,6 +57,8 @@ python scripts/summarize_coros_fit.py \
 ```
 
 It requires the optional `fitparse` package. Installing `fitdecode` as a fallback improves support for COROS files with vendor-specific FIT records.
+
+The ingest script only automates objective recordkeeping. Subjective recovery signals, coaching interpretation, retros, and plan changes remain manual.
 
 ## FIT Archiving
 

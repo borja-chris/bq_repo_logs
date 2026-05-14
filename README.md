@@ -14,26 +14,28 @@ Use `sources/` for durable planning context, `plans/` for upcoming training, `lo
 
 ## Current Week
 
-Source: [plans/2026-half-marathon/01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
+<!-- current-week:start -->
+Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 
 Week of `2026-05-11`
 
-- Target mileage: about `22-25`
-- Actual mileage so far: `5.80`
+- Target mileage: `about 22-25`
+- Actual mileage so far: `11.38`
 - Primary purpose: settle into rhythm while accommodating travel logistics
-- Week status: `Tuesday run logged`
+- Week status: `Wednesday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | Rest | Rest | Took rest after the Sunday bike ride ended up less recovery-like than intended. |
-| Tuesday | 5 mi easy | 5.80 mi easy | 1:09:53 at 12:03/mi. Right glute still sore from the weekend 5K and noticeable during strides. |
-| Wednesday | 4 mi very easy | x | Replaces Monday's easy run. No strides. Keep it controlled. |
-| Thursday | 5 mi easy | x | No steady finish; keep it conversational. |
-| Friday | Off | x | Packing and last-minute errands. No makeup mileage. |
-| Saturday | 3-4 mi easy | x | Use this to loosen up after the flight. Stay relaxed. |
-| Sunday | 6-7 mi easy | x | Finish fresh. |
+| Monday | Rest | Rest day | Took a rest day because the Sunday recovery bike ride was not especially recovery-like. |
+| Tuesday | 5 mi easy | 5.80 mi run | 1:09:53 at 12:03/mi. Right glute is still sore from the 5K race over the weekend and was noticeable during strides. |
+| Wednesday | 4 mi very easy | 5.58 mi run | 1:05:07 at 11:40/mi. |
+| Thursday | 5 mi easy | x | x |
+| Friday | Off | x | x |
+| Saturday | 3-4 mi easy | x | x |
+| Sunday | 6-7 mi easy | x | x |
 
 The 18-week half-marathon block starts on `2026-06-01`. Until then, this pre-block ramp week is the live reference.
+<!-- current-week:end -->
 
 ## Workflow
 
@@ -52,8 +54,8 @@ Raw COROS exports belong under `data/coros_exports/`. Processed summaries belong
 COROS data workflow:
 
 1. Drop new `.fit` files in the repo root.
-2. Move them into a dated batch folder under `data/coros_exports/`.
-3. Generate processed summaries in `data/processed/`.
+2. Run `python scripts/ingest_coros_fit.py`.
+3. Let the script move them into a dated batch folder under `data/coros_exports/`, update the processed summaries, and refresh the current logs.
 4. Archive completed prior-month raw batches into `fit_files.tar.gz` after verification.
 
 Aim to make this as Ai Tool Agnostic as possible.

@@ -1,0 +1,2 @@
+import_batch,source_file,source_relpath,source_sha256,activity_id,start_time,sport,sub_sport,distance_mi,duration_s,avg_hr,max_hr,ascent_m,parser,parse_error
+COROS_export_2026-05-14,Afternoon_Run.fit,data/coros_exports/COROS_export_2026-05-14/Afternoon_Run.fit,dafe3a7d3d413efcb594bf2add42384d520b880ef483df49aadd817856340687,Afternoon_Run,2026-05-13 21:10:35+00:00,running,,5.58,3907,144,165,69,fitdecode,

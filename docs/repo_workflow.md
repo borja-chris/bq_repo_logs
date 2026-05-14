@@ -63,14 +63,32 @@ Use a decision record before:
 For a new COROS export:
 
 1. Drop new raw `.fit` files in the repo root.
-2. Move those files into `data/coros_exports/COROS_export_YYYY-MM-DD/` for the import date.
-3. Do not keep `*:Zone.Identifier` files.
-4. Add or update `SHA256SUMS.txt` for the loose `.fit` files.
-5. Add or update a manifest for the import.
-6. Put derived summaries in `data/processed/`.
-7. Write both a reviewable CSV summary and a machine-readable `.jsonl` summary when parser support is available.
-8. Verify that summary row count matches the batch FIT count before treating the import as complete.
-9. Keep current-month loose `.fit` files available for repair, reparse, or enrichment.
+2. Run `python scripts/ingest_coros_fit.py`.
+3. Let the script move those files into `data/coros_exports/COROS_export_YYYY-MM-DD/` for the import date.
+4. Do not keep `*:Zone.Identifier` files.
+5. Add or update `SHA256SUMS.txt` for the loose `.fit` files.
+6. Add or update a manifest for the import.
+7. Put derived summaries in `data/processed/`.
+8. Write both a reviewable CSV summary and a machine-readable `.jsonl` summary when parser support is available.
+9. Create or update matching `logs/daily/YYYY-MM-DD.md` entries from objective FIT data.
+10. Refresh the current week summary in `README.md` from the plan plus the daily logs.
+11. Update `logs/weekly/week_YYYY-MM-DD.md` with the current factual week summary.
+12. Verify that summary row count matches the batch FIT count before treating the import as complete.
+13. Keep current-month loose `.fit` files available for repair, reparse, or enrichment.
+
+## AI Interaction Model
+
+Use AI as the default operator for factual repo maintenance.
+
+- Auto-do: FIT import, hashing, processed summaries, daily log upserts, weekly log refresh, `README.md` sync, manifest maintenance, and archive housekeeping when the rules already exist.
+- Draft, then ask: weekly retros, decision records, and plan-text changes.
+- Ask first: changes to durable planning assumptions, framework changes, mileage-target changes, or destructive edits to historical records.
+
+Use this rule of thumb:
+
+- Facts: automate.
+- Interpretation: draft.
+- Decisions: ask.
 
 ## Data Archive Loop
 
