@@ -2,13 +2,13 @@
 
 ## Purpose
 
-Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while preserving the larger 3-year BQ arc.
+Prepare for the 2026-12-06 half marathon with a sub-1:33 checkpoint target while preserving the larger 3-year BQ arc.
 
 ## Assumptions
 
-- Start date: 2026-06-01
-- Race date: 2026-10-04
-- Starting base: about 30 miles/week
+- Start date: 2026-08-03
+- Race date: 2026-12-06
+- Starting base: about 30-35 miles/week, with 35-40 as a better outcome if earned
 - Goal pace: about 7:05/mi for sub-1:33
 - Rhythm: 6 running days/week
 - Normal off day: Wednesday
@@ -48,7 +48,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 - If calves, Achilles, plantar fascia, knees, hips, or hamstrings show warning signs, replace the next SOS day with easy running or rest.
 - Monday, Wednesday, and Friday may be flipped when needed, but preserve the Tuesday/Thursday/Sunday workout structure unless there is a clear reason to change it.
 
-## Week 1 - 2026-06-01
+## Week 1 - 2026-08-03
 
 - Target mileage: about 28-30, depending on 5K warmup/cooldown
 - Primary purpose: enter the block smoothly and use the 2026-06-06 5K as a fit check
@@ -65,7 +65,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 5K race, about 5-6 mi total | Fit check | Race honestly; include warmup and cooldown. |
 | Sunday | 7 mi easy | Recovery long run | Keep this easy; shorten if the 5K leaves abnormal soreness. |
 
-## Week 2 - 2026-06-08
+## Week 2 - 2026-08-10
 
 - Target mileage: about 34
 - Primary purpose: add light volume while keeping workouts controlled
@@ -80,7 +80,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 3 mi easy | Easy aerobic | Short and comfortable. |
 | Sunday | 10 mi easy | Long run | Keep the final miles steady, not hard. |
 
-## Week 3 - 2026-06-15
+## Week 3 - 2026-08-17
 
 - Target mileage: about 36
 - Primary purpose: continue the gradual load build
@@ -95,7 +95,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 4 mi easy | Easy aerobic | Light aerobic support. |
 | Sunday | 10 mi with last 2 mi steady | Long run | Steady means controlled, not race effort. |
 
-## Week 4 - 2026-06-22
+## Week 4 - 2026-08-24
 
 - Target mileage: about 32
 - Primary purpose: absorb the first three weeks
@@ -110,7 +110,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 4 mi easy | Easy aerobic | Comfortable only. |
 | Sunday | 9 mi easy | Long run | Down week long run. |
 
-## Week 5 - 2026-06-29
+## Week 5 - 2026-08-31
 
 - Target mileage: about 38
 - Primary purpose: restart the build with stronger aerobic support
@@ -125,7 +125,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 3 mi easy | Easy aerobic | Keep this intentionally small. |
 | Sunday | 11 mi easy | Long run | First 11-miler of the block. |
 
-## Week 6 - 2026-07-06
+## Week 6 - 2026-09-07
 
 - Target mileage: about 40
 - Primary purpose: establish 40 miles as normal, not heroic
@@ -140,7 +140,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 5 mi easy | Easy aerobic | Comfortable aerobic mileage. |
 | Sunday | 11 mi steady-easy | Long run | Mostly easy, slight steady finish if fresh. |
 
-## Week 7 - 2026-07-13
+## Week 7 - 2026-09-14
 
 - Target mileage: about 42
 - Primary purpose: extend stamina without overreaching
@@ -155,7 +155,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 4 mi easy | Easy aerobic | Light support. |
 | Sunday | 12 mi easy | Long run | First 12-miler; no hard finish required. |
 
-## Week 8 - 2026-07-20
+## Week 8 - 2026-09-21
 
 - Target mileage: about 36
 - Primary purpose: down week before the larger build
@@ -170,7 +170,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 4 mi easy | Easy aerobic | No extra mileage. |
 | Sunday | 10 mi easy | Long run | Reduced long run. |
 
-## Week 9 - 2026-07-27
+## Week 9 - 2026-09-28
 
 - Target mileage: about 44
 - Primary purpose: transition fully into strength and HMP work
@@ -185,7 +185,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 5 mi easy | Easy aerobic | Comfortable. |
 | Sunday | 12 mi with last 3 mi steady | Long run | Steady, not hard. |
 
-## Week 10 - 2026-08-03
+## Week 10 - 2026-10-05
 
 - Target mileage: about 46
 - Primary purpose: build fatigue resistance
@@ -200,7 +200,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 5 mi easy | Easy aerobic | Do not turn this into a workout. |
 | Sunday | 13 mi easy | Long run | First 13-miler; easy is enough. |
 
-## Week 11 - 2026-08-10
+## Week 11 - 2026-10-12
 
 - Target mileage: about 48
 - Primary purpose: consolidate upper-40s mileage
@@ -215,7 +215,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 6 mi easy | Easy aerobic | Comfortable. |
 | Sunday | 13 mi steady-easy | Long run | Mostly easy; steady only if fresh. |
 
-## Week 12 - 2026-08-17
+## Week 12 - 2026-10-19
 
 - Target mileage: about 42
 - Primary purpose: down week before peak-specific work
@@ -230,7 +230,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 6 mi easy | Easy aerobic | Comfortable. |
 | Sunday | 11 mi easy | Long run | Reduced long run. |
 
-## Week 13 - 2026-08-24
+## Week 13 - 2026-10-26
 
 - Target mileage: about 50
 - Primary purpose: start the peak phase
@@ -245,7 +245,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 6 mi easy | Easy aerobic | Easy only. |
 | Sunday | 14 mi easy | Long run | First 14-miler. |
 
-## Week 14 - 2026-08-31
+## Week 14 - 2026-11-02
 
 - Target mileage: about 52
 - Primary purpose: extend strength while holding recovery quality
@@ -260,7 +260,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 7 mi easy | Easy aerobic | Easy mileage, not steady. |
 | Sunday | 14 mi with last 4 mi steady | Long run | Steady finish only if the week has gone well. |
 
-## Week 15 - 2026-09-07
+## Week 15 - 2026-11-09
 
 - Target mileage: about 54
 - Primary purpose: peak week if decision gates are green
@@ -275,7 +275,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 7 mi easy | Easy aerobic | Keep it light. |
 | Sunday | 15 mi easy-steady | Long run | Peak long run; do not force a fast finish. |
 
-## Week 16 - 2026-09-14
+## Week 16 - 2026-11-16
 
 - Target mileage: about 48
 - Primary purpose: begin sharpening while reducing load
@@ -290,7 +290,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 7 mi easy | Easy aerobic | Comfortable. |
 | Sunday | 12 mi easy | Long run | Reduced long run. |
 
-## Week 17 - 2026-09-21
+## Week 17 - 2026-11-23
 
 - Target mileage: about 40
 - Primary purpose: taper while keeping touch with pace
@@ -305,7 +305,7 @@ Prepare for the 2026-10-04 half marathon with a sub-1:33 checkpoint target while
 | Saturday | 7 mi easy | Easy aerobic | Easy only. |
 | Sunday | 10 mi easy | Long run | Last moderate long run. |
 
-## Week 18 - 2026-09-28
+## Week 18 - 2026-11-30
 
 - Target mileage: about 28-32 before small rounding differences, including race
 - Primary purpose: arrive fresh and sharp for race day

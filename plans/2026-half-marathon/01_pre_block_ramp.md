@@ -1,17 +1,23 @@
-# Pre-Block Ramp
+# Extended Base Ramp
 
 ## Window
 
-Build toward the 18-week half-marathon block beginning 2026-06-01.
+Build toward the 18-week half-marathon block beginning 2026-08-03.
 
 ## Target
 
-Reach about 30 miles/week by 2026-06-01 if consistency and recovery support it.
+Use the added runway to extend the base rather than force the build.
 
-Do not force 35 miles/week before the block. Arriving healthy, consistent, and slightly undercooked is preferred over starting the 18-week plan with fatigue.
+Minimum good outcome: arrive at about 30-35 miles/week by 2026-08-03.
+
+Better outcome: arrive at about 35-40 miles/week by 2026-08-03 if consistency and recovery clearly support it.
+
+Do not force 40+ miles/week before the block. Arriving healthy, consistent, and slightly undercooked is preferred over starting the 18-week plan with fatigue.
 
 ## Guardrails
 
+- Keep phase 1 at 5 days/week.
+- Do not add a 6th day until 5 days/week feels routine, not negotiated.
 - Do not force mileage after missed days.
 - Keep easy days easy.
 - Prefer repeatable frequency over standout workouts.
@@ -20,48 +26,17 @@ Do not force 35 miles/week before the block. Arriving healthy, consistent, and s
 - Strides are optional and should be relaxed, short, and never turned into a workout.
 - Monday, Wednesday, and Friday may be flipped as recovery/easy slots when scheduling requires it.
 
-## Week of 2026-05-11
+## Phase 1: 2026-05-18 through 2026-06-14
 
-- Target mileage: about 22-25
-- Primary purpose: settle into rhythm while accommodating travel logistics
+- Frequency: 5 days/week
+- Goal: settle into routine and move toward the mid-20s to low-30s without strain
 
-| Day | Run | Purpose | Notes |
-| --- | --- | --- | --- |
-| Monday | Rest | Recovery | Took rest after the Sunday bike ride ended up less recovery-like than intended. |
-| Tuesday | 5 mi easy | Easy aerobic | Optional 4-6 x 20 sec strides if legs feel good. |
-| Wednesday | 4 mi very easy | Recovery / easy | Replaces Monday's easy run. No strides. Keep it controlled. |
-| Thursday | 5 mi easy | Easy aerobic | No steady finish; keep it conversational. |
-| Friday | Off | Recovery / travel prep | Packing and last-minute errands. No makeup mileage. |
-| Saturday | 3-4 mi easy | Easy aerobic / travel shakeout | Use this to loosen up after the flight. Stay relaxed. |
-| Sunday | 6-7 mi easy | Long run | Finish fresh. |
+## Phase 2: 2026-06-15 through 2026-07-12
 
-## Week of 2026-05-18
+- Frequency: stay at 5 days/week or add a 6th day only if earned
+- Goal: make low-to-mid 30s feel normal
 
-- Target mileage: about 23-25 if Sunday is off, about 26-28 if Sunday becomes 3 mi easy
-- Primary purpose: add easy volume while keeping Monday recovery-first and building in two rest opportunities around embarkation
+## Phase 3: 2026-07-13 through 2026-08-02
 
-| Day | Run | Purpose | Notes |
-| --- | --- | --- | --- |
-| Monday | 3 mi easy | Recovery / easy | Recovery-first day after the Sunday long run. Keep it very easy. |
-| Tuesday | 5-6 mi easy | Easy aerobic | Optional 4-6 x 20 sec strides. |
-| Wednesday | 4 mi easy | Easy aerobic | Keep this controlled; no workout effort. |
-| Thursday | 6 mi easy | Easy aerobic | No workout effort. |
-| Friday | Off | Recovery | Second rest day. No makeup mileage. |
-| Saturday | 7-8 mi easy | Long run | Shifted earlier for embarkation day. Fully aerobic. |
-| Sunday | Off or 3 mi easy | Flex / embarkation day | Run only if logistics and recovery make it easy. No makeup mileage. |
-
-## Week of 2026-05-25
-
-- Target mileage: about 25-27
-- Primary purpose: arrive block-ready with two rest days before shifting into the six-day block rhythm
-- Planning note: keep Monday as a recovery-first run because it builds directly off the Sunday long run
-
-| Day | Run | Purpose | Notes |
-| --- | --- | --- | --- |
-| Monday | 4 mi easy | Recovery / easy | Recovery-first day after the Sunday long run. Keep it deliberately light. |
-| Tuesday | 5 mi easy | Easy aerobic | Optional 4 x 20 sec strides if setup is good. |
-| Wednesday | 4 mi easy | Frequency | Definitely run, but keep it very easy. |
-| Thursday | 6 mi easy | Easy aerobic | Best normal-volume day of the week. |
-| Friday | Off | Recovery | First pre-block rest day. No makeup mileage. |
-| Saturday | 7 mi easy | Shifted long-ish run | Replaces Sunday long run. Finish fresh. |
-| Sunday | Off | Flight day / recovery | Second pre-block rest day. No running. Walk or mobility only if convenient. |
+- Frequency: progress toward block rhythm if recovery supports it
+- Goal: arrive ready for the August 3 block start with stable aerobic volume, not accumulated fatigue
