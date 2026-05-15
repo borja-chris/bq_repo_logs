@@ -480,7 +480,7 @@ def build_readme_current_week(week_plan: WeekPlan, rows: list[str], total_miles:
         "",
         *rows,
         "",
-        "The 18-week half-marathon block starts on `2026-06-01`. Until then, this pre-block ramp week is the live reference.",
+        "The listed source plan is the live reference for this week.",
     ]
     return "\n".join(lines)
 

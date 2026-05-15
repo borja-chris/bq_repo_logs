@@ -26,6 +26,21 @@ Do not force 40+ miles/week before the block. Arriving healthy, consistent, and 
 - Strides are optional and should be relaxed, short, and never turned into a workout.
 - Monday, Wednesday, and Friday may be flipped as recovery/easy slots when scheduling requires it.
 
+## Week of 2026-05-11
+
+- Target mileage: about 22-25
+- Primary purpose: settle into rhythm while accommodating travel logistics
+
+| Day | Run | Purpose | Notes |
+| --- | --- | --- | --- |
+| Monday | Rest | Recovery | Took rest after the Sunday bike ride ended up less recovery-like than intended. |
+| Tuesday | 5 mi easy | Easy aerobic | Optional 4-6 x 20 sec strides if legs feel good. |
+| Wednesday | 4 mi very easy | Recovery / easy | Replaces Monday's easy run. No strides. Keep it controlled. |
+| Thursday | 5 mi easy | Easy aerobic | No steady finish; keep it conversational. |
+| Friday | Off | Recovery / travel prep | Packing and last-minute errands. No makeup mileage. |
+| Saturday | 3-4 mi easy | Easy aerobic / travel shakeout | Use this to loosen up after the flight. Stay relaxed. |
+| Sunday | 6-7 mi easy | Long run | Finish fresh. |
+
 ## Phase 1: 2026-05-18 through 2026-06-14
 
 - Frequency: 5 days/week

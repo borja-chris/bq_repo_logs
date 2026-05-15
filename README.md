@@ -7,7 +7,7 @@ Current working frame:
 - BQ category: Male 35-39
 - Posted BQ standard: 3:00:00
 - Practical planning target: approximately 2:55:00 or faster
-- Current Goal A race: half marathon on 2026-10-04
+- Current Goal A race: half marathon on 2026-12-06
 - Current preferred framework: Hanson-inspired half-marathon training
 
 Use `sources/` for durable planning context, `plans/` for upcoming training, `logs/` for completed work, `retros/` for reviews, and `decisions/` for meaningful changes to the plan.
@@ -20,21 +20,21 @@ Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 Week of `2026-05-11`
 
 - Target mileage: `about 22-25`
-- Actual mileage so far: `11.38`
+- Actual mileage so far: `15.38`
 - Primary purpose: settle into rhythm while accommodating travel logistics
-- Week status: `Wednesday run logged`
+- Week status: `Thursday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
 | Monday | Rest | Rest day | Took a rest day because the Sunday recovery bike ride was not especially recovery-like. |
 | Tuesday | 5 mi easy | 5.80 mi run | 1:09:53 at 12:03/mi. Right glute is still sore from the 5K race over the weekend and was noticeable during strides. |
 | Wednesday | 4 mi very easy | 5.58 mi run | 1:05:07 at 11:40/mi. |
-| Thursday | 5 mi easy | x | x |
+| Thursday | 5 mi easy | 4.00 mi run | 47:09 at 11:47/mi. |
 | Friday | Off | x | x |
 | Saturday | 3-4 mi easy | x | x |
 | Sunday | 6-7 mi easy | x | x |
 
-The 18-week half-marathon block starts on `2026-06-01`. Until then, this pre-block ramp week is the live reference.
+The listed source plan is the live reference for this week.
 <!-- current-week:end -->
 
 ## Workflow
