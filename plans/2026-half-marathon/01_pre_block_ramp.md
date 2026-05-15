@@ -45,6 +45,81 @@ Do not force 40+ miles/week before the block. Arriving healthy, consistent, and 
 
 - Frequency: 5 days/week
 - Goal: settle into routine and move toward the mid-20s to low-30s without strain
+- Primary standard: finish weeks feeling repeatable, not impressive
+- Allowed tools: easy running, moderate long run, optional relaxed strides
+- Not yet included: formal SOS workouts, hard long-run finishes, or forced 6th-day volume
+
+### Week of 2026-05-18
+
+- Target mileage: about 24-26
+- Primary purpose: establish a normal 5-day rhythm after the travel-adjusted week
+
+| Day | Run | Purpose | Notes |
+| --- | --- | --- | --- |
+| Monday | Off | Recovery | No makeup mileage. |
+| Tuesday | 5 mi easy | Easy aerobic | Optional 4-6 x 20 sec relaxed strides if legs feel good. |
+| Wednesday | 4 mi very easy | Recovery / easy | Keep this genuinely light. |
+| Thursday | 5 mi easy | Easy aerobic | Conversational effort throughout. |
+| Friday | Off | Recovery | If tired, take the full day off without negotiation. |
+| Saturday | 4 mi easy | Easy aerobic | Smooth, relaxed, no progression. |
+| Sunday | 7-8 mi easy | Long run | Keep this controlled; finish feeling like another mile would have been fine. |
+
+### Week of 2026-05-25
+
+- Target mileage: about 26-28
+- Primary purpose: add a small amount of volume without changing the feel of the week
+
+| Day | Run | Purpose | Notes |
+| --- | --- | --- | --- |
+| Monday | Off | Recovery | Hold the 5-day structure. |
+| Tuesday | 5 mi easy | Easy aerobic | Optional strides only if legs feel snappy. |
+| Wednesday | 4-5 mi very easy | Recovery / easy | Stay patient here. |
+| Thursday | 6 mi easy | Easy aerobic | Do not turn this into a steady run. |
+| Friday | Off | Recovery | No makeup mileage if life gets in the way earlier in the week. |
+| Saturday | 4 mi easy | Easy aerobic | Relaxed effort. |
+| Sunday | 8 mi easy | Long run | Moderate duration, not a test. |
+
+### Week of 2026-06-01
+
+- Target mileage: about 28-30
+- Primary purpose: make upper-20s mileage feel normal
+
+| Day | Run | Purpose | Notes |
+| --- | --- | --- | --- |
+| Monday | Off | Recovery | Keep the off day. |
+| Tuesday | 5-6 mi easy | Easy aerobic | Optional 4-6 x 20 sec strides if recovered. |
+| Wednesday | 5 mi very easy | Recovery / easy | Keep this soft enough to absorb the week. |
+| Thursday | 6 mi easy | Easy aerobic | Smooth, conversational, no push late. |
+| Friday | Off | Recovery | Better slightly underdone than carrying fatigue. |
+| Saturday | 4-5 mi easy | Easy aerobic | Stay relaxed. |
+| Sunday | 8-9 mi easy | Long run | Finish under control. |
+
+### Week of 2026-06-08
+
+- Target mileage: about 29-31
+- Primary purpose: touch low-30s only if the prior two weeks felt routine
+
+| Day | Run | Purpose | Notes |
+| --- | --- | --- | --- |
+| Monday | Off | Recovery | If carrying fatigue, keep this fully off. |
+| Tuesday | 6 mi easy | Easy aerobic | Optional strides only if recovery is clearly good. |
+| Wednesday | 5 mi very easy | Recovery / easy | Keep this easy enough to preserve Sunday. |
+| Thursday | 6 mi easy | Easy aerobic | No steady finish. |
+| Friday | Off | Recovery | If the week feels heavy, cap the weekend instead of forcing volume. |
+| Saturday | 4-5 mi easy | Easy aerobic | Stay smooth and economical. |
+| Sunday | 8-9 mi easy | Long run | Hold moderate long-run discipline. |
+
+### End-of-Phase 1 Check
+
+Move into Phase 2 as written only if most of the following are true:
+
+- 5 days/week felt routine, not negotiated
+- Easy days stayed easy
+- Long runs did not create multi-day recovery drag
+- No recurring warning signs showed up in calves, Achilles, plantar fascia, knees, hips, or hamstrings
+- Life stress did not make this volume feel fragile
+
+If these are not true, Phase 2 should repeat this general load shape before adding more volume or frequency.
 
 ## Phase 2: 2026-06-15 through 2026-07-12
 
