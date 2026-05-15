@@ -66,18 +66,18 @@ Do not force 40+ miles/week before the block. Arriving healthy, consistent, and 
 
 ### Week of 2026-05-25
 
-- Target mileage: about 26-28
-- Primary purpose: add a small amount of volume without changing the feel of the week
+- Target mileage: about 18-23
+- Primary purpose: maintain rhythm during cruise travel without forcing volume
 
 | Day | Run | Purpose | Notes |
 | --- | --- | --- | --- |
-| Monday | Off | Recovery | Hold the 5-day structure. |
-| Tuesday | 5 mi easy | Easy aerobic | Optional strides only if legs feel snappy. |
-| Wednesday | 4-5 mi very easy | Recovery / easy | Stay patient here. |
-| Thursday | 6 mi easy | Easy aerobic | Do not turn this into a steady run. |
-| Friday | Off | Recovery | No makeup mileage if life gets in the way earlier in the week. |
-| Saturday | 4 mi easy | Easy aerobic | Relaxed effort. |
-| Sunday | 8 mi easy | Long run | Moderate duration, not a test. |
+| Monday | 3 mi very easy | Recovery / travel buffer | Keep this short and low-pressure. If embarkation logistics are messy, this can become off. |
+| Tuesday | 4-5 mi easy | Easy aerobic | Treadmill or ship-deck running is fine. Keep effort controlled. |
+| Wednesday | Off | Recovery | Planned rest day. No makeup mileage. |
+| Thursday | 5 mi easy | Easy aerobic | Keep this fully conversational. No steady finish. |
+| Friday | 3-4 mi very easy | Recovery / easy | Short and relaxed. Skip only if sleep or logistics are clearly poor. |
+| Saturday | 4-5 mi easy | Easy aerobic | Optional treadmill or port run depending on schedule and access. |
+| Sunday | Off | Recovery / travel buffer | Planned rest day. Do not try to force a long run at the end of the cruise week. |
 
 ### Week of 2026-06-01
 
