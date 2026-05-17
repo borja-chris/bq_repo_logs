@@ -1,0 +1,1 @@
+657fbfe6b9df2a50b9e5c288733ceee33ea4f99cd2d8101b62dc5bc23183244a  data/coros_exports/COROS_export_2026-05-17/Morning_Run.fit

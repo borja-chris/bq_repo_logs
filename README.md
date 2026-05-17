@@ -20,9 +20,9 @@ Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 Week of `2026-05-11`
 
 - Target mileage: `about 22-25`
-- Actual mileage so far: `15.38`
+- Actual mileage so far: `21.01`
 - Primary purpose: settle into rhythm while accommodating travel logistics
-- Week status: `Thursday run logged`
+- Week status: `Sunday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
@@ -32,7 +32,7 @@ Week of `2026-05-11`
 | Thursday | 5 mi easy | 4.00 mi run | 47:09 at 11:47/mi. |
 | Friday | Off | x | x |
 | Saturday | 3-4 mi easy | x | x |
-| Sunday | 6-7 mi easy | x | x |
+| Sunday | 6-7 mi easy | 5.63 mi run | 1:07:30 at 11:59/mi. |
 
 The listed source plan is the live reference for this week.
 <!-- current-week:end -->

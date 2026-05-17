@@ -21,6 +21,13 @@ Primary command:
 python scripts/ingest_coros_fit.py
 ```
 
+Recommended setup for fresh environments:
+
+```bash
+bash scripts/setup_fit_env.sh
+.venv/bin/python scripts/ingest_coros_fit.py
+```
+
 Optional flags:
 
 ```bash
@@ -56,7 +63,12 @@ python scripts/summarize_coros_fit.py \
   --jsonl data/processed/coros_export_2026-05-09_summary.jsonl
 ```
 
-It requires the optional `fitparse` package. Installing `fitdecode` as a fallback improves support for COROS files with vendor-specific FIT records.
+It requires FIT parser dependencies from `requirements-fit.txt`. `fitdecode` is the practical default for COROS files, with `fitparse` available alongside it.
+
+Current repo note:
+
+- Prior successful COROS imports in this repo used `fitdecode`.
+- Fresh environments should be bootstrapped with `bash scripts/setup_fit_env.sh` before FIT ingestion.
 
 The ingest script only automates objective recordkeeping. Subjective recovery signals, coaching interpretation, retros, and plan changes remain manual.
 
