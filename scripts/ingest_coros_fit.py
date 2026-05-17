@@ -38,6 +38,9 @@ WEEKLY_START = "<!-- auto-summary:start -->"
 WEEKLY_END = "<!-- auto-summary:end -->"
 IMPORT_NOTE_PREFIX = "- Imported from `"
 FIT_NOTE_PREFIX = "- FIT summary:"
+MANAGED_NOTES_HEADING = "## Managed Notes"
+MANUAL_NOTES_HEADING = "## Manual Notes"
+RECOVERY_HEADING = "## Recovery Signals"
 
 
 @dataclass
@@ -219,30 +222,47 @@ def set_field(lines: list[str], field_name: str, value: str) -> None:
     raise ValueError(f"Missing field {field_name}")
 
 
-def replace_or_append_managed_notes(lines: list[str], activity: Activity) -> list[str]:
-    note_start = lines.index("## Notes") + 1
-    recovery_index = lines.index("## Recovery Signals")
-    notes = lines[note_start:recovery_index]
-    filtered = [
-        line
-        for line in notes
-        if not line.startswith(IMPORT_NOTE_PREFIX) and not line.startswith(FIT_NOTE_PREFIX)
-    ]
-    filtered = [line for line in filtered if line.strip() not in {"", "-"}]
+def ensure_daily_log_structure(text: str) -> str:
+    if MANAGED_NOTES_HEADING in text and MANUAL_NOTES_HEADING in text:
+        return text
+    if "## Notes" in text:
+        text = text.replace("## Notes", MANAGED_NOTES_HEADING, 1)
+    if MANUAL_NOTES_HEADING not in text and RECOVERY_HEADING in text:
+        text = text.replace(
+            RECOVERY_HEADING,
+            f"{MANUAL_NOTES_HEADING}\n\n- \n\n{RECOVERY_HEADING}",
+            1,
+        )
+    return text
+
+
+def replace_managed_notes(lines: list[str], activity: Activity) -> list[str]:
+    note_start = lines.index(MANAGED_NOTES_HEADING) + 1
+    manual_index = lines.index(MANUAL_NOTES_HEADING)
     managed = [activity.import_note, activity.fit_note]
-    new_notes = [""] + managed
-    if filtered:
-        new_notes.extend(filtered)
-    new_notes.append("")
-    return lines[:note_start] + new_notes + lines[recovery_index:]
+    new_notes = [""] + managed + [""]
+    return lines[:note_start] + new_notes + lines[manual_index:]
+
+
+def create_daily_log_stub(day_date: date, planned: str) -> Path:
+    log_path = REPO_ROOT / "logs" / "daily" / f"{day_date.isoformat()}.md"
+    if log_path.exists():
+        return log_path
+    text = load_template(DAILY_TEMPLATE).replace("YYYY-MM-DD", day_date.isoformat())
+    text = ensure_daily_log_structure(text)
+    lines = text.splitlines()
+    set_field(lines, "Planned", planned)
+    log_path.write_text("\n".join(lines) + "\n")
+    return log_path
 
 
 def upsert_daily_log(activity: Activity) -> Path:
     log_path = REPO_ROOT / "logs" / "daily" / f"{activity.local_date.isoformat()}.md"
     if log_path.exists():
-        text = log_path.read_text()
+        text = ensure_daily_log_structure(log_path.read_text())
     else:
         text = load_template(DAILY_TEMPLATE).replace("YYYY-MM-DD", activity.local_date.isoformat())
+        text = ensure_daily_log_structure(text)
     lines = text.splitlines()
     set_field(lines, "Completed", activity.completed_label)
     set_field(lines, "Time", activity.time_label)
@@ -251,7 +271,7 @@ def upsert_daily_log(activity: Activity) -> Path:
     current_effort = next(line for line in lines if line.startswith("- Effort:"))
     if current_effort == "- Effort:":
         set_field(lines, "Effort", "imported")
-    updated = replace_or_append_managed_notes(lines, activity)
+    updated = replace_managed_notes(lines, activity)
     log_path.write_text("\n".join(updated) + "\n")
     return log_path
 
@@ -273,16 +293,21 @@ def parse_day_logs(week_start: date) -> dict[date, dict[str, str]]:
             "soreness": "",
             "warning_signs": "",
         }
-        notes_started = False
+        manual_notes_started = False
         recovery_started = False
         notes_lines: list[str] = []
-        for raw_line in path.read_text().splitlines():
-            if raw_line == "## Notes":
-                notes_started = True
+        text = ensure_daily_log_structure(path.read_text())
+        for raw_line in text.splitlines():
+            if raw_line == MANAGED_NOTES_HEADING:
+                manual_notes_started = False
                 recovery_started = False
                 continue
-            if raw_line == "## Recovery Signals":
-                notes_started = False
+            if raw_line == MANUAL_NOTES_HEADING:
+                manual_notes_started = True
+                recovery_started = False
+                continue
+            if raw_line == RECOVERY_HEADING:
+                manual_notes_started = False
                 recovery_started = True
                 continue
             if raw_line.startswith("- Completed:"):
@@ -299,18 +324,28 @@ def parse_day_logs(week_start: date) -> dict[date, dict[str, str]]:
                 fields["soreness"] = raw_line.removeprefix("- Soreness:").strip()
             elif raw_line.startswith("- Warning signs:"):
                 fields["warning_signs"] = raw_line.removeprefix("- Warning signs:").strip()
-            elif notes_started and raw_line.startswith("- "):
+            elif manual_notes_started and raw_line.startswith("- "):
                 notes_lines.append(raw_line)
             elif recovery_started:
                 continue
-        filtered_notes = [
-            line.removeprefix("- ").strip()
-            for line in notes_lines
-            if not line.startswith(IMPORT_NOTE_PREFIX) and not line.startswith(FIT_NOTE_PREFIX)
-        ]
+        filtered_notes = [line.removeprefix("- ").strip() for line in notes_lines]
         fields["notes"] = " ".join(note for note in filtered_notes if note and note != "")
         result[day_date] = fields
     return result
+
+
+def seed_missing_planned_day_logs(week_plan: WeekPlan, today: date) -> list[Path]:
+    created_paths: list[Path] = []
+    for day_plan in week_plan.day_plans:
+        if day_plan.day_date > today:
+            continue
+        if day_plan.planned.strip().lower() in {"rest", "off"}:
+            continue
+        log_path = REPO_ROOT / "logs" / "daily" / f"{day_plan.day_date.isoformat()}.md"
+        if log_path.exists():
+            continue
+        created_paths.append(create_daily_log_stub(day_plan.day_date, day_plan.planned))
+    return created_paths
 
 
 def parse_pre_block_week(target_week: date) -> WeekPlan | None:
@@ -408,6 +443,14 @@ def actual_miles_from_distance(distance: str) -> float:
     return float(match.group("value"))
 
 
+def sentence(text: str, prefix: str = "") -> str:
+    cleaned = text.strip()
+    if not cleaned:
+        return ""
+    cleaned = cleaned.rstrip(".")
+    return f"{prefix}{cleaned}."
+
+
 def summarize_day(fields: dict[str, str]) -> tuple[str, str]:
     completed = fields["completed"] or "x"
     note_parts: list[str] = []
@@ -417,19 +460,19 @@ def summarize_day(fields: dict[str, str]) -> tuple[str, str]:
     elif fields["time"]:
         note_parts.append(f"Time {fields['time']}.")
     if note_text:
-        note_parts.append(note_text)
+        note_parts.append(sentence(note_text))
     soreness = fields["soreness"]
     if soreness and soreness.lower() not in note_text.lower() and "sore" not in note_text.lower():
-        note_parts.append(f"Soreness: {fields['soreness']}.")
+        note_parts.append(sentence(fields["soreness"], "Soreness: "))
     if fields["warning_signs"]:
-        note_parts.append(f"Warning signs: {fields['warning_signs']}.")
+        note_parts.append(sentence(fields["warning_signs"], "Warning signs: "))
     return completed, " ".join(part.strip() for part in note_parts if part.strip()) or "x"
 
 
 def build_week_rows(week_plan: WeekPlan, day_logs: dict[date, dict[str, str]]) -> tuple[list[str], float, str]:
     rows = ["| Day | Planned | Actual | Notes |", "| --- | --- | --- | --- |"]
     total_miles = 0.0
-    latest_logged: date | None = None
+    latest_logged: tuple[date, dict[str, str]] | None = None
     for day_plan in week_plan.day_plans:
         fields = day_logs.get(day_plan.day_date)
         actual = "x"
@@ -437,17 +480,21 @@ def build_week_rows(week_plan: WeekPlan, day_logs: dict[date, dict[str, str]]) -
         if fields:
             actual, note = summarize_day(fields)
             total_miles += actual_miles_from_distance(fields["distance"])
-            latest_logged = day_plan.day_date
+            if any(fields.values()):
+                latest_logged = (day_plan.day_date, fields)
         rows.append(f"| {day_plan.day_name} | {day_plan.planned} | {actual} | {note} |")
     if latest_logged is None:
         status = "No days logged yet"
     else:
-        label = latest_logged.strftime("%A")
-        completed = day_logs[latest_logged].get("completed", "").lower()
+        latest_date, latest_fields = latest_logged
+        label = latest_date.strftime("%A")
+        completed = latest_fields.get("completed", "").lower()
         if completed == "rest day":
             status = f"{label} rest logged"
-        else:
+        elif completed:
             status = f"{label} run logged"
+        else:
+            status = f"{label} note logged"
     return rows, total_miles, status
 
 
@@ -622,7 +669,9 @@ def sync_records(
     week_start = monday_of(today)
     week_end = week_start + timedelta(days=6)
     synced_daily_paths: list[Path] = []
+    week_plan = load_week_plan(week_start)
     if update_logs:
+        synced_daily_paths.extend(seed_missing_planned_day_logs(week_plan, today))
         activities = recent_activities
         if activities is None:
             activities = load_processed_activities_for_week(week_start)
@@ -631,7 +680,6 @@ def sync_records(
                 continue
             synced_daily_paths.append(upsert_daily_log(activity))
     day_logs = parse_day_logs(week_start)
-    week_plan = load_week_plan(week_start)
     rows, total_miles, status = build_week_rows(week_plan, day_logs)
     weekly_path: Path | None = None
     if update_logs:

@@ -26,12 +26,12 @@ Week of `2026-05-11`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | Rest | Rest day | Took a rest day because the Sunday recovery bike ride was not especially recovery-like. |
-| Tuesday | 5 mi easy | 5.80 mi run | 1:09:53 at 12:03/mi. Right glute is still sore from the 5K race over the weekend and was noticeable during strides. |
+| Monday | Rest | Rest day | x |
+| Tuesday | 5 mi easy | 5.80 mi run | 1:09:53 at 12:03/mi. Soreness: Right glute still sore from the weekend 5K. |
 | Wednesday | 4 mi very easy | 5.58 mi run | 1:05:07 at 11:40/mi. |
 | Thursday | 5 mi easy | 4.00 mi run | 47:09 at 11:47/mi. |
 | Friday | Off | x | x |
-| Saturday | 3-4 mi easy | x | x |
+| Saturday | 3-4 mi easy | x | Skipped after flight due to fatigue. |
 | Sunday | 6-7 mi easy | 5.63 mi run | 1:07:30 at 11:59/mi. |
 
 The listed source plan is the live reference for this week.

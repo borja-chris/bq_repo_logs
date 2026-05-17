@@ -24,6 +24,7 @@ During the week:
 
 - Add daily logs only when there is useful signal.
 - Record distance, effort, soreness, sleep/stress, and warning signs.
+- Use daily-log manual notes for context that FIT data cannot capture, including run quality, travel fatigue, shortened runs, and skipped-run reasons.
 - Do not backfill noise just to make the repo look complete.
 - If repo Markdown changed, run `python scripts/check_markdown_links.py` before commit.
 - If the live current week changed, check whether `README.md` needs a matching summary update before commit/push.
@@ -70,11 +71,12 @@ For a new COROS export:
 6. Add or update a manifest for the import.
 7. Put derived summaries in `data/processed/`.
 8. Write both a reviewable CSV summary and a machine-readable `.jsonl` summary when parser support is available.
-9. Create or update matching `logs/daily/YYYY-MM-DD.md` entries from objective FIT data.
-10. Refresh the current week summary in `README.md` from the plan plus the daily logs.
-11. Update `logs/weekly/week_YYYY-MM-DD.md` with the current factual week summary.
-12. Verify that summary row count matches the batch FIT count before treating the import as complete.
-13. Keep current-month loose `.fit` files available for repair, reparse, or enrichment.
+9. Create or update matching `logs/daily/YYYY-MM-DD.md` entries from objective FIT data while preserving manual notes.
+10. Seed daily log stubs for past skipped planned run days so manual notes can capture why the day changed.
+11. Refresh the current week summary in `README.md` from the plan plus the daily logs.
+12. Update `logs/weekly/week_YYYY-MM-DD.md` with the current factual week summary.
+13. Verify that summary row count matches the batch FIT count before treating the import as complete.
+14. Keep current-month loose `.fit` files available for repair, reparse, or enrichment.
 
 ## AI Interaction Model
 

@@ -43,7 +43,8 @@ python scripts/ingest_coros_fit.py --no-logs
 - removing `:Zone.Identifier` sidecars
 - writing `SHA256SUMS.txt`
 - generating CSV and JSONL processed summaries
-- upserting matching daily logs from objective FIT fields
+- upserting matching daily logs from objective FIT fields while preserving manual notes
+- creating daily log stubs for past skipped planned run days so manual context has a place to live
 - refreshing `logs/weekly/`
 - refreshing the managed current-week block in `README.md`
 - writing the batch manifest
@@ -71,6 +72,12 @@ Current repo note:
 - Fresh environments should be bootstrapped with `bash scripts/setup_fit_env.sh` before FIT ingestion.
 
 The ingest script only automates objective recordkeeping. Subjective recovery signals, coaching interpretation, retros, and plan changes remain manual.
+
+Daily logs use a mixed-source model:
+
+- `## Managed Notes` is owned by the ingest script.
+- `## Manual Notes` is safe for user or AI-added context on any day, including completed runs, shortened runs, skipped runs, and rest days.
+- Weekly sync pulls manual notes into the week summary table when present.
 
 ## FIT Archiving
 
