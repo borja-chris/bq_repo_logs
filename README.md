@@ -17,22 +17,22 @@ Use `sources/` for durable planning context, `plans/` for upcoming training, `lo
 <!-- current-week:start -->
 Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 
-Week of `2026-05-11`
+Week of `2026-05-18`
 
-- Target mileage: `about 22-25`
-- Actual mileage so far: `21.01`
-- Primary purpose: settle into rhythm while accommodating travel logistics
-- Week status: `Sunday run logged`
+- Target mileage: `about 24-26`
+- Actual mileage so far: `9.02`
+- Primary purpose: establish a normal 5-day rhythm after the travel-adjusted week
+- Week status: `Tuesday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | Rest | Rest day | x |
-| Tuesday | 5 mi easy | 5.80 mi run | 1:09:53 at 12:03/mi. Soreness: Right glute still sore from the weekend 5K. |
-| Wednesday | 4 mi very easy | 5.58 mi run | 1:05:07 at 11:40/mi. |
-| Thursday | 5 mi easy | 4.00 mi run | 47:09 at 11:47/mi. |
+| Monday | Off | 5.23 mi run | 58:12 at 11:08/mi. |
+| Tuesday | 5 mi easy | 3.79 mi run | 38:21 at 10:07/mi. |
+| Wednesday | 4 mi very easy | x | x |
+| Thursday | 5 mi easy | x | x |
 | Friday | Off | x | x |
-| Saturday | 3-4 mi easy | x | Skipped after flight due to fatigue. |
-| Sunday | 6-7 mi easy | 5.63 mi run | 1:07:30 at 11:59/mi. |
+| Saturday | 4 mi easy | x | x |
+| Sunday | 7-8 mi easy | x | x |
 
 The listed source plan is the live reference for this week.
 <!-- current-week:end -->

@@ -1,0 +1,2 @@
+55c9769a5392d223b9844d09c6da5745effb85fb990c43155aa372e04d6e59d1  data/coros_exports/COROS_export_2026-05-20/Evening_Run_w_CSRD(1).fit
+0a32c67a09c932cdd2be51076c42b0f89806ad8844262d6950da9cc82d40af21  data/coros_exports/COROS_export_2026-05-20/Evening_Run_w_CSRD.fit
