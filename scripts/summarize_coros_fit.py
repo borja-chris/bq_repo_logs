@@ -135,6 +135,60 @@ def normalize_start_time(
         resolution,
     )
 
+def localize_utc_to_timezone(utc_text: str, timezone_name: str) -> str:
+    utc_start = parse_datetime_value(utc_text)
+    if utc_start is None:
+        return ""
+    if utc_start.tzinfo is None:
+        utc_start = utc_start.replace(tzinfo=timezone.utc)
+    else:
+        utc_start = utc_start.astimezone(timezone.utc)
+    return utc_start.astimezone(ZoneInfo(timezone_name)).isoformat()
+
+def refine_default_timezones(rows: list[dict[str, str]]) -> None:
+    anchors: list[tuple[datetime, str]] = []
+    for row in rows:
+        utc_text = row.get("start_time_utc", "")
+        timezone_name = row.get("start_timezone", "")
+        if not utc_text or not timezone_name:
+            continue
+        if not row.get("start_lat") or not row.get("start_lon"):
+            continue
+        utc_start = parse_datetime_value(utc_text)
+        if utc_start is None:
+            continue
+        if utc_start.tzinfo is None:
+            utc_start = utc_start.replace(tzinfo=timezone.utc)
+        else:
+            utc_start = utc_start.astimezone(timezone.utc)
+        anchors.append((utc_start, timezone_name))
+
+    for row in rows:
+        if row.get("start_time_resolution") != "naive_utc_default_timezone":
+            continue
+        utc_text = row.get("start_time_utc", "")
+        utc_start = parse_datetime_value(utc_text)
+        if utc_start is None:
+            continue
+        if utc_start.tzinfo is None:
+            utc_start = utc_start.replace(tzinfo=timezone.utc)
+        else:
+            utc_start = utc_start.astimezone(timezone.utc)
+        nearby_timezone = ""
+        nearby_delta_s = None
+        for anchor_start, anchor_timezone in anchors:
+            delta_s = abs((anchor_start - utc_start).total_seconds())
+            if delta_s > 12 * 3600:
+                continue
+            if nearby_delta_s is None or delta_s < nearby_delta_s:
+                nearby_delta_s = delta_s
+                nearby_timezone = anchor_timezone
+        if not nearby_timezone:
+            continue
+        row["start_timezone"] = nearby_timezone
+        row["start_time"] = localize_utc_to_timezone(utc_text, nearby_timezone)
+        row["start_time_resolution"] = "naive_utc_nearby_activity_timezone"
+
 
 def field_map(message: Any) -> dict[str, Any]:
     return {field.name: field.value for field in message}
@@ -283,7 +337,9 @@ def parse_fit(path: Path, row: dict[str, str] | None = None) -> dict[str, str]:
 
 
 def parse_fit_files(paths: list[Path]) -> list[dict[str, str]]:
-    return [parse_fit(path, row=build_row(path)) for path in paths]
+    rows = [parse_fit(path, row=build_row(path)) for path in paths]
+    refine_default_timezones(rows)
+    return rows
 
 
 def write_jsonl(output_path: Path, rows: list[dict[str, str]]) -> None:

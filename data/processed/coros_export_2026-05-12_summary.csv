@@ -1,2 +1,2 @@
-source_file,start_time,sport,sub_sport,distance_mi,duration_s,avg_hr,max_hr,ascent_m,parser,parse_error
-477448262486360264.fit,2026-05-12 21:28:32+00:00,running,,5.80,4193,145,166,78,fitdecode,
+import_batch,source_file,source_relpath,source_sha256,activity_id,start_time,start_time_raw,start_time_utc,start_timezone,start_time_resolution,start_lat,start_lon,sport,sub_sport,distance_mi,duration_s,avg_hr,max_hr,ascent_m,weather_temp_c,weather_temp_f,weather_source,weather_observation_time,weather_fetch_error,parser,parse_error
+tmpxkbeim1r,477448262486360264.fit,/tmp/tmpxkbeim1r/477448262486360264.fit,13e490c87e1fafad006b60d712a9f9a7960da8f8a7e7426c974a67e4b75dc502,477448262486360264,2026-05-12T17:28:32-04:00,2026-05-12 21:28:32+00:00,2026-05-12T21:28:32+00:00,America/New_York,source_offset,40.811481,-73.954217,running,,5.80,4193,145,166,78,19.9,67.8,open-meteo,2026-05-12T17:00,,fitdecode,

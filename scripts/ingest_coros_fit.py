@@ -19,9 +19,11 @@ import argparse
 import csv
 import json
 import re
+import tarfile
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Iterable
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
@@ -239,7 +241,19 @@ def generate_summaries(export_dir: Path) -> tuple[Path, Path, list[dict[str, str
     import_date = export_dir.name.removeprefix("COROS_export_")
     output_csv, output_jsonl = processed_paths_for(date.fromisoformat(import_date))
     fit_files = sorted(export_dir.glob("*.fit"))
-    rows = summarize.parse_fit_files(fit_files)
+    if fit_files:
+        rows = summarize.parse_fit_files(fit_files)
+    else:
+        archive_path = export_dir / "fit_files.tar.gz"
+        if not archive_path.exists():
+            rows = []
+        else:
+            with TemporaryDirectory() as temp_dir_name:
+                temp_dir = Path(temp_dir_name)
+                with tarfile.open(archive_path, "r:gz") as archive:
+                    archive.extractall(temp_dir)
+                archived_fit_files = sorted(temp_dir.rglob("*.fit"))
+                rows = summarize.parse_fit_files(archived_fit_files)
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     with output_csv.open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=summarize.FIELDS)
