@@ -27,4 +27,6 @@ If these are not true, cap the cycle closer to 48-55 mpw.
 
 ## Retro Notes
 
-Add recurring patterns here as they emerge from weekly and block retros.
+- When a user requests a plan-text change, restate the current file accurately and wait for the exact requested adjustment before redesigning the week.
+- Treat stale or inconsistent details as verification targets, not as permission to broaden the scope of the requested planning change.
+- Keep facts, inference, and decisions visibly separate during planning edits so a stale detail does not silently become a redesign trigger.
