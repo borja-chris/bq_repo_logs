@@ -13,8 +13,10 @@ import csv
 import hashlib
 import json
 import warnings
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 try:
     from fitparse import FitFile as FITPARSE_FILE
@@ -34,6 +36,10 @@ FIELDS = [
     "source_sha256",
     "activity_id",
     "start_time",
+    "start_time_raw",
+    "start_time_utc",
+    "start_timezone",
+    "start_time_resolution",
     "start_lat",
     "start_lon",
     "sport",
@@ -51,6 +57,83 @@ FIELDS = [
     "parser",
     "parse_error",
 ]
+
+DEFAULT_TIMEZONE = "America/New_York"
+
+def stringify_datetime(value: Any) -> str:
+    if value in (None, ""):
+        return ""
+    if isinstance(value, datetime):
+        return value.isoformat(sep=" ")
+    return str(value)
+
+def parse_datetime_value(value: Any) -> datetime | None:
+    if value in (None, ""):
+        return None
+    if isinstance(value, datetime):
+        return value
+    text = str(value).strip()
+    if not text:
+        return None
+    normalized = text.replace("Z", "+00:00")
+    return datetime.fromisoformat(normalized)
+
+def infer_timezone_name(latitude: str, longitude: str) -> tuple[str, str]:
+    if not latitude or not longitude:
+        return DEFAULT_TIMEZONE, "default_fallback"
+
+    lat = float(latitude)
+    lon = float(longitude)
+
+    # Prefer a deterministic built-in heuristic over a hard dependency on a
+    # polygon timezone database. This covers the activity locations currently
+    # present in the repo and preserves DST via IANA zone names.
+    if 51.0 <= lat <= 72.0 and -180.0 <= lon <= -129.0:
+        return "America/Anchorage", "gps_inferred"
+    if 18.0 <= lat <= 23.0 and -161.0 <= lon <= -154.0:
+        return "Pacific/Honolulu", "gps_inferred"
+    if 24.0 <= lat <= 50.0 and -125.0 <= lon <= -66.0:
+        if lon >= -82.5:
+            return "America/New_York", "gps_inferred"
+        if lon >= -97.5:
+            return "America/Chicago", "gps_inferred"
+        if lon >= -110.5:
+            return "America/Denver", "gps_inferred"
+        return "America/Los_Angeles", "gps_inferred"
+
+    return DEFAULT_TIMEZONE, "default_fallback"
+
+def normalize_start_time(
+    raw_start_time: Any,
+    latitude: str,
+    longitude: str,
+) -> tuple[str, str, str, str, str]:
+    parsed = parse_datetime_value(raw_start_time)
+    raw_text = stringify_datetime(raw_start_time)
+    if parsed is None:
+        return "", raw_text, "", "", ""
+
+    timezone_name, resolution = infer_timezone_name(latitude, longitude)
+    local_tz = ZoneInfo(timezone_name)
+
+    if parsed.tzinfo is None:
+        utc_start = parsed.replace(tzinfo=timezone.utc)
+        if resolution == "default_fallback":
+            resolution = "naive_utc_default_timezone"
+        else:
+            resolution = "naive_utc_gps_timezone"
+    else:
+        utc_start = parsed.astimezone(timezone.utc)
+        resolution = "source_offset"
+
+    local_start = utc_start.astimezone(local_tz)
+    return (
+        local_start.isoformat(),
+        raw_text,
+        utc_start.isoformat(),
+        timezone_name,
+        resolution,
+    )
 
 
 def field_map(message: Any) -> dict[str, Any]:
@@ -101,9 +184,25 @@ def build_row(path: Path) -> dict[str, str]:
 
 def parse_fit(path: Path, row: dict[str, str] | None = None) -> dict[str, str]:
     row = build_row(path) if row is None else row
+    raw_start_time: Any = ""
+
+    def apply_start_time() -> None:
+        (
+            row["start_time"],
+            row["start_time_raw"],
+            row["start_time_utc"],
+            row["start_timezone"],
+            row["start_time_resolution"],
+        ) = normalize_start_time(
+            raw_start_time,
+            row["start_lat"],
+            row["start_lon"],
+        )
 
     def apply_values(values: dict[str, Any], parser_name: str) -> None:
-        row["start_time"] = str(values.get("start_time", ""))
+        nonlocal raw_start_time
+        raw_start_time = values.get("start_time", "")
+        apply_start_time()
         row["sport"] = str(values.get("sport", ""))
         row["sub_sport"] = str(values.get("sub_sport", ""))
         row["distance_mi"] = miles(values.get("total_distance"))
@@ -123,6 +222,7 @@ def parse_fit(path: Path, row: dict[str, str] | None = None) -> dict[str, str]:
             return False
         row["start_lat"] = semicircles_to_degrees(latitude)
         row["start_lon"] = semicircles_to_degrees(longitude)
+        apply_start_time()
         return True
 
     fitparse_exc: Exception | None = None

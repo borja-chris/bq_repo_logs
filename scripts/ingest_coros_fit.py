@@ -52,6 +52,7 @@ class Activity:
     row: dict[str, str]
     local_start: datetime
     local_date: date
+    timezone_name: str
 
     @property
     def distance_mi(self) -> float:
@@ -90,8 +91,9 @@ class Activity:
 
     @property
     def fit_note(self) -> str:
+        start_display = self.row.get("start_time", "").strip()
         return (
-            f"- FIT summary: start `{self.row['start_time']}`, avg HR "
+            f"- FIT summary: start `{start_display}`, avg HR "
             f"`{self.row['avg_hr'] or ''}`, max HR `{self.row['max_hr'] or ''}`, "
             f"ascent `{self.row['ascent_m'] or ''} m`."
         )
@@ -172,7 +174,18 @@ def monday_of(target: date) -> date:
 
 
 def parse_start_time(value: str) -> datetime:
-    return datetime.fromisoformat(value).astimezone(LOCAL_TZ)
+    parsed = datetime.fromisoformat(value)
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=LOCAL_TZ)
+    return parsed
+
+def row_start_time_value(row: dict[str, str]) -> str:
+    return (
+        row.get("start_time")
+        or row.get("start_time_local")
+        or row.get("start_time_utc")
+        or ""
+    )
 
 
 def find_loose_fit_files() -> list[Path]:
@@ -262,7 +275,7 @@ def fetch_open_meteo_weather(activity: Activity, timeout_s: float) -> dict[str, 
         "start_date": activity.local_date.isoformat(),
         "end_date": activity.local_date.isoformat(),
         "hourly": "temperature_2m",
-        "timezone": str(LOCAL_TZ),
+        "timezone": activity.timezone_name,
     }
     url = f"{OPEN_METEO_ARCHIVE_URL}?{urlencode(params)}"
     try:
@@ -716,14 +729,16 @@ def write_manifest(
 def load_activities(rows: Iterable[dict[str, str]]) -> list[Activity]:
     activities: list[Activity] = []
     for row in rows:
-        if not row.get("start_time"):
+        start_time_value = row_start_time_value(row)
+        if not start_time_value:
             continue
-        local_start = parse_start_time(row["start_time"])
+        local_start = parse_start_time(start_time_value)
         activities.append(
             Activity(
                 row=row,
                 local_start=local_start,
                 local_date=local_start.date(),
+                timezone_name=row.get("start_timezone", "") or str(local_start.tzinfo or LOCAL_TZ),
             )
         )
     return activities
@@ -736,9 +751,10 @@ def load_processed_activities_for_week(week_start: date) -> list[Activity]:
         with path.open() as handle:
             for raw_line in handle:
                 row = json.loads(raw_line)
-                if not row.get("start_time"):
+                start_time_value = row_start_time_value(row)
+                if not start_time_value:
                     continue
-                local_start = parse_start_time(row["start_time"])
+                local_start = parse_start_time(start_time_value)
                 local_date = local_start.date()
                 if week_start <= local_date <= week_end:
                     activities.append(
@@ -746,6 +762,7 @@ def load_processed_activities_for_week(week_start: date) -> list[Activity]:
                             row=row,
                             local_start=local_start,
                             local_date=local_date,
+                            timezone_name=row.get("start_timezone", "") or str(local_start.tzinfo or LOCAL_TZ),
                         )
                     )
     activities.sort(key=lambda activity: activity.local_start)
