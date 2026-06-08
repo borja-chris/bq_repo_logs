@@ -23,6 +23,9 @@ from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Iterable
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlencode
+from urllib.request import urlopen
 from zoneinfo import ZoneInfo
 
 import summarize_coros_fit as summarize
@@ -38,6 +41,7 @@ WEEKLY_START = "<!-- auto-summary:start -->"
 WEEKLY_END = "<!-- auto-summary:end -->"
 IMPORT_NOTE_PREFIX = "- Imported from `"
 FIT_NOTE_PREFIX = "- FIT summary:"
+OPEN_METEO_ARCHIVE_URL = "https://archive-api.open-meteo.com/v1/archive"
 MANAGED_NOTES_HEADING = "## Managed Notes"
 MANUAL_NOTES_HEADING = "## Manual Notes"
 RECOVERY_HEADING = "## Recovery Signals"
@@ -92,6 +96,18 @@ class Activity:
             f"ascent `{self.row['ascent_m'] or ''} m`."
         )
 
+    @property
+    def weather_note(self) -> str:
+        temperature_f = self.row.get("weather_temp_f", "").strip()
+        observed_at = self.row.get("weather_observation_time", "").strip()
+        if not temperature_f or not observed_at:
+            return ""
+        source = self.row.get("weather_source", "").strip() or "weather"
+        return (
+            f"- Weather at start: `{temperature_f} F` at `{observed_at}` "
+            f"from `{source}`."
+        )
+
 
 @dataclass
 class DayPlan:
@@ -132,6 +148,17 @@ def parse_args() -> argparse.Namespace:
         "--sync-only",
         action="store_true",
         help="Do not import loose FIT files. Refresh logs/README from existing data.",
+    )
+    parser.add_argument(
+        "--no-weather",
+        action="store_true",
+        help="Skip Open-Meteo start-time weather enrichment.",
+    )
+    parser.add_argument(
+        "--weather-timeout",
+        type=float,
+        default=10.0,
+        help="Timeout in seconds for each Open-Meteo request.",
     )
     return parser.parse_args()
 
@@ -208,6 +235,69 @@ def generate_summaries(export_dir: Path) -> tuple[Path, Path, list[dict[str, str
     summarize.write_jsonl(output_jsonl, rows)
     return output_csv, output_jsonl, rows
 
+def write_processed_outputs(
+    output_csv: Path,
+    output_jsonl: Path,
+    rows: list[dict[str, str]],
+) -> None:
+    output_csv.parent.mkdir(parents=True, exist_ok=True)
+    with output_csv.open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=summarize.FIELDS)
+        writer.writeheader()
+        writer.writerows(rows)
+    summarize.write_jsonl(output_jsonl, rows)
+
+def weather_hour_key(local_start: datetime) -> str:
+    hour_start = local_start.replace(minute=0, second=0, microsecond=0)
+    return hour_start.strftime("%Y-%m-%dT%H:00")
+
+def fetch_open_meteo_weather(activity: Activity, timeout_s: float) -> dict[str, str]:
+    latitude = activity.row.get("start_lat", "").strip()
+    longitude = activity.row.get("start_lon", "").strip()
+    if not latitude or not longitude:
+        return {}
+    params = {
+        "latitude": latitude,
+        "longitude": longitude,
+        "start_date": activity.local_date.isoformat(),
+        "end_date": activity.local_date.isoformat(),
+        "hourly": "temperature_2m",
+        "timezone": str(LOCAL_TZ),
+    }
+    url = f"{OPEN_METEO_ARCHIVE_URL}?{urlencode(params)}"
+    try:
+        with urlopen(url, timeout=timeout_s) as response:
+            payload = json.load(response)
+    except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as exc:
+        return {"weather_fetch_error": f"{type(exc).__name__}: {exc}"}
+    hourly = payload.get("hourly", {})
+    times = hourly.get("time", [])
+    temperatures_c = hourly.get("temperature_2m", [])
+    target_time = weather_hour_key(activity.local_start)
+    try:
+        index = times.index(target_time)
+    except ValueError:
+        return {"weather_fetch_error": f"Open-Meteo missing hourly point for {target_time}"}
+    if index >= len(temperatures_c):
+        return {"weather_fetch_error": f"Open-Meteo missing temperature for {target_time}"}
+    temperature_c = temperatures_c[index]
+    if temperature_c in (None, ""):
+        return {"weather_fetch_error": f"Open-Meteo blank temperature for {target_time}"}
+    temperature_c_float = float(temperature_c)
+    return {
+        "weather_temp_c": f"{temperature_c_float:.1f}",
+        "weather_temp_f": f"{(temperature_c_float * 9 / 5) + 32:.1f}",
+        "weather_source": "open-meteo",
+        "weather_observation_time": target_time,
+        "weather_fetch_error": "",
+    }
+
+def enrich_rows_with_weather(rows: list[dict[str, str]], timeout_s: float) -> list[Activity]:
+    activities = load_activities(rows)
+    for activity in activities:
+        activity.row.update(fetch_open_meteo_weather(activity, timeout_s=timeout_s))
+    return activities
+
 
 def load_template(path: Path) -> str:
     return path.read_text()
@@ -240,6 +330,8 @@ def replace_managed_notes(lines: list[str], activity: Activity) -> list[str]:
     note_start = lines.index(MANAGED_NOTES_HEADING) + 1
     manual_index = lines.index(MANUAL_NOTES_HEADING)
     managed = [activity.import_note, activity.fit_note]
+    if activity.weather_note:
+        managed.append(activity.weather_note)
     new_notes = [""] + managed + [""]
     return lines[:note_start] + new_notes + lines[manual_index:]
 
@@ -700,6 +792,7 @@ def main() -> int:
     today = date.fromisoformat(args.date) if args.date else datetime.now(LOCAL_TZ).date()
     update_logs = not args.no_logs
     update_readme_flag = not args.no_readme
+    weather_enabled = not args.no_weather
 
     moved_files: list[Path] = []
     removed_sidecars = 0
@@ -714,8 +807,12 @@ def main() -> int:
         export_dir, moved_files, removed_sidecars = import_loose_fit_files(today)
         if moved_files:
             output_csv, output_jsonl, rows = generate_summaries(export_dir)
+            if weather_enabled:
+                activities = enrich_rows_with_weather(rows, timeout_s=args.weather_timeout)
+                write_processed_outputs(output_csv, output_jsonl, rows)
             fit_count = write_sha256s(export_dir, rows)
-            activities = load_activities(rows)
+            if not activities:
+                activities = load_activities(rows)
             if update_logs:
                 for activity in activities:
                     daily_paths.append(upsert_daily_log(activity))

@@ -34,6 +34,8 @@ FIELDS = [
     "source_sha256",
     "activity_id",
     "start_time",
+    "start_lat",
+    "start_lon",
     "sport",
     "sub_sport",
     "distance_mi",
@@ -41,6 +43,11 @@ FIELDS = [
     "avg_hr",
     "max_hr",
     "ascent_m",
+    "weather_temp_c",
+    "weather_temp_f",
+    "weather_source",
+    "weather_observation_time",
+    "weather_fetch_error",
     "parser",
     "parse_error",
 ]
@@ -60,6 +67,11 @@ def seconds(value: Any) -> str:
     if value in (None, ""):
         return ""
     return f"{float(value):.0f}"
+
+def semicircles_to_degrees(value: Any) -> str:
+    if value in (None, ""):
+        return ""
+    return f"{float(value) * 180.0 / (2 ** 31):.6f}"
 
 
 def sha256(path: Path) -> str:
@@ -100,14 +112,33 @@ def parse_fit(path: Path, row: dict[str, str] | None = None) -> dict[str, str]:
         row["max_hr"] = str(values.get("max_heart_rate", "") or "")
         row["ascent_m"] = str(values.get("total_ascent", "") or "")
         row["parser"] = parser_name
+        if not row["start_lat"] or not row["start_lon"]:
+            apply_position(
+                values.get("start_position_lat"),
+                values.get("start_position_long"),
+            )
+
+    def apply_position(latitude: Any, longitude: Any) -> bool:
+        if latitude in (None, "") or longitude in (None, ""):
+            return False
+        row["start_lat"] = semicircles_to_degrees(latitude)
+        row["start_lon"] = semicircles_to_degrees(longitude)
+        return True
 
     fitparse_exc: Exception | None = None
     if FITPARSE_FILE is not None:
         try:
             fit_file = FITPARSE_FILE(str(path))
             for message in fit_file.get_messages():
+                values = field_map(message)
                 if message.name == "session":
-                    apply_values(field_map(message), "fitparse")
+                    apply_values(values, "fitparse")
+                elif message.name == "record" and not row["start_lat"]:
+                    apply_position(
+                        values.get("position_lat"),
+                        values.get("position_long"),
+                    )
+                if row["parser"] and row["start_lat"] and row["start_lon"]:
                     break
         except Exception as exc:
             fitparse_exc = exc
@@ -125,14 +156,17 @@ def parse_fit(path: Path, row: dict[str, str] | None = None) -> dict[str, str]:
                 warnings.simplefilter("ignore")
                 with FITDECODE.FitReader(str(path)) as fit_file:
                     for frame in fit_file:
-                        if (
-                            frame.frame_type == FITDECODE.FIT_FRAME_DATA
-                            and frame.name == "session"
-                        ):
-                            apply_values(
-                                {field.name: field.value for field in frame.fields},
-                                "fitdecode",
+                        if frame.frame_type != FITDECODE.FIT_FRAME_DATA:
+                            continue
+                        values = {field.name: field.value for field in frame.fields}
+                        if frame.name == "session":
+                            apply_values(values, "fitdecode")
+                        elif frame.name == "record" and not row["start_lat"]:
+                            apply_position(
+                                values.get("position_lat"),
+                                values.get("position_long"),
                             )
+                        if row["parser"] and row["start_lat"] and row["start_lon"]:
                             break
         except Exception as fitdecode_exc:
             if fitparse_exc is not None:
