@@ -20,6 +20,7 @@ import csv
 import json
 import re
 import tarfile
+from collections import defaultdict
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -278,28 +279,43 @@ def weather_hour_key(local_start: datetime) -> str:
     hour_start = local_start.replace(minute=0, second=0, microsecond=0)
     return hour_start.strftime("%Y-%m-%dT%H:00")
 
-def fetch_open_meteo_weather(activity: Activity, timeout_s: float) -> dict[str, str]:
+def weather_group_key(activity: Activity) -> tuple[str, str, str] | None:
     latitude = activity.row.get("start_lat", "").strip()
     longitude = activity.row.get("start_lon", "").strip()
     if not latitude or not longitude:
-        return {}
+        return None
+    latitude_key = f"{float(latitude):.3f}"
+    longitude_key = f"{float(longitude):.3f}"
+    return latitude_key, longitude_key, activity.timezone_name
+
+def fetch_open_meteo_archive(
+    latitude: str,
+    longitude: str,
+    timezone_name: str,
+    start_date: date,
+    end_date: date,
+    timeout_s: float,
+) -> dict[str, object] | dict[str, str]:
     params = {
         "latitude": latitude,
         "longitude": longitude,
-        "start_date": activity.local_date.isoformat(),
-        "end_date": activity.local_date.isoformat(),
+        "start_date": start_date.isoformat(),
+        "end_date": end_date.isoformat(),
         "hourly": "temperature_2m",
-        "timezone": activity.timezone_name,
+        "timezone": timezone_name,
     }
     url = f"{OPEN_METEO_ARCHIVE_URL}?{urlencode(params)}"
     try:
         with urlopen(url, timeout=timeout_s) as response:
-            payload = json.load(response)
+            return json.load(response)
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as exc:
         return {"weather_fetch_error": f"{type(exc).__name__}: {exc}"}
-    hourly = payload.get("hourly", {})
+
+def weather_update_from_hourly(activity: Activity, hourly: dict[str, object]) -> dict[str, str]:
     times = hourly.get("time", [])
     temperatures_c = hourly.get("temperature_2m", [])
+    if not isinstance(times, list) or not isinstance(temperatures_c, list):
+        return {"weather_fetch_error": "Open-Meteo hourly payload missing time series"}
     target_time = weather_hour_key(activity.local_start)
     try:
         index = times.index(target_time)
@@ -321,8 +337,36 @@ def fetch_open_meteo_weather(activity: Activity, timeout_s: float) -> dict[str, 
 
 def enrich_rows_with_weather(rows: list[dict[str, str]], timeout_s: float) -> list[Activity]:
     activities = load_activities(rows)
+    grouped: dict[tuple[str, str, str], list[Activity]] = defaultdict(list)
     for activity in activities:
-        activity.row.update(fetch_open_meteo_weather(activity, timeout_s=timeout_s))
+        key = weather_group_key(activity)
+        if key is None:
+            continue
+        grouped[key].append(activity)
+
+    for (latitude, longitude, timezone_name), group_activities in grouped.items():
+        start_date = min(activity.local_date for activity in group_activities)
+        end_date = max(activity.local_date for activity in group_activities)
+        payload = fetch_open_meteo_archive(
+            latitude=latitude,
+            longitude=longitude,
+            timezone_name=timezone_name,
+            start_date=start_date,
+            end_date=end_date,
+            timeout_s=timeout_s,
+        )
+        if "weather_fetch_error" in payload:
+            for activity in group_activities:
+                activity.row.update(payload)
+            continue
+        hourly = payload.get("hourly", {})
+        if not isinstance(hourly, dict):
+            error = {"weather_fetch_error": "Open-Meteo payload missing hourly data"}
+            for activity in group_activities:
+                activity.row.update(error)
+            continue
+        for activity in group_activities:
+            activity.row.update(weather_update_from_hourly(activity, hourly))
     return activities
 
 
