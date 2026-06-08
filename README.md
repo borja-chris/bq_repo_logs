@@ -17,22 +17,22 @@ Use `sources/` for durable planning context, `plans/` for upcoming training, `lo
 <!-- current-week:start -->
 Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 
-Week of `2026-05-18`
+Week of `2026-06-01`
 
-- Target mileage: `about 24-26`
-- Actual mileage so far: `9.02`
-- Primary purpose: establish a normal 5-day rhythm after the travel-adjusted week
-- Week status: `Tuesday run logged`
+- Target mileage: `about 28-30`
+- Actual mileage so far: `21.51`
+- Primary purpose: make upper-20s mileage feel normal
+- Week status: `Sunday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | Off | 5.23 mi run | 58:12 at 11:08/mi. |
-| Tuesday | 5 mi easy | 3.79 mi run | 38:21 at 10:07/mi. |
-| Wednesday | 4 mi very easy | x | x |
-| Thursday | 5 mi easy | x | x |
-| Friday | Off | x | x |
-| Saturday | 4 mi easy | x | x |
-| Sunday | 7-8 mi easy | x | x |
+| Monday | Off | x | x |
+| Tuesday | 5-6 mi easy | 3.37 mi run | 39:50 at 11:49/mi. |
+| Wednesday | 5 mi very easy | 3.15 mi run | 42:59 at 13:39/mi. |
+| Thursday | 6 mi easy | 5.75 mi run | 1:17:24 at 13:28/mi. |
+| Friday | Off | 1.77 mi run | 21:30 at 12:09/mi. |
+| Saturday | 4-5 mi easy | 3.12 mi run | 25:32 at 8:11/mi. |
+| Sunday | 8-9 mi easy | 4.35 mi run | 51:31 at 11:51/mi. |
 
 The listed source plan is the live reference for this week.
 <!-- current-week:end -->
