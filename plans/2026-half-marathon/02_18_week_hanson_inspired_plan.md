@@ -50,20 +50,20 @@ Prepare for the 2026-12-06 half marathon with a sub-1:33 checkpoint target while
 
 ## Week 1 - 2026-08-03
 
-- Target mileage: about 28-30, depending on 5K warmup/cooldown
-- Primary purpose: enter the block smoothly and use the 2026-06-06 5K as a fit check
-- Fit-check rule: the 5K is the primary quality session this week; do not stack it with normal Tuesday/Thursday SOS work
-- Interpretation rule: use the result to refine early workout paces, not to make a major mileage escalation
+- Target mileage: about 26-27
+- Primary purpose: enter the block smoothly while adjusting for Thursday evening travel
+- Adjustment rule: move the long run earlier in the week and use Sunday as the off day
+- Interpretation rule: keep the week structurally useful without forcing missed training later
 
 | Day | Run | Purpose | Notes |
 | --- | --- | --- | --- |
 | Monday | 3 mi easy | Recovery | Keep it deliberately light. |
 | Tuesday | 5 mi easy with 6 x 20 sec strides | Light sharpening | Keep the strides relaxed and full-recovery. |
-| Wednesday | Off | Recovery | Normal Hanson-style break. |
-| Thursday | 4 mi easy | Easy aerobic | No threshold work this week. |
-| Friday | 3 mi easy or off | Pre-race recovery | Choose off if legs feel flat or life stress is high. |
-| Saturday | 5K race, about 5-6 mi total | Fit check | Race honestly; include warmup and cooldown. |
-| Sunday | 7 mi easy | Recovery long run | Keep this easy; shorten if the 5K leaves abnormal soreness. |
+| Wednesday | 7 mi easy | Long run | Move the long run here to protect the rest of the week. Keep it fully aerobic. |
+| Thursday | 4 mi easy | Easy aerobic | Run this in the morning before evening travel. |
+| Friday | 4 mi easy | Easy aerobic | Keep this low pressure. |
+| Saturday | 3 mi easy shakeout | Easy aerobic | Keep it short and relaxed. |
+| Sunday | Off | Recovery | Use the travel week to make this the clean off day. |
 
 ## Week 2 - 2026-08-10
 

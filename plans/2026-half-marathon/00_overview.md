@@ -21,13 +21,12 @@
 - Long runs: mostly 13-15 miles
 - Main workout emphasis: threshold, stamina, and half-marathon-pace work
 
-## Early Fit Check
+## Week 1 Adjustment
 
-- Scheduled race: 2026-06-06 5K
-- Purpose: use as an early fit check during the extended base, not a referendum on the full half-marathon cycle
-- Planning rule: treat the 5K as the primary quality session for that week
-- Interpretation rule: the race gets one vote; the next 7-10 days of consistency and recovery get the deciding vote
-- Adjustment rule: use the result to refine early workout paces, not to trigger an automatic mileage escalation
+- Travel note: Thursday evening travel changes the normal opening-week shape
+- Planning rule: move the long run to Wednesday and use Sunday as the off day
+- Saturday note: replace the previously scheduled 5K fit check with a 3 mi easy shakeout
+- Interpretation rule: keep the week useful and low-drama rather than trying to preserve the original race-week structure
 
 ## Plan Files
 
