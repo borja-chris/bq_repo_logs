@@ -31,7 +31,7 @@ Week of `2026-06-01`
 | Wednesday | 5 mi very easy | 3.15 mi run | 42:59 at 13:39/mi. |
 | Thursday | 6 mi easy | 5.75 mi run | 1:17:24 at 13:28/mi. |
 | Friday | Off | 1.77 mi run | 21:30 at 12:09/mi. |
-| Saturday | 4-5 mi easy | 3.12 mi run | 25:32 at 8:11/mi. |
+| Saturday | 4-5 mi easy | 3.12 mi run | 25:32 at 8:11/mi. This was a 5K race effort. FIT heart-rate summary recorded avg HR `178` and max HR `196`. |
 | Sunday | 8-9 mi easy | 4.35 mi run | 51:31 at 11:51/mi. |
 
 The listed source plan is the live reference for this week.
@@ -50,6 +50,7 @@ The short version:
 5. Record meaningful changes in `decisions/`.
 
 Raw COROS exports belong under `data/coros_exports/`. Processed summaries belong under `data/processed/`.
+Completed daily-log months should be archived under `logs/daily/YYYY/YYYY-MM/` with a generated `monthly_summary.md`.
 
 COROS data workflow:
 
@@ -57,5 +58,6 @@ COROS data workflow:
 2. Run `python scripts/ingest_coros_fit.py`.
 3. Let the script move them into a dated batch folder under `data/coros_exports/`, update the processed summaries, and refresh the current logs.
 4. Archive completed prior-month raw batches into `fit_files.tar.gz` after verification.
+5. On the first maintenance pass of a new month, let the repo archive prior-month daily logs into their month folder and refresh that month's summary.
 
 Aim to make this as Ai Tool Agnostic as possible.

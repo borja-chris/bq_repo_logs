@@ -40,7 +40,10 @@ After each week:
 
 ## File Naming
 
-- Daily log: `logs/daily/YYYY-MM-DD.md`
+- Active daily log: `logs/daily/YYYY-MM-DD.md`
+- Archived daily month folder: `logs/daily/YYYY/YYYY-MM/`
+- Archived daily log: `logs/daily/YYYY/YYYY-MM/YYYY-MM-DD.md`
+- Monthly daily summary: `logs/daily/YYYY/YYYY-MM/monthly_summary.md`
 - Weekly log: `logs/weekly/week_YYYY-MM-DD.md`
 - Weekly retro: `retros/weekly/week_YYYY-MM-DD.md`
 - Decision: `decisions/YYYY-MM-DD_short_topic.md`
@@ -107,6 +110,8 @@ For completed prior-month COROS export batches:
 ## Monthly Archive Rule
 
 - On the first repo maintenance pass of a new month, archive all completed COROS export batches from the previous month.
+- On the first repo maintenance pass of a new month, move prior-month daily logs into `logs/daily/YYYY/YYYY-MM/` and generate `monthly_summary.md` in that folder.
+- Current-week sync must still read and update archived prior-month daily logs when a week spans a month boundary.
 
 Use `scripts/summarize_coros_fit.py` when the optional FIT parser dependency is available.
 Use `scripts/archive_coros_export.py` for batch archiving after summaries exist.

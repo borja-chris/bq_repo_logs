@@ -20,6 +20,7 @@ The repository structure has been initialized for planning, logs, retros, decisi
 - For COROS imports, the user should be able to drop raw `.fit` files in the repo root and let Codex handle sorting, hashing, summary generation, and archiving.
 - The operator-facing default should be one command: `python scripts/ingest_coros_fit.py`.
 - FIT ingest should also sync the repo-facing Markdown layer: matching daily logs, the live weekly log, and the managed current-week block in `README.md`.
+- On the first maintenance pass of a new month, daily logs from the completed prior month should move into `logs/daily/YYYY/YYYY-MM/` and get a generated `monthly_summary.md`.
 - Human interaction model: factual repo maintenance is automatic by default; interpretation should be drafted; plan and framework decisions should still be surfaced explicitly.
 - Processed summaries are the working layer. Prefer both reviewable CSV and machine-readable JSONL when parser support is available.
 - Raw FIT data should remain preserved as the canonical source, but prior-month completed batches can be compressed into `fit_files.tar.gz` to reduce clutter.

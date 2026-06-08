@@ -131,6 +131,13 @@ class WeekPlan:
     primary_purpose: str
     day_plans: list[DayPlan]
 
+@dataclass
+class ArchivedMonth:
+    month_start: date
+    archive_dir: Path
+    summary_path: Path
+    moved_logs: list[Path]
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -175,6 +182,14 @@ def format_int(value: int) -> str:
 def monday_of(target: date) -> date:
     return target - timedelta(days=target.weekday())
 
+def month_start_of(target: date) -> date:
+    return target.replace(day=1)
+
+def next_month_start(target: date) -> date:
+    if target.month == 12:
+        return date(target.year + 1, 1, 1)
+    return date(target.year, target.month + 1, 1)
+
 
 def parse_start_time(value: str) -> datetime:
     parsed = datetime.fromisoformat(value)
@@ -209,6 +224,27 @@ def processed_paths_for(import_date: date) -> tuple[Path, Path]:
         REPO_ROOT / "data" / "processed" / f"{stem}.csv",
         REPO_ROOT / "data" / "processed" / f"{stem}.jsonl",
     )
+
+def root_daily_log_path(day_date: date) -> Path:
+    return REPO_ROOT / "logs" / "daily" / f"{day_date.isoformat()}.md"
+
+def daily_archive_dir(day_date: date) -> Path:
+    month_key = day_date.strftime("%Y-%m")
+    return REPO_ROOT / "logs" / "daily" / f"{day_date.year}" / month_key
+
+def archived_daily_log_path(day_date: date) -> Path:
+    return daily_archive_dir(day_date) / f"{day_date.isoformat()}.md"
+
+def resolve_daily_log_path(day_date: date) -> Path:
+    archived_path = archived_daily_log_path(day_date)
+    if archived_path.exists():
+        return archived_path
+    root_path = root_daily_log_path(day_date)
+    if root_path.exists():
+        return root_path
+    if archived_path.parent.exists():
+        return archived_path
+    return root_path
 
 
 def import_loose_fit_files(import_date: date) -> tuple[Path, list[Path], int]:
@@ -397,6 +433,94 @@ def ensure_daily_log_structure(text: str) -> str:
     return text
 
 
+def parse_duration_to_seconds(value: str) -> int:
+    cleaned = value.strip()
+    if not cleaned:
+        return 0
+    parts = cleaned.split(":")
+    if len(parts) == 2:
+        minutes, seconds = parts
+        return int(minutes) * 60 + int(seconds)
+    if len(parts) == 3:
+        hours, minutes, seconds = parts
+        return (int(hours) * 3600) + (int(minutes) * 60) + int(seconds)
+    return 0
+
+
+def format_duration(seconds: int) -> str:
+    hours, remainder = divmod(seconds, 3600)
+    minutes, secs = divmod(remainder, 60)
+    if hours:
+        return f"{hours}:{minutes:02d}:{secs:02d}"
+    return f"{minutes}:{secs:02d}"
+
+
+def format_pace_label(total_seconds: int, total_miles: float) -> str:
+    if total_seconds <= 0 or total_miles <= 0:
+        return ""
+    pace_seconds = round(total_seconds / total_miles)
+    minutes, seconds = divmod(pace_seconds, 60)
+    return f"{minutes}:{seconds:02d}/mi"
+
+
+def parse_daily_log_file(path: Path) -> dict[str, str]:
+    fields = {
+        "planned": "",
+        "completed": "",
+        "time": "",
+        "distance": "",
+        "pace": "",
+        "effort": "",
+        "notes": "",
+        "sleep": "",
+        "soreness": "",
+        "stress": "",
+        "warning_signs": "",
+    }
+    manual_notes_started = False
+    recovery_started = False
+    notes_lines: list[str] = []
+    text = ensure_daily_log_structure(path.read_text())
+    for raw_line in text.splitlines():
+        if raw_line == MANAGED_NOTES_HEADING:
+            manual_notes_started = False
+            recovery_started = False
+            continue
+        if raw_line == MANUAL_NOTES_HEADING:
+            manual_notes_started = True
+            recovery_started = False
+            continue
+        if raw_line == RECOVERY_HEADING:
+            manual_notes_started = False
+            recovery_started = True
+            continue
+        if raw_line.startswith("- Planned:"):
+            fields["planned"] = raw_line.removeprefix("- Planned:").strip()
+        elif raw_line.startswith("- Completed:"):
+            fields["completed"] = raw_line.removeprefix("- Completed:").strip()
+        elif raw_line.startswith("- Time:"):
+            fields["time"] = raw_line.removeprefix("- Time:").strip()
+        elif raw_line.startswith("- Distance:"):
+            fields["distance"] = raw_line.removeprefix("- Distance:").strip()
+        elif raw_line.startswith("- Pace:"):
+            fields["pace"] = raw_line.removeprefix("- Pace:").strip()
+        elif raw_line.startswith("- Effort:"):
+            fields["effort"] = raw_line.removeprefix("- Effort:").strip()
+        elif raw_line.startswith("- Sleep:"):
+            fields["sleep"] = raw_line.removeprefix("- Sleep:").strip()
+        elif raw_line.startswith("- Soreness:"):
+            fields["soreness"] = raw_line.removeprefix("- Soreness:").strip()
+        elif raw_line.startswith("- Stress:"):
+            fields["stress"] = raw_line.removeprefix("- Stress:").strip()
+        elif raw_line.startswith("- Warning signs:"):
+            fields["warning_signs"] = raw_line.removeprefix("- Warning signs:").strip()
+        elif manual_notes_started and raw_line.startswith("- "):
+            notes_lines.append(raw_line)
+    filtered_notes = [line.removeprefix("- ").strip() for line in notes_lines]
+    fields["notes"] = " ".join(note for note in filtered_notes if note)
+    return fields
+
+
 def replace_managed_notes(lines: list[str], activity: Activity) -> list[str]:
     note_start = lines.index(MANAGED_NOTES_HEADING) + 1
     manual_index = lines.index(MANUAL_NOTES_HEADING)
@@ -408,9 +532,10 @@ def replace_managed_notes(lines: list[str], activity: Activity) -> list[str]:
 
 
 def create_daily_log_stub(day_date: date, planned: str) -> Path:
-    log_path = REPO_ROOT / "logs" / "daily" / f"{day_date.isoformat()}.md"
+    log_path = resolve_daily_log_path(day_date)
     if log_path.exists():
         return log_path
+    log_path.parent.mkdir(parents=True, exist_ok=True)
     text = load_template(DAILY_TEMPLATE).replace("YYYY-MM-DD", day_date.isoformat())
     text = ensure_daily_log_structure(text)
     lines = text.splitlines()
@@ -420,10 +545,11 @@ def create_daily_log_stub(day_date: date, planned: str) -> Path:
 
 
 def upsert_daily_log(activity: Activity) -> Path:
-    log_path = REPO_ROOT / "logs" / "daily" / f"{activity.local_date.isoformat()}.md"
+    log_path = resolve_daily_log_path(activity.local_date)
     if log_path.exists():
         text = ensure_daily_log_structure(log_path.read_text())
     else:
+        log_path.parent.mkdir(parents=True, exist_ok=True)
         text = load_template(DAILY_TEMPLATE).replace("YYYY-MM-DD", activity.local_date.isoformat())
         text = ensure_daily_log_structure(text)
     lines = text.splitlines()
@@ -443,57 +569,10 @@ def parse_day_logs(week_start: date) -> dict[date, dict[str, str]]:
     result: dict[date, dict[str, str]] = {}
     for offset in range(7):
         day_date = week_start + timedelta(days=offset)
-        path = REPO_ROOT / "logs" / "daily" / f"{day_date.isoformat()}.md"
+        path = resolve_daily_log_path(day_date)
         if not path.exists():
             continue
-        fields = {
-            "completed": "",
-            "time": "",
-            "distance": "",
-            "pace": "",
-            "effort": "",
-            "notes": "",
-            "soreness": "",
-            "warning_signs": "",
-        }
-        manual_notes_started = False
-        recovery_started = False
-        notes_lines: list[str] = []
-        text = ensure_daily_log_structure(path.read_text())
-        for raw_line in text.splitlines():
-            if raw_line == MANAGED_NOTES_HEADING:
-                manual_notes_started = False
-                recovery_started = False
-                continue
-            if raw_line == MANUAL_NOTES_HEADING:
-                manual_notes_started = True
-                recovery_started = False
-                continue
-            if raw_line == RECOVERY_HEADING:
-                manual_notes_started = False
-                recovery_started = True
-                continue
-            if raw_line.startswith("- Completed:"):
-                fields["completed"] = raw_line.removeprefix("- Completed:").strip()
-            elif raw_line.startswith("- Time:"):
-                fields["time"] = raw_line.removeprefix("- Time:").strip()
-            elif raw_line.startswith("- Distance:"):
-                fields["distance"] = raw_line.removeprefix("- Distance:").strip()
-            elif raw_line.startswith("- Pace:"):
-                fields["pace"] = raw_line.removeprefix("- Pace:").strip()
-            elif raw_line.startswith("- Effort:"):
-                fields["effort"] = raw_line.removeprefix("- Effort:").strip()
-            elif raw_line.startswith("- Soreness:"):
-                fields["soreness"] = raw_line.removeprefix("- Soreness:").strip()
-            elif raw_line.startswith("- Warning signs:"):
-                fields["warning_signs"] = raw_line.removeprefix("- Warning signs:").strip()
-            elif manual_notes_started and raw_line.startswith("- "):
-                notes_lines.append(raw_line)
-            elif recovery_started:
-                continue
-        filtered_notes = [line.removeprefix("- ").strip() for line in notes_lines]
-        fields["notes"] = " ".join(note for note in filtered_notes if note and note != "")
-        result[day_date] = fields
+        result[day_date] = parse_daily_log_file(path)
     return result
 
 
@@ -504,7 +583,7 @@ def seed_missing_planned_day_logs(week_plan: WeekPlan, today: date) -> list[Path
             continue
         if day_plan.planned.strip().lower() in {"rest", "off"}:
             continue
-        log_path = REPO_ROOT / "logs" / "daily" / f"{day_plan.day_date.isoformat()}.md"
+        log_path = resolve_daily_log_path(day_plan.day_date)
         if log_path.exists():
             continue
         created_paths.append(create_daily_log_stub(day_plan.day_date, day_plan.planned))
@@ -630,6 +709,109 @@ def summarize_day(fields: dict[str, str]) -> tuple[str, str]:
     if fields["warning_signs"]:
         note_parts.append(sentence(fields["warning_signs"], "Warning signs: "))
     return completed, " ".join(part.strip() for part in note_parts if part.strip()) or "x"
+
+
+def build_monthly_summary(month_start: date, archive_dir: Path) -> str:
+    month_end = next_month_start(month_start) - timedelta(days=1)
+    daily_paths = sorted(
+        path for path in archive_dir.glob("*.md")
+        if path.name != "monthly_summary.md"
+    )
+    records: list[tuple[date, dict[str, str]]] = []
+    for path in daily_paths:
+        day_date = date.fromisoformat(path.stem)
+        records.append((day_date, parse_daily_log_file(path)))
+
+    run_records = [
+        (day_date, fields)
+        for day_date, fields in records
+        if actual_miles_from_distance(fields["distance"]) > 0
+    ]
+    total_miles = sum(actual_miles_from_distance(fields["distance"]) for _, fields in run_records)
+    total_seconds = sum(parse_duration_to_seconds(fields["time"]) for _, fields in run_records)
+    logged_run_days = len(run_records)
+    average_distance = total_miles / logged_run_days if logged_run_days else 0.0
+    longest_run_label = "n/a"
+    if run_records:
+        longest_day, longest_fields = max(
+            run_records,
+            key=lambda item: actual_miles_from_distance(item[1]["distance"]),
+        )
+        longest_run_label = (
+            f"`{longest_fields['distance']}` on `{longest_day.isoformat()}`"
+        )
+    soreness_days = sum(1 for _, fields in records if fields["soreness"])
+    warning_days = sum(1 for _, fields in records if fields["warning_signs"])
+    manual_note_days = sum(1 for _, fields in records if fields["notes"])
+    average_pace = format_pace_label(total_seconds, total_miles) or "n/a"
+    total_time = format_duration(total_seconds) if total_seconds else "0:00"
+
+    lines = [
+        f"# {month_start.strftime('%Y-%m')} Daily Log Summary",
+        "",
+        f"- Month: `{month_start.strftime('%Y-%m')}`",
+        f"- Date span: `{month_start.isoformat()}` to `{month_end.isoformat()}`",
+        f"- Daily logs archived: `{len(records)}`",
+        f"- Logged run days: `{logged_run_days}`",
+        f"- Total mileage: `{total_miles:.2f} mi`",
+        f"- Total logged time: `{total_time}`",
+        f"- Average pace across logged miles: `{average_pace}`",
+        f"- Average distance per logged run: `{average_distance:.2f} mi`",
+        f"- Longest logged run: {longest_run_label}",
+        f"- Days with manual notes: `{manual_note_days}`",
+        f"- Days with soreness notes: `{soreness_days}`",
+        f"- Days with warning-sign notes: `{warning_days}`",
+        "",
+        "## Daily Index",
+        "",
+        "| Date | Planned | Completed | Distance | Effort | Notes |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    for day_date, fields in records:
+        note = fields["notes"] or "x"
+        lines.append(
+            f"| {day_date.isoformat()} | {fields['planned'] or 'x'} | "
+            f"{fields['completed'] or 'x'} | {fields['distance'] or 'x'} | "
+            f"{fields['effort'] or 'x'} | {note} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def archive_completed_daily_months(today: date) -> list[ArchivedMonth]:
+    current_month_start = month_start_of(today)
+    monthly_paths: dict[date, list[Path]] = defaultdict(list)
+    for path in sorted((REPO_ROOT / "logs" / "daily").glob("*.md")):
+        if path.name == ".gitkeep":
+            continue
+        try:
+            day_date = date.fromisoformat(path.stem)
+        except ValueError:
+            continue
+        day_month_start = month_start_of(day_date)
+        if day_month_start >= current_month_start:
+            continue
+        monthly_paths[day_month_start].append(path)
+
+    archived_months: list[ArchivedMonth] = []
+    for month_start, paths in sorted(monthly_paths.items()):
+        archive_dir = daily_archive_dir(month_start)
+        archive_dir.mkdir(parents=True, exist_ok=True)
+        moved_logs: list[Path] = []
+        for source_path in paths:
+            target_path = archive_dir / source_path.name
+            source_path.rename(target_path)
+            moved_logs.append(target_path)
+        summary_path = archive_dir / "monthly_summary.md"
+        summary_path.write_text(build_monthly_summary(month_start, archive_dir))
+        archived_months.append(
+            ArchivedMonth(
+                month_start=month_start,
+                archive_dir=archive_dir,
+                summary_path=summary_path,
+                moved_logs=moved_logs,
+            )
+        )
+    return archived_months
 
 
 def build_week_rows(week_plan: WeekPlan, day_logs: dict[date, dict[str, str]]) -> tuple[list[str], float, str]:
@@ -877,6 +1059,7 @@ def main() -> int:
     manifest_path: Path | None = None
     daily_paths: list[Path] = []
     activities: list[Activity] = []
+    archived_months = archive_completed_daily_months(today)
 
     if not args.sync_only:
         export_dir, moved_files, removed_sidecars = import_loose_fit_files(today)
@@ -913,6 +1096,16 @@ def main() -> int:
         for path in moved_files:
             print(f"  - {summarize.repo_relpath(path)}")
     print(f"Removed sidecars: {removed_sidecars}")
+    if archived_months:
+        print(f"Archived daily months: {len(archived_months)}")
+        for archived_month in archived_months:
+            print(
+                "  - "
+                f"{archived_month.month_start.strftime('%Y-%m')}: "
+                f"{len(archived_month.moved_logs)} logs -> "
+                f"{summarize.repo_relpath(archived_month.archive_dir)} "
+                f"(summary: {summarize.repo_relpath(archived_month.summary_path)})"
+            )
     if rows:
         print(f"Processed activities: {len(rows)}")
         print(f"CSV summary: {summarize.repo_relpath(output_csv)}")
