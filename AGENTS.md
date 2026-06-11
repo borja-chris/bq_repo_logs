@@ -131,6 +131,12 @@ Major decisions include:
 - Do not silently overwrite historical logs or retros.
 - If replacing old content, preserve meaningful prior context unless the user explicitly asks to delete it.
 
+## Retro Rules
+
+- When the user asks for a retro, include at least one actionable follow-up.
+- A retro is not complete if it only summarizes what happened.
+- The action can be a code change, workflow change, decision, or explicit next step with an owner and success condition.
+
 ## Repository Structure
 
 Expected structure:

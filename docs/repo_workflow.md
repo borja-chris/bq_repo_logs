@@ -26,7 +26,7 @@ During the week:
 - Record distance, effort, soreness, sleep/stress, and warning signs.
 - Use daily-log manual notes for context that FIT data cannot capture, including run quality, travel fatigue, shortened runs, and skipped-run reasons.
 - Do not backfill noise just to make the repo look complete.
-- If repo Markdown changed, run `python scripts/check_markdown_links.py` before commit.
+- If repo Markdown changed, run `.venv/bin/python scripts/check_markdown_links.py` before commit.
 - If the live current week changed, check whether `README.md` needs a matching summary update before commit/push.
 - Before updating live current-week status in `README.md`, verify completed work from `logs/daily/` first, then `logs/weekly/`, then `data/processed/` if a COROS import may have landed before the Markdown was updated.
 - When a request could mean either a training retrospective or a work-session retrospective, label it explicitly before writing.
@@ -67,7 +67,7 @@ Use a decision record before:
 For a new COROS export:
 
 1. Drop new raw `.fit` files in the repo root.
-2. Run `python scripts/ingest_coros_fit.py`.
+2. Run `.venv/bin/python scripts/ingest_coros_fit.py`.
 3. Let the script move those files into `data/coros_exports/COROS_export_YYYY-MM-DD/` for the import date.
 4. Do not keep `*:Zone.Identifier` files.
 5. Add or update `SHA256SUMS.txt` for the loose `.fit` files.
@@ -113,7 +113,7 @@ For completed prior-month COROS export batches:
 - On the first repo maintenance pass of a new month, move prior-month daily logs into `logs/daily/YYYY/YYYY-MM/` and generate `monthly_summary.md` in that folder.
 - Current-week sync must still read and update archived prior-month daily logs when a week spans a month boundary.
 
-Use `scripts/summarize_coros_fit.py` when the optional FIT parser dependency is available.
-Use `scripts/archive_coros_export.py` for batch archiving after summaries exist.
+Use `.venv/bin/python scripts/summarize_coros_fit.py` when the optional FIT parser dependency is available.
+Use `.venv/bin/python scripts/archive_coros_export.py` for batch archiving after summaries exist.
 
 Raw FIT files may include GPS, timestamps, heart rate, and device metadata. Treat them as private training data unless you intentionally publish them.

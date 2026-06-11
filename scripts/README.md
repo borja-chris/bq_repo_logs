@@ -18,7 +18,7 @@ The expected operator flow is:
 Primary command:
 
 ```bash
-python scripts/ingest_coros_fit.py
+.venv/bin/python scripts/ingest_coros_fit.py
 ```
 
 Recommended setup for fresh environments:
@@ -31,11 +31,11 @@ bash scripts/setup_fit_env.sh
 Optional flags:
 
 ```bash
-python scripts/ingest_coros_fit.py --sync-only
-python scripts/ingest_coros_fit.py --date 2026-05-14
-python scripts/ingest_coros_fit.py --no-readme
-python scripts/ingest_coros_fit.py --no-logs
-python scripts/ingest_coros_fit.py --require-weather
+.venv/bin/python scripts/ingest_coros_fit.py --sync-only
+.venv/bin/python scripts/ingest_coros_fit.py --date 2026-05-14
+.venv/bin/python scripts/ingest_coros_fit.py --no-readme
+.venv/bin/python scripts/ingest_coros_fit.py --no-logs
+.venv/bin/python scripts/ingest_coros_fit.py --require-weather
 ```
 
 `--sync-only` also re-attempts weather enrichment for that import date's processed batch
@@ -62,11 +62,11 @@ instead of silently leaving weather fields blank.
 Example:
 
 ```bash
-python scripts/summarize_coros_fit.py data/coros_exports/COROS_export_2026-05-09 data/processed/coros_export_2026-05-09_summary.csv
+.venv/bin/python scripts/summarize_coros_fit.py data/coros_exports/COROS_export_2026-05-09 data/processed/coros_export_2026-05-09_summary.csv
 ```
 
 ```bash
-python scripts/summarize_coros_fit.py \
+.venv/bin/python scripts/summarize_coros_fit.py \
   data/coros_exports/COROS_export_2026-05-09 \
   data/processed/coros_export_2026-05-09_summary.csv \
   --jsonl data/processed/coros_export_2026-05-09_summary.jsonl
@@ -100,7 +100,7 @@ Archive policy:
 Example:
 
 ```bash
-python scripts/archive_coros_export.py data/coros_exports/COROS_export_2026-05-09
+.venv/bin/python scripts/archive_coros_export.py data/coros_exports/COROS_export_2026-05-09
 ```
 
 Keep scripts small and reviewable. The Markdown files remain the system of record.
@@ -116,5 +116,5 @@ Keep scripts small and reviewable. The Markdown files remain the system of recor
 Example:
 
 ```bash
-python scripts/check_markdown_links.py
+.venv/bin/python scripts/check_markdown_links.py
 ```

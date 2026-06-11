@@ -218,6 +218,16 @@ def find_loose_fit_files() -> list[Path]:
         if path.is_file()
     )
 
+def fit_parser_available() -> bool:
+    return summarize.FITPARSE_FILE is not None or summarize.FITDECODE is not None
+
+def print_fit_parser_preflight_failure(fit_files: list[Path]) -> None:
+    print("Import aborted: FIT parser dependencies are unavailable in this interpreter.")
+    print("Use `.venv/bin/python scripts/ingest_coros_fit.py` or run `bash scripts/setup_fit_env.sh`.")
+    print(f"Loose FIT files left in repo root: {len(fit_files)}")
+    for path in fit_files:
+        print(f"  - {path.name}")
+
 
 def batch_dir_for(import_date: date) -> Path:
     return REPO_ROOT / "data" / "coros_exports" / f"COROS_export_{import_date.isoformat()}"
@@ -1089,6 +1099,11 @@ def main() -> int:
     update_logs = not args.no_logs
     update_readme_flag = not args.no_readme
     weather_enabled = not args.no_weather
+    loose_fit_files = [] if args.sync_only else find_loose_fit_files()
+
+    if loose_fit_files and not fit_parser_available():
+        print_fit_parser_preflight_failure(loose_fit_files)
+        return 3
 
     moved_files: list[Path] = []
     removed_sidecars = 0

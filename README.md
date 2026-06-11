@@ -22,13 +22,13 @@ Week of `2026-06-08`
 - Target mileage: `about 29-31`
 - Actual mileage so far: `17.56`
 - Primary purpose: touch low-30s only if the prior two weeks felt routine
-- Week status: `Wednesday completed`
+- Week status: `Wednesday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
 | Monday | Off | 5.80 mi run | 1:06:18 at 11:26/mi. Decided to run today because Whoop recovery was in the green. Pace felt better than expected. I was able to kick up the pace a bit more than I thought. Current impression: roughly 11:00-10:30/mi may now be easy pace. |
 | Tuesday | 6 mi easy | 5.76 mi run | 1:07:04 at 11:39/mi. |
-| Wednesday | 5 mi very easy | 6.00 mi run | 1:12:06 at 12:01/mi. Very hot and humid. Pace backed off, but completed 6. |
+| Wednesday | 5 mi very easy | 6.00 mi run | 1:12:06 at 12:01/mi. Very hot and humid. Had to knock down the pace a bit but glad I pushed for 6. I may either crosstrain or take the next 2 days off since the temps will be in the 90s during the evening. |
 | Thursday | 6 mi easy | x | x |
 | Friday | Off | x | x |
 | Saturday | 4-5 mi easy | x | x |
@@ -55,7 +55,7 @@ Completed daily-log months should be archived under `logs/daily/YYYY/YYYY-MM/` w
 COROS data workflow:
 
 1. Drop new `.fit` files in the repo root.
-2. Run `python scripts/ingest_coros_fit.py`.
+2. Run `.venv/bin/python scripts/ingest_coros_fit.py`.
 3. Let the script move them into a dated batch folder under `data/coros_exports/`, update the processed summaries, and refresh the current logs.
 4. Archive completed prior-month raw batches into `fit_files.tar.gz` after verification.
 5. On the first maintenance pass of a new month, let the repo archive prior-month daily logs into their month folder and refresh that month's summary.
