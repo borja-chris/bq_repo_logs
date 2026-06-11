@@ -172,6 +172,11 @@ def parse_args() -> argparse.Namespace:
         default=10.0,
         help="Timeout in seconds for each Open-Meteo request.",
     )
+    parser.add_argument(
+        "--require-weather",
+        action="store_true",
+        help="Fail with a non-zero exit code if any activity is missing weather after enrichment.",
+    )
     return parser.parse_args()
 
 
@@ -299,6 +304,18 @@ def generate_summaries(export_dir: Path) -> tuple[Path, Path, list[dict[str, str
     summarize.write_jsonl(output_jsonl, rows)
     return output_csv, output_jsonl, rows
 
+def load_processed_rows(jsonl_path: Path) -> list[dict[str, str]]:
+    if not jsonl_path.exists():
+        return []
+    rows: list[dict[str, str]] = []
+    with jsonl_path.open() as handle:
+        for raw_line in handle:
+            raw_line = raw_line.strip()
+            if not raw_line:
+                continue
+            rows.append(json.loads(raw_line))
+    return rows
+
 def write_processed_outputs(
     output_csv: Path,
     output_jsonl: Path,
@@ -404,6 +421,28 @@ def enrich_rows_with_weather(rows: list[dict[str, str]], timeout_s: float) -> li
         for activity in group_activities:
             activity.row.update(weather_update_from_hourly(activity, hourly))
     return activities
+
+
+def re_enrich_processed_batch_weather(
+    import_date: date,
+    timeout_s: float,
+) -> tuple[Path, Path, list[dict[str, str]], list[Activity]]:
+    output_csv, output_jsonl = processed_paths_for(import_date)
+    rows = load_processed_rows(output_jsonl)
+    if not rows:
+        return output_csv, output_jsonl, rows, []
+    activities = enrich_rows_with_weather(rows, timeout_s=timeout_s)
+    write_processed_outputs(output_csv, output_jsonl, rows)
+    return output_csv, output_jsonl, rows, activities
+
+
+def weather_failures(rows: Iterable[dict[str, str]]) -> list[dict[str, str]]:
+    failures: list[dict[str, str]] = []
+    for row in rows:
+        if row.get("weather_temp_f", "").strip():
+            continue
+        failures.append(row)
+    return failures
 
 
 def load_template(path: Path) -> str:
@@ -1082,13 +1121,24 @@ def main() -> int:
                 output_csv,
                 output_jsonl,
                 rows,
+                )
+        elif weather_enabled:
+            output_csv, output_jsonl, rows, activities = re_enrich_processed_batch_weather(
+                today,
+                timeout_s=args.weather_timeout,
             )
+    elif weather_enabled:
+        output_csv, output_jsonl, rows, activities = re_enrich_processed_batch_weather(
+            today,
+            timeout_s=args.weather_timeout,
+        )
     sync_result = sync_records(
         today,
         update_logs=update_logs,
         update_readme_flag=update_readme_flag,
         recent_activities=activities or None,
     )
+    failures = weather_failures(rows) if weather_enabled and rows else []
 
     print(f"Import date: {today.isoformat()}")
     print(f"Moved FIT files: {len(moved_files)}")
@@ -1110,6 +1160,14 @@ def main() -> int:
         print(f"Processed activities: {len(rows)}")
         print(f"CSV summary: {summarize.repo_relpath(output_csv)}")
         print(f"JSONL summary: {summarize.repo_relpath(output_jsonl)}")
+        if weather_enabled:
+            print(f"Weather enriched: {len(rows) - len(failures)}/{len(rows)}")
+            if failures:
+                print(f"Weather missing: {len(failures)}")
+                for row in failures:
+                    activity_id = row.get("activity_id", "") or row.get("source_file", "unknown")
+                    error = row.get("weather_fetch_error", "").strip() or "missing weather fields"
+                    print(f"  - {activity_id}: {error}")
     if daily_paths:
         print(f"Daily logs updated: {len(daily_paths)}")
         for path in daily_paths:
@@ -1130,6 +1188,9 @@ def main() -> int:
         "Manual follow-up: subjective recovery signals, coaching interpretation, "
         "and plan changes remain manual."
     )
+    if args.require_weather and failures:
+        print("Import failed requirement: weather enrichment missing for one or more activities.")
+        return 2
     return 0
 
 

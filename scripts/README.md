@@ -35,7 +35,15 @@ python scripts/ingest_coros_fit.py --sync-only
 python scripts/ingest_coros_fit.py --date 2026-05-14
 python scripts/ingest_coros_fit.py --no-readme
 python scripts/ingest_coros_fit.py --no-logs
+python scripts/ingest_coros_fit.py --require-weather
 ```
+
+`--sync-only` also re-attempts weather enrichment for that import date's processed batch
+when weather is enabled, which makes it the repair path after a transient API or DNS
+failure during the original import.
+
+For normal imports going forward, prefer `--require-weather` so the command fails
+instead of silently leaving weather fields blank.
 
 `ingest_coros_fit.py` is the operator-facing entry point. It handles:
 
