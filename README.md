@@ -20,15 +20,15 @@ Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 Week of `2026-06-08`
 
 - Target mileage: `about 29-31`
-- Actual mileage so far: `11.56`
+- Actual mileage so far: `17.56`
 - Primary purpose: touch low-30s only if the prior two weeks felt routine
-- Week status: `Tuesday run logged`
+- Week status: `Wednesday completed`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
 | Monday | Off | 5.80 mi run | 1:06:18 at 11:26/mi. Decided to run today because Whoop recovery was in the green. Pace felt better than expected. I was able to kick up the pace a bit more than I thought. Current impression: roughly 11:00-10:30/mi may now be easy pace. |
 | Tuesday | 6 mi easy | 5.76 mi run | 1:07:04 at 11:39/mi. |
-| Wednesday | 5 mi very easy | x | x |
+| Wednesday | 5 mi very easy | 6.00 mi run | 1:12:06 at 12:01/mi. Very hot and humid. Pace backed off, but completed 6. |
 | Thursday | 6 mi easy | x | x |
 | Friday | Off | x | x |
 | Saturday | 4-5 mi easy | x | x |
