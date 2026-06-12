@@ -29,8 +29,8 @@ Week of `2026-06-08`
 | Monday | Off | 5.80 mi run | 1:06:18 at 11:26/mi. Decided to run today because Whoop recovery was in the green. Pace felt better than expected. I was able to kick up the pace a bit more than I thought. Current impression: roughly 11:00-10:30/mi may now be easy pace. |
 | Tuesday | 6 mi easy | 5.76 mi run | 1:07:04 at 11:39/mi. |
 | Wednesday | 5 mi very easy | 6.00 mi run | 1:12:06 at 12:01/mi. Very hot and humid. Had to knock down the pace a bit but glad I pushed for 6. I may either crosstrain or take the next 2 days off since the temps will be in the 90s during the evening. |
-| Thursday | 6 mi easy | x | x |
-| Friday | Off | x | x |
+| Thursday | 6 mi easy | no run | Mainly a gym session. |
+| Friday | Off | off | Fully nothing. |
 | Saturday | 4-5 mi easy | x | x |
 | Sunday | 8-9 mi easy | x | x |
 
