@@ -16,169 +16,40 @@ signals, coaching interpretation, and plan changes remain manual.
 from __future__ import annotations
 
 import argparse
-import csv
-import json
-import re
-import tarfile
-from collections import defaultdict
-from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 from pathlib import Path
-from tempfile import TemporaryDirectory
-from typing import Iterable
-from urllib.error import HTTPError, URLError
-from urllib.parse import urlencode
-from urllib.request import urlopen
-from zoneinfo import ZoneInfo
 
+import ingest_coros_fit_batch as batch
+import ingest_coros_fit_weather as weather
 import summarize_coros_fit as summarize
+from weekly_entries import (
+    DAILY_ENTRIES_HEADING,
+    MANAGED_NOTES_FIELD,
+    MANUAL_NOTES_FIELD,
+    README_END,
+    README_START,
+    README_PATH,
+    RECOVERY_HEADING,
+    WEEKLY_END,
+    WEEKLY_START,
+    WeeklyDayEntry,
+    build_week_rows,
+    create_weekly_day_entry,
+    ensure_markers,
+    merge_legacy_entry,
+    normalize_nested_note_lines,
+    parse_legacy_daily_log_entry,
+    parse_weekly_day_entry,
+    parse_weekly_day_entries,
+    render_weekly_day_entry,
+    replace_heading_section,
+    seed_missing_planned_day_entries,
+    update_readme,
+    upsert_activity_entry,
+    upsert_weekly_log,
+)
+from weekly_plan import DayPlan, WeekPlan, load_week_plan
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-LOCAL_TZ = ZoneInfo("America/New_York")
-README_PATH = REPO_ROOT / "README.md"
-WEEKLY_TEMPLATE = REPO_ROOT / "templates" / "weekly_log_template.md"
-README_START = "<!-- current-week:start -->"
-README_END = "<!-- current-week:end -->"
-WEEKLY_START = "<!-- auto-summary:start -->"
-WEEKLY_END = "<!-- auto-summary:end -->"
-IMPORT_NOTE_PREFIX = "- Imported from `"
-FIT_NOTE_PREFIX = "- FIT summary:"
-OPEN_METEO_ARCHIVE_URL = "https://archive-api.open-meteo.com/v1/archive"
-MANAGED_NOTES_HEADING = "## Managed Notes"
-MANUAL_NOTES_HEADING = "## Manual Notes"
-RECOVERY_HEADING = "## Recovery Signals"
-MANUAL_WEEKLY_NOTES_HEADING = "## Manual Weekly Notes"
-DAILY_ENTRIES_HEADING = "## Daily Entries"
-MANAGED_NOTES_FIELD = "- Managed Notes:"
-MANUAL_NOTES_FIELD = "- Manual Notes:"
-
-@dataclass
-class WeeklyDayEntry:
-    day_date: date
-    planned: str = ""
-    completed: str = ""
-    time: str = ""
-    distance: str = ""
-    pace: str = ""
-    effort: str = ""
-    managed_notes_lines: list[str] = field(default_factory=list)
-    manual_notes_lines: list[str] = field(default_factory=list)
-    sleep: str = ""
-    soreness: str = ""
-    stress: str = ""
-    warning_signs: str = ""
-
-    @property
-    def notes(self) -> str:
-        note_parts: list[str] = []
-        for raw_line in self.manual_notes_lines:
-            cleaned = raw_line.strip()
-            if not cleaned:
-                continue
-            if cleaned.startswith("-"):
-                cleaned = cleaned[1:].strip()
-            if cleaned:
-                note_parts.append(cleaned)
-        return " ".join(note_parts)
-
-    @property
-    def has_content(self) -> bool:
-        return any(
-            (
-                self.completed,
-                self.time,
-                self.distance,
-                self.pace,
-                self.effort,
-                self.notes,
-                self.sleep,
-                self.soreness,
-                self.stress,
-                self.warning_signs,
-            )
-        )
-
-
-@dataclass
-class Activity:
-    row: dict[str, str]
-    local_start: datetime
-    local_date: date
-    timezone_name: str
-
-    @property
-    def distance_mi(self) -> float:
-        return float(self.row["distance_mi"] or 0.0)
-
-    @property
-    def duration_s(self) -> int:
-        return int(float(self.row["duration_s"] or 0.0))
-
-    @property
-    def completed_label(self) -> str:
-        sport = self.row.get("sport", "").strip() or "activity"
-        noun = "run" if sport == "running" else sport.replace("_", " ")
-        return f"{self.row['distance_mi']} mi {noun}"
-
-    @property
-    def pace_label(self) -> str:
-        if self.distance_mi <= 0 or self.duration_s <= 0:
-            return ""
-        pace_seconds = round(self.duration_s / self.distance_mi)
-        minutes, seconds = divmod(pace_seconds, 60)
-        return f"{minutes}:{seconds:02d}/mi"
-
-    @property
-    def time_label(self) -> str:
-        seconds = self.duration_s
-        hours, remainder = divmod(seconds, 3600)
-        minutes, secs = divmod(remainder, 60)
-        if hours:
-            return f"{hours}:{minutes:02d}:{secs:02d}"
-        return f"{minutes}:{secs:02d}"
-
-    @property
-    def import_note(self) -> str:
-        return f"- Imported from `{self.row['source_relpath']}`."
-
-    @property
-    def fit_note(self) -> str:
-        start_display = self.row.get("start_time", "").strip()
-        return (
-            f"- FIT summary: start `{start_display}`, avg HR "
-            f"`{self.row['avg_hr'] or ''}`, max HR `{self.row['max_hr'] or ''}`, "
-            f"ascent `{self.row['ascent_m'] or ''} m`."
-        )
-
-    @property
-    def weather_note(self) -> str:
-        temperature_f = self.row.get("weather_temp_f", "").strip()
-        observed_at = self.row.get("weather_observation_time", "").strip()
-        if not temperature_f or not observed_at:
-            return ""
-        source = self.row.get("weather_source", "").strip() or "weather"
-        return (
-            f"- Weather at start: `{temperature_f} F` at `{observed_at}` "
-            f"from `{source}`."
-        )
-
-
-@dataclass
-class DayPlan:
-    day_name: str
-    planned: str
-    purpose: str
-    notes: str
-    day_date: date
-
-
-@dataclass
-class WeekPlan:
-    source_relpath: str
-    week_start: date
-    target_mileage: str
-    primary_purpose: str
-    day_plans: list[DayPlan]
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -221,947 +92,15 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def format_int(value: int) -> str:
-    return f"{value:,}"
-
-
 def monday_of(target: date) -> date:
     return target - timedelta(days=target.weekday())
-
-
-def parse_start_time(value: str) -> datetime:
-    parsed = datetime.fromisoformat(value)
-    if parsed.tzinfo is None:
-        return parsed.replace(tzinfo=LOCAL_TZ)
-    return parsed
-
-def row_start_time_value(row: dict[str, str]) -> str:
-    return (
-        row.get("start_time")
-        or row.get("start_time_local")
-        or row.get("start_time_utc")
-        or ""
-    )
-
-
-def find_loose_fit_files() -> list[Path]:
-    return sorted(
-        path
-        for path in REPO_ROOT.glob("*.fit")
-        if path.is_file()
-    )
-
-def fit_parser_available() -> bool:
-    return summarize.FITPARSE_FILE is not None or summarize.FITDECODE is not None
-
-def print_fit_parser_preflight_failure(fit_files: list[Path]) -> None:
-    print("Import aborted: FIT parser dependencies are unavailable in this interpreter.")
-    print("Use `.venv/bin/python scripts/ingest_coros_fit.py` or run `bash scripts/setup_fit_env.sh`.")
-    print(f"Loose FIT files left in repo root: {len(fit_files)}")
-    for path in fit_files:
-        print(f"  - {path.name}")
-
-
-def batch_dir_for(import_date: date) -> Path:
-    return REPO_ROOT / "data" / "coros_exports" / f"COROS_export_{import_date.isoformat()}"
-
-
-def processed_paths_for(import_date: date) -> tuple[Path, Path]:
-    stem = f"coros_export_{import_date.isoformat()}_summary"
-    return (
-        REPO_ROOT / "data" / "processed" / f"{stem}.csv",
-        REPO_ROOT / "data" / "processed" / f"{stem}.jsonl",
-    )
-
-
-def root_daily_log_path(day_date: date) -> Path:
-    return REPO_ROOT / "logs" / "daily" / f"{day_date.isoformat()}.md"
-
-
-def daily_archive_dir(day_date: date) -> Path:
-    month_key = day_date.strftime("%Y-%m")
-    return REPO_ROOT / "logs" / "daily" / f"{day_date.year}" / month_key
-
-
-def archived_daily_log_path(day_date: date) -> Path:
-    return daily_archive_dir(day_date) / f"{day_date.isoformat()}.md"
-
-
-def resolve_daily_log_path(day_date: date) -> Path:
-    archived_path = archived_daily_log_path(day_date)
-    if archived_path.exists():
-        return archived_path
-    root_path = root_daily_log_path(day_date)
-    if root_path.exists():
-        return root_path
-    if archived_path.parent.exists():
-        return archived_path
-    return root_path
-
-
-def import_loose_fit_files(import_date: date) -> tuple[Path, list[Path], int]:
-    fit_files = find_loose_fit_files()
-    export_dir = batch_dir_for(import_date)
-    export_dir.mkdir(parents=True, exist_ok=True)
-    removed_sidecars = 0
-    moved_files: list[Path] = []
-    for source_path in fit_files:
-        target_path = export_dir / source_path.name
-        source_path.rename(target_path)
-        moved_files.append(target_path)
-        sidecar = REPO_ROOT / f"{source_path.name}:Zone.Identifier"
-        if sidecar.exists():
-            sidecar.unlink()
-            removed_sidecars += 1
-    return export_dir, moved_files, removed_sidecars
-
-
-def write_sha256s(export_dir: Path, rows: Iterable[dict[str, str]]) -> int:
-    hash_path = export_dir / "SHA256SUMS.txt"
-    with hash_path.open("w") as handle:
-        count = 0
-        for row in rows:
-            handle.write(f"{row['source_sha256']}  {row['source_relpath']}\n")
-            count += 1
-    return count
-
-
-def generate_summaries(export_dir: Path) -> tuple[Path, Path, list[dict[str, str]]]:
-    import_date = export_dir.name.removeprefix("COROS_export_")
-    output_csv, output_jsonl = processed_paths_for(date.fromisoformat(import_date))
-    fit_files = sorted(export_dir.glob("*.fit"))
-    if fit_files:
-        rows = summarize.parse_fit_files(fit_files)
-    else:
-        archive_path = export_dir / "fit_files.tar.gz"
-        if not archive_path.exists():
-            rows = []
-        else:
-            with TemporaryDirectory() as temp_dir_name:
-                temp_dir = Path(temp_dir_name)
-                with tarfile.open(archive_path, "r:gz") as archive:
-                    archive.extractall(temp_dir)
-                archived_fit_files = sorted(temp_dir.rglob("*.fit"))
-                rows = summarize.parse_fit_files(archived_fit_files)
-    output_csv.parent.mkdir(parents=True, exist_ok=True)
-    with output_csv.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=summarize.FIELDS)
-        writer.writeheader()
-        writer.writerows(rows)
-    summarize.write_jsonl(output_jsonl, rows)
-    return output_csv, output_jsonl, rows
-
-def load_processed_rows(jsonl_path: Path) -> list[dict[str, str]]:
-    if not jsonl_path.exists():
-        return []
-    rows: list[dict[str, str]] = []
-    with jsonl_path.open() as handle:
-        for raw_line in handle:
-            raw_line = raw_line.strip()
-            if not raw_line:
-                continue
-            rows.append(json.loads(raw_line))
-    return rows
-
-def write_processed_outputs(
-    output_csv: Path,
-    output_jsonl: Path,
-    rows: list[dict[str, str]],
-) -> None:
-    output_csv.parent.mkdir(parents=True, exist_ok=True)
-    with output_csv.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=summarize.FIELDS)
-        writer.writeheader()
-        writer.writerows(rows)
-    summarize.write_jsonl(output_jsonl, rows)
-
-def weather_hour_key(local_start: datetime) -> str:
-    hour_start = local_start.replace(minute=0, second=0, microsecond=0)
-    return hour_start.strftime("%Y-%m-%dT%H:00")
-
-def weather_group_key(activity: Activity) -> tuple[str, str, str] | None:
-    latitude = activity.row.get("start_lat", "").strip()
-    longitude = activity.row.get("start_lon", "").strip()
-    if not latitude or not longitude:
-        return None
-    latitude_key = f"{float(latitude):.3f}"
-    longitude_key = f"{float(longitude):.3f}"
-    return latitude_key, longitude_key, activity.timezone_name
-
-def fetch_open_meteo_archive(
-    latitude: str,
-    longitude: str,
-    timezone_name: str,
-    start_date: date,
-    end_date: date,
-    timeout_s: float,
-) -> dict[str, object] | dict[str, str]:
-    params = {
-        "latitude": latitude,
-        "longitude": longitude,
-        "start_date": start_date.isoformat(),
-        "end_date": end_date.isoformat(),
-        "hourly": "temperature_2m",
-        "timezone": timezone_name,
-    }
-    url = f"{OPEN_METEO_ARCHIVE_URL}?{urlencode(params)}"
-    try:
-        with urlopen(url, timeout=timeout_s) as response:
-            return json.load(response)
-    except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as exc:
-        return {"weather_fetch_error": f"{type(exc).__name__}: {exc}"}
-
-def weather_update_from_hourly(activity: Activity, hourly: dict[str, object]) -> dict[str, str]:
-    times = hourly.get("time", [])
-    temperatures_c = hourly.get("temperature_2m", [])
-    if not isinstance(times, list) or not isinstance(temperatures_c, list):
-        return {"weather_fetch_error": "Open-Meteo hourly payload missing time series"}
-    target_time = weather_hour_key(activity.local_start)
-    try:
-        index = times.index(target_time)
-    except ValueError:
-        return {"weather_fetch_error": f"Open-Meteo missing hourly point for {target_time}"}
-    if index >= len(temperatures_c):
-        return {"weather_fetch_error": f"Open-Meteo missing temperature for {target_time}"}
-    temperature_c = temperatures_c[index]
-    if temperature_c in (None, ""):
-        return {"weather_fetch_error": f"Open-Meteo blank temperature for {target_time}"}
-    temperature_c_float = float(temperature_c)
-    return {
-        "weather_temp_c": f"{temperature_c_float:.1f}",
-        "weather_temp_f": f"{(temperature_c_float * 9 / 5) + 32:.1f}",
-        "weather_source": "open-meteo",
-        "weather_observation_time": target_time,
-        "weather_fetch_error": "",
-    }
-
-def enrich_rows_with_weather(rows: list[dict[str, str]], timeout_s: float) -> list[Activity]:
-    activities = load_activities(rows)
-    grouped: dict[tuple[str, str, str], list[Activity]] = defaultdict(list)
-    for activity in activities:
-        key = weather_group_key(activity)
-        if key is None:
-            continue
-        grouped[key].append(activity)
-
-    for (latitude, longitude, timezone_name), group_activities in grouped.items():
-        start_date = min(activity.local_date for activity in group_activities)
-        end_date = max(activity.local_date for activity in group_activities)
-        payload = fetch_open_meteo_archive(
-            latitude=latitude,
-            longitude=longitude,
-            timezone_name=timezone_name,
-            start_date=start_date,
-            end_date=end_date,
-            timeout_s=timeout_s,
-        )
-        if "weather_fetch_error" in payload:
-            for activity in group_activities:
-                activity.row.update(payload)
-            continue
-        hourly = payload.get("hourly", {})
-        if not isinstance(hourly, dict):
-            error = {"weather_fetch_error": "Open-Meteo payload missing hourly data"}
-            for activity in group_activities:
-                activity.row.update(error)
-            continue
-        for activity in group_activities:
-            activity.row.update(weather_update_from_hourly(activity, hourly))
-    return activities
-
-
-def re_enrich_processed_batch_weather(
-    import_date: date,
-    timeout_s: float,
-) -> tuple[Path, Path, list[dict[str, str]], list[Activity]]:
-    output_csv, output_jsonl = processed_paths_for(import_date)
-    rows = load_processed_rows(output_jsonl)
-    if not rows:
-        return output_csv, output_jsonl, rows, []
-    activities = enrich_rows_with_weather(rows, timeout_s=timeout_s)
-    write_processed_outputs(output_csv, output_jsonl, rows)
-    return output_csv, output_jsonl, rows, activities
-
-
-def weather_failures(rows: Iterable[dict[str, str]]) -> list[dict[str, str]]:
-    failures: list[dict[str, str]] = []
-    for row in rows:
-        if row.get("weather_temp_f", "").strip():
-            continue
-        failures.append(row)
-    return failures
-
-
-def load_template(path: Path) -> str:
-    return path.read_text()
-
-
-def ensure_daily_log_structure(text: str) -> str:
-    if MANAGED_NOTES_HEADING in text and MANUAL_NOTES_HEADING in text:
-        return text
-    if "## Notes" in text:
-        text = text.replace("## Notes", MANAGED_NOTES_HEADING, 1)
-    if MANUAL_NOTES_HEADING not in text and RECOVERY_HEADING in text:
-        text = text.replace(
-            RECOVERY_HEADING,
-            f"{MANUAL_NOTES_HEADING}\n\n- \n\n{RECOVERY_HEADING}",
-            1,
-        )
-    return text
-
-
-def weekly_log_path(week_start: date) -> Path:
-    return REPO_ROOT / "logs" / "weekly" / f"week_{week_start.isoformat()}.md"
-
-
-def ensure_weekly_log_structure(text: str) -> str:
-    if "## Auto Summary" in text:
-        text = text.replace("## Auto Summary", "## Weekly Summary", 1)
-    if "## Manual Notes" in text:
-        text = text.replace("## Manual Notes", MANUAL_WEEKLY_NOTES_HEADING, 1)
-    if DAILY_ENTRIES_HEADING in text:
-        return text
-    trimmed = text.rstrip()
-    return f"{trimmed}\n\n{DAILY_ENTRIES_HEADING}\n"
-
-
-def empty_nested_note_lines() -> list[str]:
-    return ["  - "]
-
-
-def has_real_note_lines(lines: list[str]) -> bool:
-    for line in lines:
-        cleaned = line.strip()
-        if cleaned and cleaned != "-":
-            return True
-    return False
-
-
-def normalize_nested_note_lines(lines: list[str]) -> list[str]:
-    cleaned = [line.rstrip() for line in lines]
-    real_lines = [line for line in cleaned if line.strip() and line.strip() != "-"]
-    if real_lines:
-        return real_lines
-    return empty_nested_note_lines()
-
-
-def build_managed_notes_lines(activity: Activity) -> list[str]:
-    managed = [activity.import_note, activity.fit_note]
-    if activity.weather_note:
-        managed.append(activity.weather_note)
-    return [f"  {line}" for line in managed]
-
-
-def create_weekly_day_entry(day_date: date, planned: str = "") -> WeeklyDayEntry:
-    return WeeklyDayEntry(
-        day_date=day_date,
-        planned=planned,
-        managed_notes_lines=empty_nested_note_lines(),
-        manual_notes_lines=empty_nested_note_lines(),
-    )
-
-
-def parse_duration_to_seconds(value: str) -> int:
-    cleaned = value.strip()
-    if not cleaned:
-        return 0
-    parts = cleaned.split(":")
-    if len(parts) == 2:
-        minutes, seconds = parts
-        return int(minutes) * 60 + int(seconds)
-    if len(parts) == 3:
-        hours, minutes, seconds = parts
-        return (int(hours) * 3600) + (int(minutes) * 60) + int(seconds)
-    return 0
-
-
-def format_duration(seconds: int) -> str:
-    hours, remainder = divmod(seconds, 3600)
-    minutes, secs = divmod(remainder, 60)
-    if hours:
-        return f"{hours}:{minutes:02d}:{secs:02d}"
-    return f"{minutes}:{secs:02d}"
-
-
-def format_pace_label(total_seconds: int, total_miles: float) -> str:
-    if total_seconds <= 0 or total_miles <= 0:
-        return ""
-    pace_seconds = round(total_seconds / total_miles)
-    minutes, seconds = divmod(pace_seconds, 60)
-    return f"{minutes}:{seconds:02d}/mi"
-
-
-def parse_weekly_day_entry(day_date: date, block_lines: list[str]) -> WeeklyDayEntry:
-    entry = create_weekly_day_entry(day_date)
-    current_section: str | None = None
-    for raw_line in block_lines:
-        if raw_line.startswith("- Planned:"):
-            entry.planned = raw_line.removeprefix("- Planned:").strip()
-            current_section = None
-        elif raw_line.startswith("- Completed:"):
-            entry.completed = raw_line.removeprefix("- Completed:").strip()
-            current_section = None
-        elif raw_line.startswith("- Time:"):
-            entry.time = raw_line.removeprefix("- Time:").strip()
-            current_section = None
-        elif raw_line.startswith("- Distance:"):
-            entry.distance = raw_line.removeprefix("- Distance:").strip()
-            current_section = None
-        elif raw_line.startswith("- Pace:"):
-            entry.pace = raw_line.removeprefix("- Pace:").strip()
-            current_section = None
-        elif raw_line.startswith("- Effort:"):
-            entry.effort = raw_line.removeprefix("- Effort:").strip()
-            current_section = None
-        elif raw_line == MANAGED_NOTES_FIELD:
-            current_section = "managed"
-        elif raw_line == MANUAL_NOTES_FIELD:
-            current_section = "manual"
-        elif raw_line.startswith("- Sleep:"):
-            entry.sleep = raw_line.removeprefix("- Sleep:").strip()
-            current_section = None
-        elif raw_line.startswith("- Soreness:"):
-            entry.soreness = raw_line.removeprefix("- Soreness:").strip()
-            current_section = None
-        elif raw_line.startswith("- Stress:"):
-            entry.stress = raw_line.removeprefix("- Stress:").strip()
-            current_section = None
-        elif raw_line.startswith("- Warning signs:"):
-            entry.warning_signs = raw_line.removeprefix("- Warning signs:").strip()
-            current_section = None
-        elif current_section == "managed":
-            entry.managed_notes_lines.append(raw_line.rstrip())
-        elif current_section == "manual":
-            entry.manual_notes_lines.append(raw_line.rstrip())
-    entry.managed_notes_lines = normalize_nested_note_lines(entry.managed_notes_lines)
-    entry.manual_notes_lines = normalize_nested_note_lines(entry.manual_notes_lines)
-    return entry
-
-
-def parse_weekly_day_entries_from_text(text: str) -> dict[date, WeeklyDayEntry]:
-    if DAILY_ENTRIES_HEADING not in text:
-        return {}
-    section_match = re.search(
-        rf"(?ms)^{re.escape(DAILY_ENTRIES_HEADING)}\n(?P<body>.*?)(?=^## |\Z)",
-        text,
-    )
-    if section_match is None:
-        return {}
-    body_lines = section_match.group("body").splitlines()
-    entries: dict[date, WeeklyDayEntry] = {}
-    current_date: date | None = None
-    current_block: list[str] = []
-    for raw_line in body_lines:
-        if raw_line.startswith("### "):
-            if current_date is not None:
-                entries[current_date] = parse_weekly_day_entry(current_date, current_block)
-            current_block = []
-            heading_value = raw_line.removeprefix("### ").strip()
-            try:
-                current_date = date.fromisoformat(heading_value)
-            except ValueError:
-                current_date = None
-            continue
-        if current_date is not None:
-            current_block.append(raw_line)
-    if current_date is not None:
-        entries[current_date] = parse_weekly_day_entry(current_date, current_block)
-    return entries
-
-
-def parse_weekly_day_entries(week_start: date) -> dict[date, WeeklyDayEntry]:
-    path = weekly_log_path(week_start)
-    if not path.exists():
-        return {}
-    return parse_weekly_day_entries_from_text(path.read_text())
-
-
-def parse_legacy_daily_log_entry(day_date: date) -> WeeklyDayEntry | None:
-    path = resolve_daily_log_path(day_date)
-    if not path.exists():
-        return None
-    entry = create_weekly_day_entry(day_date)
-    section: str | None = None
-    text = ensure_daily_log_structure(path.read_text())
-    for raw_line in text.splitlines():
-        if raw_line.startswith("- Planned:"):
-            entry.planned = raw_line.removeprefix("- Planned:").strip()
-            section = None
-        elif raw_line.startswith("- Completed:"):
-            entry.completed = raw_line.removeprefix("- Completed:").strip()
-            section = None
-        elif raw_line.startswith("- Time:"):
-            entry.time = raw_line.removeprefix("- Time:").strip()
-            section = None
-        elif raw_line.startswith("- Distance:"):
-            entry.distance = raw_line.removeprefix("- Distance:").strip()
-            section = None
-        elif raw_line.startswith("- Pace:"):
-            entry.pace = raw_line.removeprefix("- Pace:").strip()
-            section = None
-        elif raw_line.startswith("- Effort:"):
-            entry.effort = raw_line.removeprefix("- Effort:").strip()
-            section = None
-        elif raw_line == MANAGED_NOTES_HEADING:
-            section = "managed"
-        elif raw_line == MANUAL_NOTES_HEADING:
-            section = "manual"
-        elif raw_line == RECOVERY_HEADING:
-            section = None
-        elif raw_line.startswith("- Sleep:"):
-            entry.sleep = raw_line.removeprefix("- Sleep:").strip()
-        elif raw_line.startswith("- Soreness:"):
-            entry.soreness = raw_line.removeprefix("- Soreness:").strip()
-        elif raw_line.startswith("- Stress:"):
-            entry.stress = raw_line.removeprefix("- Stress:").strip()
-        elif raw_line.startswith("- Warning signs:"):
-            entry.warning_signs = raw_line.removeprefix("- Warning signs:").strip()
-        elif section == "managed" and raw_line.startswith("- "):
-            entry.managed_notes_lines.append(f"  {raw_line}")
-        elif section == "manual" and raw_line.startswith("- "):
-            entry.manual_notes_lines.append(f"  {raw_line}")
-    entry.managed_notes_lines = normalize_nested_note_lines(entry.managed_notes_lines)
-    entry.manual_notes_lines = normalize_nested_note_lines(entry.manual_notes_lines)
-    return entry
-
-
-def merge_legacy_entry(target: WeeklyDayEntry, legacy: WeeklyDayEntry) -> None:
-    if not target.planned:
-        target.planned = legacy.planned
-    if not target.completed:
-        target.completed = legacy.completed
-    if not target.time:
-        target.time = legacy.time
-    if not target.distance:
-        target.distance = legacy.distance
-    if not target.pace:
-        target.pace = legacy.pace
-    if not target.effort:
-        target.effort = legacy.effort
-    if not has_real_note_lines(target.managed_notes_lines) and has_real_note_lines(legacy.managed_notes_lines):
-        target.managed_notes_lines = legacy.managed_notes_lines
-    if not has_real_note_lines(target.manual_notes_lines) and has_real_note_lines(legacy.manual_notes_lines):
-        target.manual_notes_lines = legacy.manual_notes_lines
-    if not target.sleep:
-        target.sleep = legacy.sleep
-    if not target.soreness:
-        target.soreness = legacy.soreness
-    if not target.stress:
-        target.stress = legacy.stress
-    if not target.warning_signs:
-        target.warning_signs = legacy.warning_signs
-
-
-def render_weekly_day_entry(entry: WeeklyDayEntry) -> str:
-    lines = [
-        f"### {entry.day_date.isoformat()}",
-        "",
-        f"- Planned: {entry.planned}",
-        f"- Completed: {entry.completed}",
-        f"- Time: {entry.time}",
-        f"- Distance: {entry.distance}",
-        f"- Pace: {entry.pace}",
-        f"- Effort: {entry.effort}",
-        MANAGED_NOTES_FIELD,
-        *normalize_nested_note_lines(entry.managed_notes_lines),
-        MANUAL_NOTES_FIELD,
-        *normalize_nested_note_lines(entry.manual_notes_lines),
-        f"- Sleep: {entry.sleep}",
-        f"- Soreness: {entry.soreness}",
-        f"- Stress: {entry.stress}",
-        f"- Warning signs: {entry.warning_signs}",
-    ]
-    return "\n".join(lines)
-
-
-def render_daily_entries_section(entries: dict[date, WeeklyDayEntry]) -> str:
-    rendered = [
-        render_weekly_day_entry(entry)
-        for _, entry in sorted(entries.items())
-    ]
-    if not rendered:
-        return f"{DAILY_ENTRIES_HEADING}\n"
-    return f"{DAILY_ENTRIES_HEADING}\n\n" + "\n\n".join(rendered) + "\n"
-
-
-def replace_heading_section(text: str, heading: str, body: str) -> str:
-    section_pattern = re.compile(
-        rf"(?ms)^{re.escape(heading)}\n.*?(?=^## |\Z)"
-    )
-    replacement = f"{body.rstrip()}\n"
-    if section_pattern.search(text):
-        return section_pattern.sub(replacement, text, count=1)
-    trimmed = text.rstrip()
-    return f"{trimmed}\n\n{replacement}"
-
-
-def seed_missing_planned_day_entries(
-    entries: dict[date, WeeklyDayEntry],
-    week_plan: WeekPlan,
-    today: date,
-) -> list[date]:
-    seeded_dates: list[date] = []
-    for day_plan in week_plan.day_plans:
-        entry = entries.get(day_plan.day_date)
-        if entry is None:
-            entries[day_plan.day_date] = create_weekly_day_entry(day_plan.day_date, day_plan.planned)
-            seeded_dates.append(day_plan.day_date)
-            entry = entries[day_plan.day_date]
-        if not entry.planned:
-            entry.planned = day_plan.planned
-        if day_plan.day_date <= today and not entry.completed:
-            planned_lower = day_plan.planned.strip().lower()
-            if planned_lower == "off":
-                entry.completed = "off"
-                entry.effort = entry.effort or "off"
-            elif planned_lower == "rest":
-                entry.completed = "rest day"
-                entry.effort = entry.effort or "rest"
-    return seeded_dates
-
-
-def upsert_activity_entry(entry: WeeklyDayEntry, activity: Activity) -> None:
-    entry.completed = activity.completed_label
-    entry.time = activity.time_label
-    entry.distance = f"{activity.row['distance_mi']} mi"
-    entry.pace = activity.pace_label
-    if not entry.effort or entry.effort in {"off", "rest"}:
-        entry.effort = "imported"
-    entry.managed_notes_lines = build_managed_notes_lines(activity)
-
-
-def parse_pre_block_week(target_week: date) -> WeekPlan | None:
-    path = REPO_ROOT / "plans" / "2026-half-marathon" / "01_pre_block_ramp.md"
-    text = path.read_text()
-    pattern = re.compile(
-        r"## Week of (?P<date>\d{4}-\d{2}-\d{2})\n\n"
-        r"- Target mileage: (?P<target>.+)\n"
-        r"- Primary purpose: (?P<purpose>.+)\n\n"
-        r"\| Day \| Run \| Purpose \| Notes \|\n"
-        r"\| --- \| --- \| --- \| --- \|\n"
-        r"(?P<table>(?:\| .+\n)+)"
-    )
-    for match in pattern.finditer(text):
-        week_start = date.fromisoformat(match.group("date"))
-        if week_start != target_week:
-            continue
-        rows: list[DayPlan] = []
-        for offset, line in enumerate(match.group("table").strip().splitlines()):
-            cells = [cell.strip() for cell in line.strip("|").split("|")]
-            rows.append(
-                DayPlan(
-                    day_name=cells[0],
-                    planned=cells[1],
-                    purpose=cells[2],
-                    notes=cells[3],
-                    day_date=week_start + timedelta(days=offset),
-                )
-            )
-        return WeekPlan(
-            source_relpath="plans/2026-half-marathon/01_pre_block_ramp.md",
-            week_start=week_start,
-            target_mileage=match.group("target"),
-            primary_purpose=match.group("purpose"),
-            day_plans=rows,
-        )
-    return None
-
-
-def parse_week_file(target_week: date) -> WeekPlan | None:
-    week_path = REPO_ROOT / "plans" / "2026-half-marathon" / f"week_{target_week.isoformat()}.md"
-    if not week_path.exists():
-        candidates = sorted((REPO_ROOT / "plans" / "2026-half-marathon").glob("week_*_*.md"))
-        for path in candidates:
-            if path.name.endswith(f"_{target_week.isoformat()}.md"):
-                week_path = path
-                break
-    if not week_path.exists():
-        return None
-    text = week_path.read_text()
-    target_match = re.search(r"- Target mileage: (?P<target>.+)", text)
-    purpose_match = re.search(r"- Primary purpose: (?P<purpose>.+)", text)
-    table_match = re.search(
-        r"\| Day \| Run \| Purpose \| Notes \|\n"
-        r"\| --- \| --- \| --- \| --- \|\n"
-        r"(?P<table>(?:\| .+\n)+)",
-        text,
-    )
-    if not (target_match and purpose_match and table_match):
-        return None
-    rows: list[DayPlan] = []
-    for offset, line in enumerate(table_match.group("table").strip().splitlines()):
-        cells = [cell.strip() for cell in line.strip("|").split("|")]
-        rows.append(
-            DayPlan(
-                day_name=cells[0],
-                planned=cells[1],
-                purpose=cells[2],
-                notes=cells[3],
-                day_date=target_week + timedelta(days=offset),
-            )
-        )
-    return WeekPlan(
-        source_relpath=f"plans/2026-half-marathon/{week_path.name}",
-        week_start=target_week,
-        target_mileage=target_match.group("target"),
-        primary_purpose=purpose_match.group("purpose"),
-        day_plans=rows,
-    )
-
-
-def load_week_plan(target_week: date) -> WeekPlan:
-    plan = parse_week_file(target_week)
-    if plan is None:
-        plan = parse_pre_block_week(target_week)
-    if plan is None:
-        raise SystemExit(f"No week plan found for {target_week.isoformat()}")
-    return plan
-
-
-def actual_miles_from_distance(distance: str) -> float:
-    match = re.match(r"(?P<value>\d+(?:\.\d+)?)", distance)
-    if not match:
-        return 0.0
-    return float(match.group("value"))
-
-
-def sentence(text: str, prefix: str = "") -> str:
-    cleaned = text.strip()
-    if not cleaned:
-        return ""
-    cleaned = cleaned.rstrip(".")
-    return f"{prefix}{cleaned}."
-
-
-def summarize_day(entry: WeeklyDayEntry) -> tuple[str, str]:
-    completed = entry.completed or "x"
-    note_parts: list[str] = []
-    note_text = entry.notes
-    if entry.time and entry.pace:
-        note_parts.append(f"{entry.time} at {entry.pace}.")
-    elif entry.time:
-        note_parts.append(f"Time {entry.time}.")
-    if note_text:
-        note_parts.append(sentence(note_text))
-    soreness = entry.soreness
-    if soreness and soreness.lower() not in note_text.lower() and "sore" not in note_text.lower():
-        note_parts.append(sentence(entry.soreness, "Soreness: "))
-    if entry.warning_signs:
-        note_parts.append(sentence(entry.warning_signs, "Warning signs: "))
-    return completed, " ".join(part.strip() for part in note_parts if part.strip()) or "x"
-
-def build_week_rows(
-    week_plan: WeekPlan,
-    day_entries: dict[date, WeeklyDayEntry],
-) -> tuple[list[str], float, str]:
-    rows = ["| Day | Planned | Actual | Notes |", "| --- | --- | --- | --- |"]
-    total_miles = 0.0
-    latest_logged: tuple[date, WeeklyDayEntry] | None = None
-    for day_plan in week_plan.day_plans:
-        entry = day_entries.get(day_plan.day_date)
-        actual = "x"
-        note = "x"
-        if entry:
-            actual, note = summarize_day(entry)
-            total_miles += actual_miles_from_distance(entry.distance)
-            if entry.has_content:
-                latest_logged = (day_plan.day_date, entry)
-        rows.append(f"| {day_plan.day_name} | {day_plan.planned} | {actual} | {note} |")
-    if latest_logged is None:
-        status = "No days logged yet"
-    else:
-        latest_date, latest_entry = latest_logged
-        label = latest_date.strftime("%A")
-        completed = latest_entry.completed.lower()
-        if completed == "rest day":
-            status = f"{label} rest logged"
-        elif completed == "off":
-            status = f"{label} off logged"
-        elif completed:
-            status = f"{label} run logged"
-        else:
-            status = f"{label} note logged"
-    return rows, total_miles, status
-
-
-def ensure_markers(text: str, start_marker: str, end_marker: str, heading: str, body: str) -> str:
-    if start_marker in text and end_marker in text:
-        pattern = re.compile(
-            rf"{re.escape(start_marker)}.*?{re.escape(end_marker)}",
-            re.DOTALL,
-        )
-        return pattern.sub(f"{start_marker}\n{body}\n{end_marker}", text, count=1)
-    section_pattern = re.compile(
-        rf"(?ms)^## {re.escape(heading)}\n.*?(?=^## |\Z)"
-    )
-    replacement = f"## {heading}\n\n{start_marker}\n{body}\n{end_marker}\n\n"
-    if section_pattern.search(text):
-        return section_pattern.sub(replacement, text, count=1)
-    raise SystemExit(f"Could not find ## {heading} section for managed update.")
-
-
-def build_readme_current_week(week_plan: WeekPlan, rows: list[str], total_miles: float, status: str) -> str:
-    lines = [
-        f"Source: [{Path(week_plan.source_relpath).name}]({week_plan.source_relpath})",
-        "",
-        f"Week of `{week_plan.week_start.isoformat()}`",
-        "",
-        f"- Target mileage: `{week_plan.target_mileage}`",
-        f"- Actual mileage so far: `{total_miles:.2f}`",
-        f"- Primary purpose: {week_plan.primary_purpose}",
-        f"- Week status: `{status}`",
-        "",
-        *rows,
-        "",
-        "This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.",
-    ]
-    return "\n".join(lines)
-
-
-def update_readme(week_plan: WeekPlan, rows: list[str], total_miles: float, status: str) -> None:
-    text = README_PATH.read_text()
-    body = build_readme_current_week(week_plan, rows, total_miles, status)
-    updated = ensure_markers(text, README_START, README_END, "Current Week", body)
-    README_PATH.write_text(updated)
-
-
-def build_weekly_log_body(week_plan: WeekPlan, rows: list[str], total_miles: float, status: str) -> str:
-    lines = [
-        f"- Source plan: `{week_plan.source_relpath}`",
-        f"- Target mileage: `{week_plan.target_mileage}`",
-        f"- Actual mileage so far: `{total_miles:.2f}`",
-        f"- Primary purpose: {week_plan.primary_purpose}",
-        f"- Status: `{status}`",
-        "",
-        *rows,
-    ]
-    return "\n".join(lines)
-
-
-def upsert_weekly_log(
-    week_plan: WeekPlan,
-    rows: list[str],
-    total_miles: float,
-    status: str,
-    day_entries: dict[date, WeeklyDayEntry],
-) -> Path:
-    weekly_path = weekly_log_path(week_plan.week_start)
-    body = build_weekly_log_body(week_plan, rows, total_miles, status)
-    if weekly_path.exists():
-        text = ensure_weekly_log_structure(weekly_path.read_text())
-    else:
-        template = load_template(WEEKLY_TEMPLATE).replace("YYYY-MM-DD", week_plan.week_start.isoformat())
-        text = ensure_weekly_log_structure(template)
-    updated = ensure_markers(text, WEEKLY_START, WEEKLY_END, "Weekly Summary", body)
-    updated = replace_heading_section(updated, DAILY_ENTRIES_HEADING, render_daily_entries_section(day_entries))
-    weekly_path.write_text(updated)
-    return weekly_path
-
-
-def write_manifest(
-    export_dir: Path,
-    import_date: date,
-    fit_count: int,
-    removed_sidecars: int,
-    output_csv: Path,
-    output_jsonl: Path,
-    rows: list[dict[str, str]],
-) -> Path:
-    fit_files = sorted(export_dir.glob("*.fit"))
-    payload_bytes = sum(path.stat().st_size for path in fit_files)
-    folder_bytes = sum(path.stat().st_size for path in export_dir.iterdir() if path.is_file())
-    parser_names = sorted({row.get("parser", "") for row in rows if row.get("parser", "")})
-    manifest = export_dir / "manifest.md"
-    first_source = fit_files[0].name if fit_files else ""
-    lines = [
-        f"# COROS Export Manifest - {import_date.isoformat()}",
-        "",
-        "## Import",
-        "",
-        f"- Source file: `{first_source}`" if fit_count == 1 else f"- Source files: `{fit_count}` files",
-        f"- Repo folder: `data/coros_exports/{export_dir.name}/`",
-        f"- Imported on: {import_date.isoformat()}",
-        f"- FIT files: {fit_count}",
-        f"- FIT payload bytes: {format_int(payload_bytes)}",
-        f"- Removed sidecars: {removed_sidecars} `*:Zone.Identifier` file" + ("" if removed_sidecars == 1 else "s"),
-        "",
-        "## Integrity",
-        "",
-        "- Hash file: `SHA256SUMS.txt`",
-        f"- Hash entries: {fit_count}",
-        "",
-        "## Processing",
-        "",
-        f"- Processed CSV: `{summarize.repo_relpath(output_csv)}`",
-        f"- Processed JSONL: `{summarize.repo_relpath(output_jsonl)}`",
-        f"- CSV activity rows: {len(rows)}",
-        f"- JSONL rows: {len(rows)}",
-        f"- Summary row count matches FIT count: {'yes' if len(rows) == fit_count else 'no'}",
-        f"- Parser used for this batch: `{', '.join(parser_names) or 'unknown'}`",
-        "",
-        "## Archive",
-        "",
-        "- Archive status: not archived yet",
-        "- Reason: current-month loose FIT files stay available for repair, reparse, or enrichment",
-        f"- Folder bytes with loose FIT files: {format_int(folder_bytes)}",
-        "",
-        "## Notes",
-        "",
-        "- Raw FIT files are binary training records and may contain GPS, timestamps, heart rate, and device metadata.",
-        "- Processed summaries should be written to `data/processed/`.",
-    ]
-    manifest.write_text("\n".join(lines) + "\n")
-    return manifest
-
-
-def load_activities(rows: Iterable[dict[str, str]]) -> list[Activity]:
-    activities: list[Activity] = []
-    for row in rows:
-        start_time_value = row_start_time_value(row)
-        if not start_time_value:
-            continue
-        local_start = parse_start_time(start_time_value)
-        activities.append(
-            Activity(
-                row=row,
-                local_start=local_start,
-                local_date=local_start.date(),
-                timezone_name=row.get("start_timezone", "") or str(local_start.tzinfo or LOCAL_TZ),
-            )
-        )
-    return activities
-
-
-def load_processed_activities_for_week(week_start: date) -> list[Activity]:
-    activities: list[Activity] = []
-    week_end = week_start + timedelta(days=6)
-    for path in sorted((REPO_ROOT / "data" / "processed").glob("*.jsonl")):
-        with path.open() as handle:
-            for raw_line in handle:
-                row = json.loads(raw_line)
-                start_time_value = row_start_time_value(row)
-                if not start_time_value:
-                    continue
-                local_start = parse_start_time(start_time_value)
-                local_date = local_start.date()
-                if week_start <= local_date <= week_end:
-                    activities.append(
-                        Activity(
-                            row=row,
-                            local_start=local_start,
-                            local_date=local_date,
-                            timezone_name=row.get("start_timezone", "") or str(local_start.tzinfo or LOCAL_TZ),
-                        )
-                    )
-    activities.sort(key=lambda activity: activity.local_start)
-    return activities
 
 
 def sync_records(
     today: date,
     update_logs: bool,
     update_readme_flag: bool,
-    recent_activities: list[Activity] | None = None,
+    recent_activities: list[weather.Activity] | None = None,
 ) -> dict[str, object]:
     week_start = monday_of(today)
     week_end = week_start + timedelta(days=6)
@@ -1176,12 +115,13 @@ def sync_records(
             day_entries[day_plan.day_date] = legacy_entry
         else:
             merge_legacy_entry(current_entry, legacy_entry)
+
     synced_entry_dates: list[date] = []
     if update_logs:
         synced_entry_dates.extend(seed_missing_planned_day_entries(day_entries, week_plan, today))
         activities = recent_activities
         if activities is None:
-            activities = load_processed_activities_for_week(week_start)
+            activities = weather.load_processed_activities_for_week(week_start)
         planned_by_date = {day_plan.day_date: day_plan.planned for day_plan in week_plan.day_plans}
         for activity in activities:
             if not (week_start <= activity.local_date <= week_end):
@@ -1197,6 +137,7 @@ def sync_records(
                 entry.planned = planned_by_date.get(activity.local_date, "")
             upsert_activity_entry(entry, activity)
             synced_entry_dates.append(activity.local_date)
+
     rows, total_miles, status = build_week_rows(week_plan, day_entries)
     weekly_path: Path | None = None
     if update_logs:
@@ -1214,35 +155,35 @@ def sync_records(
 
 def main() -> int:
     args = parse_args()
-    today = date.fromisoformat(args.date) if args.date else datetime.now(LOCAL_TZ).date()
+    today = date.fromisoformat(args.date) if args.date else datetime.now(weather.LOCAL_TZ).date()
     update_logs = not args.no_logs
     update_readme_flag = not args.no_readme
     weather_enabled = not args.no_weather
-    loose_fit_files = [] if args.sync_only else find_loose_fit_files()
+    loose_fit_files = [] if args.sync_only else batch.find_loose_fit_files()
 
-    if loose_fit_files and not fit_parser_available():
-        print_fit_parser_preflight_failure(loose_fit_files)
+    if loose_fit_files and not batch.fit_parser_available():
+        batch.print_fit_parser_preflight_failure(loose_fit_files)
         return 3
 
     moved_files: list[Path] = []
     removed_sidecars = 0
     rows: list[dict[str, str]] = []
-    export_dir = batch_dir_for(today)
-    output_csv, output_jsonl = processed_paths_for(today)
+    export_dir = batch.batch_dir_for(today)
+    output_csv, output_jsonl = batch.processed_paths_for(today)
     manifest_path: Path | None = None
-    activities: list[Activity] = []
+    activities: list[weather.Activity] = []
 
     if not args.sync_only:
-        export_dir, moved_files, removed_sidecars = import_loose_fit_files(today)
+        export_dir, moved_files, removed_sidecars = batch.import_loose_fit_files(today)
         if moved_files:
-            output_csv, output_jsonl, rows = generate_summaries(export_dir)
+            output_csv, output_jsonl, rows = batch.generate_summaries(export_dir)
             if weather_enabled:
-                activities = enrich_rows_with_weather(rows, timeout_s=args.weather_timeout)
-                write_processed_outputs(output_csv, output_jsonl, rows)
-            fit_count = write_sha256s(export_dir, rows)
+                activities = weather.enrich_rows_with_weather(rows, timeout_s=args.weather_timeout)
+                batch.write_processed_outputs(output_csv, output_jsonl, rows)
+            fit_count = batch.write_sha256s(export_dir, rows)
             if not activities:
-                activities = load_activities(rows)
-            manifest_path = write_manifest(
+                activities = weather.load_activities(rows)
+            manifest_path = batch.write_manifest(
                 export_dir,
                 today,
                 fit_count,
@@ -1250,24 +191,25 @@ def main() -> int:
                 output_csv,
                 output_jsonl,
                 rows,
-                )
+            )
         elif weather_enabled:
-            output_csv, output_jsonl, rows, activities = re_enrich_processed_batch_weather(
+            output_csv, output_jsonl, rows, activities = weather.re_enrich_processed_batch_weather(
                 today,
                 timeout_s=args.weather_timeout,
             )
     elif weather_enabled:
-        output_csv, output_jsonl, rows, activities = re_enrich_processed_batch_weather(
+        output_csv, output_jsonl, rows, activities = weather.re_enrich_processed_batch_weather(
             today,
             timeout_s=args.weather_timeout,
         )
+
     sync_result = sync_records(
         today,
         update_logs=update_logs,
         update_readme_flag=update_readme_flag,
         recent_activities=activities or None,
     )
-    failures = weather_failures(rows) if weather_enabled and rows else []
+    failures = weather.weather_failures(rows) if weather_enabled and rows else []
 
     print(f"Import date: {today.isoformat()}")
     print(f"Moved FIT files: {len(moved_files)}")

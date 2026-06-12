@@ -67,3 +67,34 @@
 - Owner: Codex
 - Action: adjust `scripts/ingest_coros_fit.py` status selection so `README.md` and the weekly summary prefer the latest meaningful logged activity over a seeded placeholder day.
 - Success condition: a `--sync-only` run on an in-progress week reports a status that matches the latest substantive entry and does not regress migrated manual notes.
+
+## Additional Work Session - Ingest Refactor
+
+### Summary
+
+- Goal: break up the 1,300-line `scripts/ingest_coros_fit.py` entrypoint into smaller reviewable modules without changing the operator workflow.
+- Result: the script is now an orchestration layer, with batch/file handling, weather enrichment, weekly-entry sync, and week-plan parsing extracted into separate modules, plus direct regression coverage for the refactored surface.
+- Main issue: the old single-file design mixed CLI flow, FIT batch processing, network enrichment, markdown parsing, and rendering in one place, which made changes expensive to review and easy to break indirectly.
+
+### What Worked
+
+- The existing code already had natural seams, so the refactor could follow real responsibility boundaries instead of inventing abstractions.
+- Splitting the work into import/weather, weekly markdown sync, and QA slices reduced integration risk.
+- Keeping `scripts/ingest_coros_fit.py` as the stable operator-facing entrypoint avoided workflow churn while still shrinking the hot path.
+- Direct tests against the refactored modules caught a couple of incorrect assumptions in the expected sync behavior before commit.
+
+### What Did Not Work
+
+- The first pass left duplicated manifest-writing logic across the main script and the new batch module.
+- The initial QA patch relied on a compatibility shim for the old monolith surface, which would have added maintenance drag if left in place.
+- The weekly-entry module is still fairly large because parsing, rendering, and README/weekly-log writes are grouped together.
+
+### Next Adjustment
+
+- Split `scripts/weekly_entries.py` again when there is a concrete change to that area, separating markdown parsing/rendering from file-write orchestration.
+
+### Action Item
+
+- Owner: Codex
+- Action: on the next ingest-related change, extract weekly markdown parsing/rendering helpers from `scripts/weekly_entries.py` into a dedicated module instead of growing the current file.
+- Success condition: the next refactor leaves the operator entrypoint stable, keeps current tests green, and reduces `scripts/weekly_entries.py` below its current size without changing log output format.
