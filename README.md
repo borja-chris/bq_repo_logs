@@ -11,6 +11,7 @@ Current working frame:
 - Current preferred framework: Hanson-inspired half-marathon training
 
 Use `sources/` for durable planning context, `plans/` for upcoming training, `logs/` for completed work, `retros/` for reviews, and `decisions/` for meaningful changes to the plan.
+The active weekly log lives in `logs/weekly/week_YYYY-MM-DD.md`; daily entries are appended under the weekly summary there. Any `logs/daily/` content is historical only.
 
 ## Current Week
 
@@ -22,7 +23,7 @@ Week of `2026-06-08`
 - Target mileage: `about 29-31`
 - Actual mileage so far: `17.56`
 - Primary purpose: touch low-30s only if the prior two weeks felt routine
-- Week status: `Wednesday run logged`
+- Week status: `Friday off logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
@@ -34,7 +35,7 @@ Week of `2026-06-08`
 | Saturday | 4-5 mi easy | x | x |
 | Sunday | 8-9 mi easy | x | x |
 
-The listed source plan is the live reference for this week.
+This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
 
 ## Workflow
@@ -50,7 +51,7 @@ The short version:
 5. Record meaningful changes in `decisions/`.
 
 Raw COROS exports belong under `data/coros_exports/`. Processed summaries belong under `data/processed/`.
-Completed daily-log months should be archived under `logs/daily/YYYY/YYYY-MM/` with a generated `monthly_summary.md`.
+Historical daily-log months should be archived under `logs/daily/YYYY/YYYY-MM/` with a generated `monthly_summary.md`.
 
 COROS data workflow:
 
@@ -58,6 +59,6 @@ COROS data workflow:
 2. Run `.venv/bin/python scripts/ingest_coros_fit.py`.
 3. Let the script move them into a dated batch folder under `data/coros_exports/`, update the processed summaries, and refresh the current logs.
 4. Archive completed prior-month raw batches into `fit_files.tar.gz` after verification.
-5. On the first maintenance pass of a new month, let the repo archive prior-month daily logs into their month folder and refresh that month's summary.
+5. On the first maintenance pass of a new month, let the repo archive prior-month daily logs into their month folder and refresh that month's historical summary.
 
 Aim to make this as Ai Tool Agnostic as possible.

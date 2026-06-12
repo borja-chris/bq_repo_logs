@@ -4,7 +4,7 @@ This directory is reserved for repeatable repo operations.
 
 Near-term candidates:
 
-- Weekly rollover helper: create daily log stubs, weekly log, and weekly retro from templates.
+- Weekly rollover helper: create the weekly log summary, daily-entry scaffolding, and weekly retro from templates.
 - Decision gate helper: collect recent weekly retros before mileage or workout changes.
 
 ## FIT Summaries
@@ -51,8 +51,8 @@ instead of silently leaving weather fields blank.
 - removing `:Zone.Identifier` sidecars
 - writing `SHA256SUMS.txt`
 - generating CSV and JSONL processed summaries
-- upserting matching daily logs from objective FIT fields while preserving manual notes
-- creating daily log stubs for past skipped planned run days so manual context has a place to live
+- upserting matching daily-entry blocks inside the active weekly log from objective FIT fields while preserving manual notes
+- creating daily-entry stubs for past skipped planned run days so manual context has a place to live
 - refreshing `logs/weekly/`
 - refreshing the managed current-week block in `README.md`
 - writing the batch manifest
@@ -81,11 +81,11 @@ Current repo note:
 
 The ingest script only automates objective recordkeeping. Subjective recovery signals, coaching interpretation, retros, and plan changes remain manual.
 
-Daily logs use a mixed-source model:
+Weekly logs use a mixed-source model:
 
-- `## Managed Notes` is owned by the ingest script.
-- `## Manual Notes` is safe for user or AI-added context on any day, including completed runs, shortened runs, skipped runs, and rest days.
-- Weekly sync pulls manual notes into the week summary table when present.
+- The top weekly summary is owned by the ingest script for objective context.
+- Manual weekly notes and follow-up items stay in the same top summary section.
+- `## Daily Entries` contains per-day blocks where objective fields are updated and manual notes stay attached to that day.
 
 ## FIT Archiving
 

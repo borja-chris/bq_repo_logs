@@ -19,16 +19,18 @@ Before each week:
 - For plan adjustments, propose the exact wording first and only edit after approval.
 - Adjust only that week unless the change affects the whole block.
 - If the adjustment changes a major assumption, add or update a decision in `decisions/`.
+- Treat `logs/weekly/week_YYYY-MM-DD.md` as the only active log for the week.
+- Keep the weekly summary at the top of that file and append daily entries below it.
 
 During the week:
 
-- Add daily logs only when there is useful signal.
+- Append daily entries to the active weekly log only when there is useful signal.
 - Record distance, effort, soreness, sleep/stress, and warning signs.
-- Use daily-log manual notes for context that FIT data cannot capture, including run quality, travel fatigue, shortened runs, and skipped-run reasons.
-- Do not backfill noise just to make the repo look complete.
+- Use daily-entry manual notes for context that FIT data cannot capture, including run quality, travel fatigue, shortened runs, and skipped-run reasons.
+- Do not create standalone daily log files or backfill noise just to make the repo look complete.
 - If repo Markdown changed, run `.venv/bin/python scripts/check_markdown_links.py` before commit.
 - If the live current week changed, check whether `README.md` needs a matching summary update before commit/push.
-- Before updating live current-week status in `README.md`, verify completed work from `logs/daily/` first, then `logs/weekly/`, then `data/processed/` if a COROS import may have landed before the Markdown was updated.
+- Before updating live current-week status in `README.md`, verify the active weekly log first, then `data/processed/` if a COROS import may have landed before the Markdown was updated.
 - When a request could mean either a training retrospective or a work-session retrospective, label it explicitly before writing.
 
 After each week:
@@ -40,11 +42,10 @@ After each week:
 
 ## File Naming
 
-- Active daily log: `logs/daily/YYYY-MM-DD.md`
-- Archived daily month folder: `logs/daily/YYYY/YYYY-MM/`
-- Archived daily log: `logs/daily/YYYY/YYYY-MM/YYYY-MM-DD.md`
-- Monthly daily summary: `logs/daily/YYYY/YYYY-MM/monthly_summary.md`
-- Weekly log: `logs/weekly/week_YYYY-MM-DD.md`
+- Active weekly log: `logs/weekly/week_YYYY-MM-DD.md`
+- Historical daily log month folder: `logs/daily/YYYY/YYYY-MM/`
+- Historical daily log: `logs/daily/YYYY/YYYY-MM/YYYY-MM-DD.md`
+- Historical monthly daily summary: `logs/daily/YYYY/YYYY-MM/monthly_summary.md`
 - Weekly retro: `retros/weekly/week_YYYY-MM-DD.md`
 - Decision: `decisions/YYYY-MM-DD_short_topic.md`
 - Raw COROS export: `data/coros_exports/COROS_export_YYYY-MM-DD/`
@@ -74,9 +75,9 @@ For a new COROS export:
 6. Add or update a manifest for the import.
 7. Put derived summaries in `data/processed/`.
 8. Write both a reviewable CSV summary and a machine-readable `.jsonl` summary when parser support is available.
-9. Create or update matching `logs/daily/YYYY-MM-DD.md` entries from objective FIT data while preserving manual notes.
-10. Seed daily log stubs for past skipped planned run days so manual notes can capture why the day changed.
-11. Refresh the current week summary in `README.md` from the plan plus the daily logs.
+9. Create or update matching daily-entry blocks inside `logs/weekly/week_YYYY-MM-DD.md` from objective FIT data while preserving manual notes.
+10. Seed daily-entry stubs for past skipped planned run days so manual notes can capture why the day changed.
+11. Refresh the current week summary in `README.md` from the plan plus the weekly log.
 12. Update `logs/weekly/week_YYYY-MM-DD.md` with the current factual week summary.
 13. Verify that summary row count matches the batch FIT count before treating the import as complete.
 14. Keep current-month loose `.fit` files available for repair, reparse, or enrichment.
@@ -85,7 +86,7 @@ For a new COROS export:
 
 Use AI as the default operator for factual repo maintenance.
 
-- Auto-do: FIT import, hashing, processed summaries, daily log upserts, weekly log refresh, `README.md` sync, manifest maintenance, and archive housekeeping when the rules already exist.
+- Auto-do: FIT import, hashing, processed summaries, weekly log upserts, `README.md` sync, manifest maintenance, and archive housekeeping when the rules already exist.
 - Draft, then ask: weekly retros, decision records, and plan-text changes.
 - Ask first: changes to durable planning assumptions, framework changes, mileage-target changes, or destructive edits to historical records.
 
@@ -111,7 +112,7 @@ For completed prior-month COROS export batches:
 
 - On the first repo maintenance pass of a new month, archive all completed COROS export batches from the previous month.
 - On the first repo maintenance pass of a new month, move prior-month daily logs into `logs/daily/YYYY/YYYY-MM/` and generate `monthly_summary.md` in that folder.
-- Current-week sync must still read and update archived prior-month daily logs when a week spans a month boundary.
+- Current-week sync must still read and update archived historical daily logs when a week spans a month boundary.
 
 Use `.venv/bin/python scripts/summarize_coros_fit.py` when the optional FIT parser dependency is available.
 Use `.venv/bin/python scripts/archive_coros_export.py` for batch archiving after summaries exist.

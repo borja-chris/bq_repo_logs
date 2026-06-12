@@ -37,3 +37,33 @@
 - Run future imports here with `rtk python3 scripts/ingest_coros_fit.py --require-weather`.
 - Treat weather enrichment as part of a successful import, not as optional nice-to-have metadata.
 - Keep repairable enrichment steps tied to processed JSONL so transient external failures can be retried without moving FIT files again.
+
+## Additional Work Session - Weekly-Only Logging
+
+### Summary
+
+- Goal: reduce note-taking friction by making the weekly log the only active log and appending each day under the weekly summary.
+- Result: the workflow, template, README guidance, and ingest script now all point at `logs/weekly/week_YYYY-MM-DD.md` as the live record.
+- Main issue: the first pass of the ingest refactor wrote weekly entries correctly but did not preserve manual notes from the legacy current-week daily files.
+
+### What Worked
+
+- Splitting the work into docs/template changes and script refactor changes made the target format clearer before code integration.
+- Using `--sync-only` for 2026-06-12 was the right verification path because it exercised the migration without requiring a fresh FIT import.
+- Pulling legacy June 8-12 daily notes into the new weekly file verified that the weekly-only format can absorb existing context instead of discarding it.
+
+### What Did Not Work
+
+- The first migration pass lost manual notes because it only trusted the new weekly entries and did not merge from historical daily files when placeholders were already present.
+- Seeded `Off` placeholders can dominate the weekly status string even when the more meaningful signal is the last actual run.
+- The script refactor was large enough that it needed multiple sync-and-fix passes before the migration behavior was trustworthy.
+
+### Next Adjustment
+
+- Refine weekly status logic so seeded `off` or `rest` placeholders do not outrank the latest meaningful activity unless that is the intended behavior.
+
+### Action Item
+
+- Owner: Codex
+- Action: adjust `scripts/ingest_coros_fit.py` status selection so `README.md` and the weekly summary prefer the latest meaningful logged activity over a seeded placeholder day.
+- Success condition: a `--sync-only` run on an in-progress week reports a status that matches the latest substantive entry and does not regress migrated manual notes.
