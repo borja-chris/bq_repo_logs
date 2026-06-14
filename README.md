@@ -21,7 +21,7 @@ Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 Week of `2026-06-08`
 
 - Target mileage: `about 29-31`
-- Actual mileage so far: `25.14`
+- Actual mileage so far: `28.37`
 - Primary purpose: touch low-30s only if the prior two weeks felt routine
 - Week status: `Sunday run logged`
 
@@ -32,8 +32,8 @@ Week of `2026-06-08`
 | Wednesday | 5 mi very easy | 6.00 mi run | 1:12:06 at 12:01/mi. Very hot and humid. Had to knock down the pace a bit but glad I pushed for 6. I may either crosstrain or take the next 2 days off since the temps will be in the 90s during the evening. |
 | Thursday | 6 mi easy | no run | Mainly a gym session. |
 | Friday | Off | off | Fully nothing. |
-| Saturday | 4-5 mi easy | x | x |
-| Sunday | 8-9 mi easy | 7.58 mi run | 1:34:20 at 12:27/mi. |
+| Saturday | 4-5 mi easy | 3.23 mi run | 45:53 at 14:12/mi. Kept this very light in prep for Sunday's longer run. |
+| Sunday | 8-9 mi easy | 7.58 mi run | 1:34:20 at 12:27/mi. Little sleep last night. It was pretty hot, so pace was adjusted accordingly. Cut the run a bit short instead of forcing the full planned 8. |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
