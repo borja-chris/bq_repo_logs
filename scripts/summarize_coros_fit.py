@@ -205,6 +205,12 @@ def seconds(value: Any) -> str:
         return ""
     return f"{float(value):.0f}"
 
+def preferred_duration_seconds(values: dict[str, Any]) -> str:
+    timer_time = values.get("total_timer_time")
+    if timer_time not in (None, ""):
+        return seconds(timer_time)
+    return seconds(values.get("total_elapsed_time"))
+
 def semicircles_to_degrees(value: Any) -> str:
     if value in (None, ""):
         return ""
@@ -260,7 +266,7 @@ def parse_fit(path: Path, row: dict[str, str] | None = None) -> dict[str, str]:
         row["sport"] = str(values.get("sport", ""))
         row["sub_sport"] = str(values.get("sub_sport", ""))
         row["distance_mi"] = miles(values.get("total_distance"))
-        row["duration_s"] = seconds(values.get("total_elapsed_time"))
+        row["duration_s"] = preferred_duration_seconds(values)
         row["avg_hr"] = str(values.get("avg_heart_rate", "") or "")
         row["max_hr"] = str(values.get("max_heart_rate", "") or "")
         row["ascent_m"] = str(values.get("total_ascent", "") or "")
