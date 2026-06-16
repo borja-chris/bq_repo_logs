@@ -146,6 +146,10 @@ def normalize_nested_note_lines(lines: list[str]) -> list[str]:
         return real_lines
     return empty_nested_note_lines()
 
+def has_placeholder_planned_value(value: str) -> bool:
+    cleaned = value.strip().lower()
+    return cleaned in {"", "unknown", "week plan not yet created", "current-week plan file not yet created"}
+
 
 def create_weekly_day_entry(day_date: date, planned: str = "") -> WeeklyDayEntry:
     return WeeklyDayEntry(
@@ -379,7 +383,7 @@ def seed_missing_planned_day_entries(
             entries[day_plan.day_date] = create_weekly_day_entry(day_plan.day_date, day_plan.planned)
             seeded_dates.append(day_plan.day_date)
             entry = entries[day_plan.day_date]
-        if not entry.planned:
+        if has_placeholder_planned_value(entry.planned):
             entry.planned = day_plan.planned
         if day_plan.day_date <= today and not entry.completed:
             planned_lower = day_plan.planned.strip().lower()

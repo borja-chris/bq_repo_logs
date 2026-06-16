@@ -44,6 +44,7 @@ from weekly_entries import (
     render_weekly_day_entry,
     replace_heading_section,
     seed_missing_planned_day_entries,
+    has_placeholder_planned_value,
     update_readme,
     upsert_activity_entry,
     upsert_weekly_log,
@@ -133,7 +134,7 @@ def sync_records(
                     planned=planned_by_date.get(activity.local_date, ""),
                 )
                 day_entries[activity.local_date] = entry
-            elif not entry.planned:
+            elif has_placeholder_planned_value(entry.planned):
                 entry.planned = planned_by_date.get(activity.local_date, "")
             upsert_activity_entry(entry, activity)
             synced_entry_dates.append(activity.local_date)
