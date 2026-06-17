@@ -21,14 +21,14 @@ Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 Week of `2026-06-15`
 
 - Target mileage: `about 30-32`
-- Actual mileage so far: `3.47`
+- Actual mileage so far: `11.84`
 - Primary purpose: make low-30s feel like normal training instead of a reach week
-- Week status: `Monday run logged`
+- Week status: `Tuesday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
 | Monday | 3-4 mi easy | 3.47 mi run | 32:51 at 9:28/mi. Easy run with Harlem Run. Very stop-start heavy due to traffic lights. Probably the reason why I was able to keep up with a quicker than usual pace. |
-| Tuesday | 5-6 mi easy | x | x |
+| Tuesday | 5-6 mi easy | 8.37 mi run | 1:31:55 at 10:59/mi. |
 | Wednesday | 4-5 mi very easy | x | x |
 | Thursday | 6 mi easy | x | x |
 | Friday | Off | x | x |
