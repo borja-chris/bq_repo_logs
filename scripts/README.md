@@ -36,11 +36,19 @@ Optional flags:
 .venv/bin/python scripts/ingest_coros_fit.py --no-readme
 .venv/bin/python scripts/ingest_coros_fit.py --no-logs
 .venv/bin/python scripts/ingest_coros_fit.py --require-weather
+.venv/bin/python scripts/ingest_coros_fit.py --manual-note "2026-06-16|Legs felt fatigued but not injured."
+.venv/bin/python scripts/ingest_coros_fit.py --manual-note "2026-06-16|Felt heavy by the end." --soreness "2026-06-16|Legs felt tired but structurally fine."
 ```
 
 `--sync-only` also re-attempts weather enrichment for that import date's processed batch
 when weather is enabled, which makes it the repair path after a transient API or DNS
 failure during the original import.
+
+When the user gives subjective context in the same turn as a FIT ingest request, pass
+that context through the ingest command instead of relying on a separate manual edit
+later. `--manual-note` appends bullet notes under `- Manual Notes:`. `--sleep`,
+`--soreness`, `--stress`, and `--warning-signs` set the matching recovery fields for
+that day.
 
 For normal imports going forward, prefer `--require-weather` so the command fails
 instead of silently leaving weather fields blank.
@@ -52,6 +60,7 @@ instead of silently leaving weather fields blank.
 - writing `SHA256SUMS.txt`
 - generating CSV and JSONL processed summaries
 - upserting matching daily-entry blocks inside the active weekly log from objective FIT fields while preserving manual notes
+- attaching explicitly supplied same-turn subjective notes to the matching daily entry during ingest
 - creating daily-entry stubs for past skipped planned run days so manual context has a place to live
 - refreshing `logs/weekly/`
 - refreshing the managed current-week block in `README.md`
@@ -79,7 +88,9 @@ Current repo note:
 - Prior successful COROS imports in this repo used `fitdecode`.
 - Fresh environments should be bootstrapped with `bash scripts/setup_fit_env.sh` before FIT ingestion.
 
-The ingest script only automates objective recordkeeping. Subjective recovery signals, coaching interpretation, retros, and plan changes remain manual.
+The ingest script automates objective recordkeeping and can persist explicitly supplied
+subjective daily notes during import. Coaching interpretation, retros, and plan changes
+remain manual.
 
 Weekly logs use a mixed-source model:
 

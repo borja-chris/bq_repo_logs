@@ -18,22 +18,22 @@ The active weekly log lives in `logs/weekly/week_YYYY-MM-DD.md`; daily entries a
 <!-- current-week:start -->
 Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 
-Week of `2026-06-15`
+Week of `2026-06-22`
 
-- Target mileage: `about 30-32`
-- Actual mileage so far: `38.47`
-- Primary purpose: make low-30s feel like normal training instead of a reach week
-- Week status: `Sunday run logged`
+- Target mileage: `about 31-34`
+- Actual mileage so far: `22.95`
+- Primary purpose: repeat the low-30s with slightly more normalcy and less negotiation
+- Week status: `Friday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 3-4 mi easy | 3.47 mi run | 32:51 at 9:28/mi. Easy run with Harlem Run. Very stop-start heavy due to traffic lights. Probably the reason why I was able to keep up with a quicker than usual pace. |
-| Tuesday | 5-6 mi easy | 8.37 mi run | 1:31:55 at 10:59/mi. |
-| Wednesday | 4-5 mi very easy | 5.00 mi run | 56:54 at 11:23/mi. |
-| Thursday | 6 mi easy | x | x |
-| Friday | Off | 4.27 mi run | 47:26 at 11:07/mi. |
-| Saturday | 4-5 mi easy | 6.73 mi run | 1:17:05 at 11:27/mi. |
-| Sunday | 9 mi easy | 10.63 mi run | 1:59:06 at 11:12/mi. |
+| Monday | Off | off | x |
+| Tuesday | 6 mi easy | 4.54 mi run | 50:29 at 11:07/mi. |
+| Wednesday | 5 mi very easy | 6.06 mi run | 1:07:31 at 11:08/mi. |
+| Thursday | 6 mi easy | 8.32 mi run | 1:33:22 at 11:13/mi. |
+| Friday | Off or 3 mi very easy | 4.03 mi run | 46:24 at 11:31/mi. |
+| Saturday | 5 mi easy | x | x |
+| Sunday | 9-10 mi easy | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->

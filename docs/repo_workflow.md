@@ -27,6 +27,7 @@ During the week:
 - Append daily entries to the active weekly log only when there is useful signal.
 - Record distance, effort, soreness, sleep/stress, and warning signs.
 - Use daily-entry manual notes for context that FIT data cannot capture, including run quality, travel fatigue, shortened runs, and skipped-run reasons.
+- When a new `.fit` import is being requested and the user supplies subjective notes in the same turn, persist them into the matching daily entry during that import workflow instead of expecting a separate later edit.
 - Do not create standalone daily log files or backfill noise just to make the repo look complete.
 - If repo Markdown changed, run `.venv/bin/python scripts/check_markdown_links.py` before commit.
 - If the live current week changed, check whether `README.md` needs a matching summary update before commit/push.
@@ -69,24 +70,26 @@ For a new COROS export:
 
 1. Drop new raw `.fit` files in the repo root.
 2. Run `.venv/bin/python scripts/ingest_coros_fit.py`.
-3. Let the script move those files into `data/coros_exports/COROS_export_YYYY-MM-DD/` for the import date.
-4. Do not keep `*:Zone.Identifier` files.
-5. Add or update `SHA256SUMS.txt` for the loose `.fit` files.
-6. Add or update a manifest for the import.
-7. Put derived summaries in `data/processed/`.
-8. Write both a reviewable CSV summary and a machine-readable `.jsonl` summary when parser support is available.
-9. Create or update matching daily-entry blocks inside `logs/weekly/week_YYYY-MM-DD.md` from objective FIT data while preserving manual notes.
-10. Seed daily-entry stubs for past skipped planned run days so manual notes can capture why the day changed.
-11. Refresh the current week summary in `README.md` from the plan plus the weekly log.
-12. Update `logs/weekly/week_YYYY-MM-DD.md` with the current factual week summary.
-13. Verify that summary row count matches the batch FIT count before treating the import as complete.
-14. Keep current-month loose `.fit` files available for repair, reparse, or enrichment.
+3. If the user supplied same-turn subjective notes for the run, pass them into the ingest command with `--manual-note`, `--sleep`, `--soreness`, `--stress`, and `--warning-signs` so they are written into the active weekly log immediately.
+4. Let the script move those files into `data/coros_exports/COROS_export_YYYY-MM-DD/` for the import date.
+5. Do not keep `*:Zone.Identifier` files.
+6. Add or update `SHA256SUMS.txt` for the loose `.fit` files.
+7. Add or update a manifest for the import.
+8. Put derived summaries in `data/processed/`.
+9. Write both a reviewable CSV summary and a machine-readable `.jsonl` summary when parser support is available.
+10. Create or update matching daily-entry blocks inside `logs/weekly/week_YYYY-MM-DD.md` from objective FIT data while preserving manual notes.
+11. Seed daily-entry stubs for past skipped planned run days so manual notes can capture why the day changed.
+12. Refresh the current week summary in `README.md` from the plan plus the weekly log.
+13. Update `logs/weekly/week_YYYY-MM-DD.md` with the current factual week summary.
+14. Verify that summary row count matches the batch FIT count before treating the import as complete.
+15. Keep current-month loose `.fit` files available for repair, reparse, or enrichment.
 
 ## AI Interaction Model
 
 Use AI as the default operator for factual repo maintenance.
 
 - Auto-do: FIT import, hashing, processed summaries, weekly log upserts, `README.md` sync, manifest maintenance, and archive housekeeping when the rules already exist.
+- Auto-do: when the user supplies subjective notes in the same turn as a FIT import request, persist those notes into the matching daily entry during the import command instead of leaving them in chat only.
 - Draft, then ask: weekly retros, decision records, and plan-text changes.
 - Ask first: changes to durable planning assumptions, framework changes, mileage-target changes, or destructive edits to historical records.
 

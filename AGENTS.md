@@ -128,6 +128,7 @@ Major decisions include:
 - When changing a plan because of a decision, add or update a decision record in `decisions/`.
 - When changing weekly training, update the relevant weekly plan file and note the reason.
 - When changing the live current week, check whether `README.md` mirrors that week and sync it before commit/push if needed.
+- If a new `.fit` import is being requested and the user provides subjective notes in the same turn, persist those notes into the matching daily entry during that import workflow instead of leaving them in chat only.
 - Do not silently overwrite historical logs or retros.
 - If replacing old content, preserve meaningful prior context unless the user explicitly asks to delete it.
 

@@ -9,13 +9,15 @@ This script:
 6. Refreshes the managed current-week block in `README.md`.
 7. Writes a batch manifest.
 
-It intentionally automates factual recordkeeping only. Subjective recovery
-signals, coaching interpretation, and plan changes remain manual.
+It automates factual recordkeeping and can also attach explicitly supplied
+subjective daily notes during import. Coaching interpretation and plan
+changes remain manual.
 """
 
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
@@ -50,6 +52,92 @@ from weekly_entries import (
     upsert_weekly_log,
 )
 from weekly_plan import DayPlan, WeekPlan, load_week_plan
+
+@dataclass
+class SubjectiveUpdate:
+    manual_notes: list[str] = field(default_factory=list)
+    sleep: str | None = None
+    soreness: str | None = None
+    stress: str | None = None
+    warning_signs: str | None = None
+
+def parse_dated_text(raw_value: str, flag_name: str) -> tuple[date, str]:
+    if "|" not in raw_value:
+        raise SystemExit(f"{flag_name} must use YYYY-MM-DD|text")
+    raw_date, raw_text = raw_value.split("|", 1)
+    try:
+        parsed_date = date.fromisoformat(raw_date.strip())
+    except ValueError as exc:
+        raise SystemExit(f"{flag_name} has invalid date: {raw_date.strip()}") from exc
+    text = raw_text.strip()
+    if not text:
+        raise SystemExit(f"{flag_name} text cannot be empty")
+    return parsed_date, text
+
+def append_unique_manual_note(entry: WeeklyDayEntry, note_text: str) -> None:
+    cleaned = note_text.strip()
+    if not cleaned:
+        return
+    existing_notes = {
+        raw_line.strip()[1:].strip()
+        for raw_line in entry.manual_notes_lines
+        if raw_line.strip() and raw_line.strip() != "-" and raw_line.strip().startswith("-")
+    }
+    if cleaned in existing_notes:
+        return
+    real_lines = [
+        raw_line.rstrip()
+        for raw_line in entry.manual_notes_lines
+        if raw_line.strip() and raw_line.strip() != "-"
+    ]
+    real_lines.append(f"  - {cleaned}")
+    entry.manual_notes_lines = real_lines
+
+def collect_subjective_updates(args: argparse.Namespace) -> dict[date, SubjectiveUpdate]:
+    updates: dict[date, SubjectiveUpdate] = {}
+
+    def update_for(day_date: date) -> SubjectiveUpdate:
+        return updates.setdefault(day_date, SubjectiveUpdate())
+
+    for raw_value in args.manual_note:
+        day_date, note_text = parse_dated_text(raw_value, "--manual-note")
+        update_for(day_date).manual_notes.append(note_text)
+    for raw_value in args.sleep:
+        day_date, text = parse_dated_text(raw_value, "--sleep")
+        update_for(day_date).sleep = text
+    for raw_value in args.soreness:
+        day_date, text = parse_dated_text(raw_value, "--soreness")
+        update_for(day_date).soreness = text
+    for raw_value in args.stress:
+        day_date, text = parse_dated_text(raw_value, "--stress")
+        update_for(day_date).stress = text
+    for raw_value in args.warning_signs:
+        day_date, text = parse_dated_text(raw_value, "--warning-signs")
+        update_for(day_date).warning_signs = text
+    return updates
+
+def apply_subjective_updates(
+    day_entries: dict[date, WeeklyDayEntry],
+    subjective_updates: dict[date, SubjectiveUpdate],
+) -> list[date]:
+    applied_dates: list[date] = []
+    for day_date, update in sorted(subjective_updates.items()):
+        entry = day_entries.get(day_date)
+        if entry is None:
+            entry = create_weekly_day_entry(day_date)
+            day_entries[day_date] = entry
+        for note_text in update.manual_notes:
+            append_unique_manual_note(entry, note_text)
+        if update.sleep is not None:
+            entry.sleep = update.sleep
+        if update.soreness is not None:
+            entry.soreness = update.soreness
+        if update.stress is not None:
+            entry.stress = update.stress
+        if update.warning_signs is not None:
+            entry.warning_signs = update.warning_signs
+        applied_dates.append(day_date)
+    return applied_dates
 
 
 def parse_args() -> argparse.Namespace:
@@ -90,6 +178,41 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Fail with a non-zero exit code if any activity is missing weather after enrichment.",
     )
+    parser.add_argument(
+        "--manual-note",
+        action="append",
+        default=[],
+        metavar="YYYY-MM-DD|TEXT",
+        help="Append a manual note to the daily entry for the given date. Repeatable.",
+    )
+    parser.add_argument(
+        "--sleep",
+        action="append",
+        default=[],
+        metavar="YYYY-MM-DD|TEXT",
+        help="Set the sleep field for the daily entry for the given date. Repeatable.",
+    )
+    parser.add_argument(
+        "--soreness",
+        action="append",
+        default=[],
+        metavar="YYYY-MM-DD|TEXT",
+        help="Set the soreness field for the daily entry for the given date. Repeatable.",
+    )
+    parser.add_argument(
+        "--stress",
+        action="append",
+        default=[],
+        metavar="YYYY-MM-DD|TEXT",
+        help="Set the stress field for the daily entry for the given date. Repeatable.",
+    )
+    parser.add_argument(
+        "--warning-signs",
+        action="append",
+        default=[],
+        metavar="YYYY-MM-DD|TEXT",
+        help="Set the warning-signs field for the daily entry for the given date. Repeatable.",
+    )
     return parser.parse_args()
 
 
@@ -102,6 +225,7 @@ def sync_records(
     update_logs: bool,
     update_readme_flag: bool,
     recent_activities: list[weather.Activity] | None = None,
+    subjective_updates: dict[date, SubjectiveUpdate] | None = None,
 ) -> dict[str, object]:
     week_start = monday_of(today)
     week_end = week_start + timedelta(days=6)
@@ -138,6 +262,8 @@ def sync_records(
                 entry.planned = planned_by_date.get(activity.local_date, "")
             upsert_activity_entry(entry, activity)
             synced_entry_dates.append(activity.local_date)
+        if subjective_updates:
+            synced_entry_dates.extend(apply_subjective_updates(day_entries, subjective_updates))
 
     rows, total_miles, status = build_week_rows(week_plan, day_entries)
     weekly_path: Path | None = None
@@ -157,6 +283,7 @@ def sync_records(
 def main() -> int:
     args = parse_args()
     today = date.fromisoformat(args.date) if args.date else datetime.now(weather.LOCAL_TZ).date()
+    subjective_updates = collect_subjective_updates(args)
     update_logs = not args.no_logs
     update_readme_flag = not args.no_readme
     weather_enabled = not args.no_weather
@@ -209,6 +336,7 @@ def main() -> int:
         update_logs=update_logs,
         update_readme_flag=update_readme_flag,
         recent_activities=activities or None,
+        subjective_updates=subjective_updates or None,
     )
     failures = weather.weather_failures(rows) if weather_enabled and rows else []
 
@@ -243,8 +371,9 @@ def main() -> int:
     if manifest_path is not None:
         print(f"Manifest updated: {summarize.repo_relpath(manifest_path)}")
     print(
-        "Manual follow-up: subjective recovery signals, coaching interpretation, "
-        "and plan changes remain manual."
+        "Manual follow-up: coaching interpretation, retros, and plan changes remain manual. "
+        "Subjective daily notes can be attached during import with --manual-note, --sleep, "
+        "--soreness, --stress, and --warning-signs."
     )
     if args.require_weather and failures:
         print("Import failed requirement: weather enrichment missing for one or more activities.")
