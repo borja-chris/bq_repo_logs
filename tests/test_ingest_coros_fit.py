@@ -193,6 +193,81 @@ class IngestCorosFitHelpersTest(unittest.TestCase):
         self.assertEqual(len(weekly_calls), 1)
         self.assertEqual(len(readme_calls), 1)
 
+    def test_sync_records_aggregates_multiple_same_day_activities(self) -> None:
+        week_start = date(2026, 6, 29)
+        today = date(2026, 7, 1)
+        monday = week_start
+        week_plan = m.WeekPlan(
+            source_relpath="plans/2026-half-marathon/01_pre_block_ramp.md",
+            week_start=week_start,
+            target_mileage="32-35",
+            primary_purpose="base",
+            day_plans=[
+                m.DayPlan("Monday", "Off", "Recovery", "", monday),
+            ],
+        )
+        first_run = m.weather.Activity(
+            row={
+                "distance_mi": "3.39",
+                "duration_s": "2059",
+                "sport": "running",
+                "source_relpath": "data/coros_exports/COROS_export_2026-07-01/first.fit",
+                "start_time": "2026-06-29T19:18:33-04:00",
+                "avg_hr": "147",
+                "max_hr": "165",
+                "ascent_m": "11",
+                "weather_temp_f": "82.6",
+                "weather_observation_time": "2026-06-29T19:00",
+                "weather_source": "open-meteo",
+            },
+            local_start=datetime.fromisoformat("2026-06-29T19:18:33-04:00"),
+            local_date=monday,
+            timezone_name="America/New_York",
+        )
+        second_run = m.weather.Activity(
+            row={
+                "distance_mi": "0.81",
+                "duration_s": "597",
+                "sport": "running",
+                "source_relpath": "data/coros_exports/COROS_export_2026-07-01/second.fit",
+                "start_time": "2026-06-29T20:11:22-04:00",
+                "avg_hr": "138",
+                "max_hr": "147",
+                "ascent_m": "5",
+                "weather_temp_f": "81.0",
+                "weather_observation_time": "2026-06-29T20:00",
+                "weather_source": "open-meteo",
+            },
+            local_start=datetime.fromisoformat("2026-06-29T20:11:22-04:00"),
+            local_date=monday,
+            timezone_name="America/New_York",
+        )
+
+        weekly_path = Path("/tmp/week_2026-06-29.md")
+        weekly_calls: list[tuple] = []
+        with patch.object(m, "load_week_plan", return_value=week_plan), patch.object(
+            m, "parse_weekly_day_entries", return_value={}
+        ), patch.object(
+            m, "parse_legacy_daily_log_entry", return_value=None
+        ), patch.object(
+            m.weather, "load_processed_activities_for_week", return_value=[first_run, second_run]
+        ), patch.object(
+            m, "upsert_weekly_log", side_effect=lambda *args: weekly_calls.append(args) or weekly_path
+        ), patch.object(
+            m, "update_readme"
+        ):
+            result = m.sync_records(today, update_logs=True, update_readme_flag=True)
+
+        self.assertAlmostEqual(result["total_miles"], 4.20)
+        self.assertEqual(result["status"], "Monday run logged")
+        synced_entry = weekly_calls[0][4][monday]
+        self.assertEqual(synced_entry.completed, "4.20 mi total (2 runs)")
+        self.assertEqual(synced_entry.time, "44:16")
+        self.assertEqual(synced_entry.distance, "4.20 mi")
+        self.assertEqual(synced_entry.pace, "10:32/mi")
+        self.assertIn("first.fit", "\n".join(synced_entry.managed_notes_lines))
+        self.assertIn("second.fit", "\n".join(synced_entry.managed_notes_lines))
+
     def test_main_aborts_when_parser_dependencies_are_missing(self) -> None:
         captured: list[list[Path]] = []
         fake_args = SimpleNamespace(
@@ -203,6 +278,11 @@ class IngestCorosFitHelpersTest(unittest.TestCase):
             no_weather=False,
             weather_timeout=10.0,
             require_weather=False,
+            manual_note=[],
+            sleep=[],
+            soreness=[],
+            stress=[],
+            warning_signs=[],
         )
         with patch.object(m, "parse_args", return_value=fake_args), patch.object(
             m.batch,

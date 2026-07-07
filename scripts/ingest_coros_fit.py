@@ -17,6 +17,7 @@ changes remain manual.
 from __future__ import annotations
 
 import argparse
+from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -36,6 +37,7 @@ from weekly_entries import (
     WEEKLY_START,
     WeeklyDayEntry,
     build_week_rows,
+    build_managed_notes_lines,
     create_weekly_day_entry,
     ensure_markers,
     merge_legacy_entry,
@@ -48,7 +50,6 @@ from weekly_entries import (
     seed_missing_planned_day_entries,
     has_placeholder_planned_value,
     update_readme,
-    upsert_activity_entry,
     upsert_weekly_log,
 )
 from weekly_plan import DayPlan, WeekPlan, load_week_plan
@@ -138,6 +139,52 @@ def apply_subjective_updates(
             entry.warning_signs = update.warning_signs
         applied_dates.append(day_date)
     return applied_dates
+
+
+def total_time_label(total_seconds: int) -> str:
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, secs = divmod(remainder, 60)
+    if hours:
+        return f"{hours}:{minutes:02d}:{secs:02d}"
+    return f"{minutes}:{secs:02d}"
+
+
+def aggregate_completed_label(activities: list[weather.Activity], total_distance: float) -> str:
+    if len(activities) == 1:
+        return activities[0].completed_label
+    run_count = sum(
+        1
+        for activity in activities
+        if (activity.row.get("sport", "").strip() or "running") == "running"
+    )
+    activity_noun = "runs" if run_count == len(activities) else "activities"
+    return f"{total_distance:.2f} mi total ({len(activities)} {activity_noun})"
+
+
+def build_managed_notes_lines_for_activities(activities: list[weather.Activity]) -> list[str]:
+    managed_lines: list[str] = []
+    for activity in sorted(activities, key=lambda activity: activity.local_start):
+        managed_lines.extend(build_managed_notes_lines(activity))
+    return managed_lines
+
+
+def upsert_activity_entries(entry: WeeklyDayEntry, activities: list[weather.Activity]) -> None:
+    ordered_activities = sorted(activities, key=lambda activity: activity.local_start)
+    total_distance = sum(activity.distance_mi for activity in ordered_activities)
+    total_duration_s = sum(activity.duration_s for activity in ordered_activities)
+
+    entry.completed = aggregate_completed_label(ordered_activities, total_distance)
+    entry.time = total_time_label(total_duration_s)
+    entry.distance = f"{total_distance:.2f} mi"
+    if total_distance > 0 and total_duration_s > 0:
+        pace_seconds = round(total_duration_s / total_distance)
+        minutes, seconds = divmod(pace_seconds, 60)
+        entry.pace = f"{minutes}:{seconds:02d}/mi"
+    else:
+        entry.pace = ""
+    if not entry.effort or entry.effort in {"off", "rest"}:
+        entry.effort = "imported"
+    entry.managed_notes_lines = build_managed_notes_lines_for_activities(ordered_activities)
 
 
 def parse_args() -> argparse.Namespace:
@@ -248,20 +295,23 @@ def sync_records(
         if activities is None:
             activities = weather.load_processed_activities_for_week(week_start)
         planned_by_date = {day_plan.day_date: day_plan.planned for day_plan in week_plan.day_plans}
+        activities_by_date: dict[date, list[weather.Activity]] = defaultdict(list)
         for activity in activities:
             if not (week_start <= activity.local_date <= week_end):
                 continue
-            entry = day_entries.get(activity.local_date)
+            activities_by_date[activity.local_date].append(activity)
+        for activity_date, dated_activities in sorted(activities_by_date.items()):
+            entry = day_entries.get(activity_date)
             if entry is None:
                 entry = create_weekly_day_entry(
-                    activity.local_date,
-                    planned=planned_by_date.get(activity.local_date, ""),
+                    activity_date,
+                    planned=planned_by_date.get(activity_date, ""),
                 )
-                day_entries[activity.local_date] = entry
+                day_entries[activity_date] = entry
             elif has_placeholder_planned_value(entry.planned):
-                entry.planned = planned_by_date.get(activity.local_date, "")
-            upsert_activity_entry(entry, activity)
-            synced_entry_dates.append(activity.local_date)
+                entry.planned = planned_by_date.get(activity_date, "")
+            upsert_activity_entries(entry, dated_activities)
+            synced_entry_dates.append(activity_date)
         if subjective_updates:
             synced_entry_dates.extend(apply_subjective_updates(day_entries, subjective_updates))
 

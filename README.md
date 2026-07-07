@@ -21,13 +21,13 @@ Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 Week of `2026-06-29`
 
 - Target mileage: `about 32-35`
-- Actual mileage so far: `13.79`
+- Actual mileage so far: `17.18`
 - Primary purpose: let low-30s become normal while keeping recovery intact
 - Week status: `Wednesday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | Off | 0.81 mi run | 9:57 at 12:17/mi. |
+| Monday | Off | 4.20 mi total (2 runs) | 44:16 at 10:32/mi. |
 | Tuesday | 6 mi easy | 8.37 mi run | 1:36:58 at 11:35/mi. |
 | Wednesday | 5 mi very easy | 4.61 mi run | 56:43 at 12:18/mi. |
 | Thursday | 6-7 mi easy | x | x |
