@@ -40,25 +40,4 @@ This block mirrors the active weekly log summary for the current week. Daily ent
 
 ## Workflow
 
-Use [docs/repo_workflow.md](docs/repo_workflow.md) as the operating loop for normal usage.
-
-The short version:
-
-1. Read current assumptions from `sources/`.
-2. Use weekly files in `plans/2026-half-marathon/` for upcoming training.
-3. Log completed work in `logs/`.
-4. Review the week in `retros/weekly/`.
-5. Record meaningful changes in `decisions/`.
-
-Raw COROS exports belong under `data/coros_exports/`. Processed summaries belong under `data/processed/`.
-Historical daily-log months should be archived under `logs/daily/YYYY/YYYY-MM/` with a generated `monthly_summary.md`.
-
-COROS data workflow:
-
-1. Drop new `.fit` files in the repo root.
-2. Run `.venv/bin/python scripts/ingest_coros_fit.py`.
-3. Let the script move them into a dated batch folder under `data/coros_exports/`, update the processed summaries, and refresh the current logs.
-4. Archive completed prior-month raw batches into `fit_files.tar.gz` after verification.
-5. On the first maintenance pass of a new month, let the repo archive prior-month daily logs into their month folder and refresh that month's historical summary.
-
-Aim to make this as Ai Tool Agnostic as possible.
+See [docs/repo_workflow.md](docs/repo_workflow.md) for the operating loop, COROS import steps, and archive rules. Keep tooling AI-tool-agnostic.

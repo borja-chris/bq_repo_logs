@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Summarize COROS FIT files into reviewable CSV and JSONL outputs.
+"""Summarize COROS FIT files into JSONL outputs.
 
 Requires the optional `fitparse` package:
 
@@ -9,7 +9,6 @@ Requires the optional `fitparse` package:
 from __future__ import annotations
 
 import argparse
-import csv
 import hashlib
 import json
 import warnings
@@ -359,27 +358,12 @@ def write_jsonl(output_path: Path, rows: list[dict[str, str]]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("input_dir", type=Path)
-    parser.add_argument("output_csv", type=Path)
-    parser.add_argument(
-        "--jsonl",
-        type=Path,
-        help="Optional newline-delimited JSON output for machine processing.",
-    )
+    parser.add_argument("output_jsonl", type=Path)
     args = parser.parse_args()
 
     fit_files = sorted(args.input_dir.glob("*.fit"))
-    args.output_csv.parent.mkdir(parents=True, exist_ok=True)
     rows = parse_fit_files(fit_files)
-
-    with args.output_csv.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=FIELDS)
-        writer.writeheader()
-        for row in rows:
-            writer.writerow(row)
-
-    if args.jsonl:
-        write_jsonl(args.jsonl, rows)
-
+    write_jsonl(args.output_jsonl, rows)
     return 0
 
 

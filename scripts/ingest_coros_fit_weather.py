@@ -235,14 +235,14 @@ def enrich_rows_with_weather(rows: list[dict[str, str]], timeout_s: float) -> li
 def re_enrich_processed_batch_weather(
     import_date: date,
     timeout_s: float,
-) -> tuple[Path, Path, list[dict[str, str]], list[Activity]]:
-    output_csv, output_jsonl = batch.processed_paths_for(import_date)
+) -> tuple[Path, list[dict[str, str]], list[Activity]]:
+    output_jsonl = batch.processed_paths_for(import_date)
     rows = batch.load_processed_rows(output_jsonl)
     if not rows:
-        return output_csv, output_jsonl, rows, []
+        return output_jsonl, rows, []
     activities = enrich_rows_with_weather(rows, timeout_s=timeout_s)
-    batch.write_processed_outputs(output_csv, output_jsonl, rows)
-    return output_csv, output_jsonl, rows, activities
+    batch.write_processed_outputs(output_jsonl, rows)
+    return output_jsonl, rows, activities
 
 
 def weather_failures(rows: Iterable[dict[str, str]]) -> list[dict[str, str]]:

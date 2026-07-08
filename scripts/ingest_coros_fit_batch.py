@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import csv
 import json
 import tarfile
 from datetime import date
@@ -33,12 +32,9 @@ def batch_dir_for(import_date: date) -> Path:
     return REPO_ROOT / "data" / "coros_exports" / f"COROS_export_{import_date.isoformat()}"
 
 
-def processed_paths_for(import_date: date) -> tuple[Path, Path]:
+def processed_paths_for(import_date: date) -> Path:
     stem = f"coros_export_{import_date.isoformat()}_summary"
-    return (
-        REPO_ROOT / "data" / "processed" / f"{stem}.csv",
-        REPO_ROOT / "data" / "processed" / f"{stem}.jsonl",
-    )
+    return REPO_ROOT / "data" / "processed" / f"{stem}.jsonl"
 
 
 def find_loose_fit_files() -> list[Path]:
@@ -72,9 +68,9 @@ def write_sha256s(export_dir: Path, rows: Iterable[dict[str, str]]) -> int:
     return count
 
 
-def generate_summaries(export_dir: Path) -> tuple[Path, Path, list[dict[str, str]]]:
+def generate_summaries(export_dir: Path) -> tuple[Path, list[dict[str, str]]]:
     import_date = export_dir.name.removeprefix("COROS_export_")
-    output_csv, output_jsonl = processed_paths_for(date.fromisoformat(import_date))
+    output_jsonl = processed_paths_for(date.fromisoformat(import_date))
     fit_files = sorted(export_dir.glob("*.fit"))
     if fit_files:
         rows = summarize.parse_fit_files(fit_files)
@@ -89,13 +85,8 @@ def generate_summaries(export_dir: Path) -> tuple[Path, Path, list[dict[str, str
                     archive.extractall(temp_dir)
                 archived_fit_files = sorted(temp_dir.rglob("*.fit"))
                 rows = summarize.parse_fit_files(archived_fit_files)
-    output_csv.parent.mkdir(parents=True, exist_ok=True)
-    with output_csv.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=summarize.FIELDS)
-        writer.writeheader()
-        writer.writerows(rows)
     summarize.write_jsonl(output_jsonl, rows)
-    return output_csv, output_jsonl, rows
+    return output_jsonl, rows
 
 
 def load_processed_rows(jsonl_path: Path) -> list[dict[str, str]]:
@@ -112,15 +103,9 @@ def load_processed_rows(jsonl_path: Path) -> list[dict[str, str]]:
 
 
 def write_processed_outputs(
-    output_csv: Path,
     output_jsonl: Path,
     rows: list[dict[str, str]],
 ) -> None:
-    output_csv.parent.mkdir(parents=True, exist_ok=True)
-    with output_csv.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=summarize.FIELDS)
-        writer.writeheader()
-        writer.writerows(rows)
     summarize.write_jsonl(output_jsonl, rows)
 
 
@@ -129,7 +114,6 @@ def write_manifest(
     import_date: date,
     fit_count: int,
     removed_sidecars: int,
-    output_csv: Path,
     output_jsonl: Path,
     rows: list[dict[str, str]],
 ) -> Path:
@@ -158,9 +142,7 @@ def write_manifest(
         "",
         "## Processing",
         "",
-        f"- Processed CSV: `{summarize.repo_relpath(output_csv)}`",
         f"- Processed JSONL: `{summarize.repo_relpath(output_jsonl)}`",
-        f"- CSV activity rows: {len(rows)}",
         f"- JSONL rows: {len(rows)}",
         f"- Summary row count matches FIT count: {'yes' if len(rows) == fit_count else 'no'}",
         f"- Parser used for this batch: `{', '.join(parser_names) or 'unknown'}`",

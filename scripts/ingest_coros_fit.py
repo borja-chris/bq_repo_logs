@@ -347,17 +347,17 @@ def main() -> int:
     removed_sidecars = 0
     rows: list[dict[str, str]] = []
     export_dir = batch.batch_dir_for(today)
-    output_csv, output_jsonl = batch.processed_paths_for(today)
+    output_jsonl = batch.processed_paths_for(today)
     manifest_path: Path | None = None
     activities: list[weather.Activity] = []
 
     if not args.sync_only:
         export_dir, moved_files, removed_sidecars = batch.import_loose_fit_files(today)
         if moved_files:
-            output_csv, output_jsonl, rows = batch.generate_summaries(export_dir)
+            output_jsonl, rows = batch.generate_summaries(export_dir)
             if weather_enabled:
                 activities = weather.enrich_rows_with_weather(rows, timeout_s=args.weather_timeout)
-                batch.write_processed_outputs(output_csv, output_jsonl, rows)
+                batch.write_processed_outputs(output_jsonl, rows)
             fit_count = batch.write_sha256s(export_dir, rows)
             if not activities:
                 activities = weather.load_activities(rows)
@@ -366,17 +366,16 @@ def main() -> int:
                 today,
                 fit_count,
                 removed_sidecars,
-                output_csv,
                 output_jsonl,
                 rows,
             )
         elif weather_enabled:
-            output_csv, output_jsonl, rows, activities = weather.re_enrich_processed_batch_weather(
+            output_jsonl, rows, activities = weather.re_enrich_processed_batch_weather(
                 today,
                 timeout_s=args.weather_timeout,
             )
     elif weather_enabled:
-        output_csv, output_jsonl, rows, activities = weather.re_enrich_processed_batch_weather(
+        output_jsonl, rows, activities = weather.re_enrich_processed_batch_weather(
             today,
             timeout_s=args.weather_timeout,
         )
@@ -398,7 +397,6 @@ def main() -> int:
     print(f"Removed sidecars: {removed_sidecars}")
     if rows:
         print(f"Processed activities: {len(rows)}")
-        print(f"CSV summary: {summarize.repo_relpath(output_csv)}")
         print(f"JSONL summary: {summarize.repo_relpath(output_jsonl)}")
         if weather_enabled:
             print(f"Weather enriched: {len(rows) - len(failures)}/{len(rows)}")

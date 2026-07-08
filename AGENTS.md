@@ -117,79 +117,11 @@ Major decisions include:
 - Adjusting long-run structure
 - Switching from half-marathon training to marathon training
 
-## File Editing Rules
+## Editing and Retros
 
-- Do not edit files unless explicitly asked.
-- For planning changes, propose the exact text in chat first and wait for approval before editing files.
-- When editing, make small, reviewable changes.
-- Preserve existing naming conventions.
-- Prefer Markdown files unless there is a clear reason otherwise.
-- When adding plans, logs, retros, or decisions, use the templates in `templates/`.
-- When changing a plan because of a decision, add or update a decision record in `decisions/`.
-- When changing weekly training, update the relevant weekly plan file and note the reason.
-- When changing the live current week, check whether `README.md` mirrors that week and sync it before commit/push if needed.
-- If a new `.fit` import is being requested and the user provides subjective notes in the same turn, persist those notes into the matching daily entry during that import workflow instead of leaving them in chat only.
-- Do not silently overwrite historical logs or retros.
-- If replacing old content, preserve meaningful prior context unless the user explicitly asks to delete it.
+- Do not edit files unless explicitly asked; for planning changes, propose exact text first.
+- Preserve naming conventions and use `templates/` for new plans, logs, retros, or decisions.
+- When changing a plan, add or update a matching record in `decisions/`.
+- Every retro must include at least one actionable follow-up (owner + success condition).
 
-## Retro Rules
-
-- When the user asks for a retro, include at least one actionable follow-up.
-- A retro is not complete if it only summarizes what happened.
-- The action can be a code change, workflow change, decision, or explicit next step with an owner and success condition.
-
-## Repository Structure
-
-Expected structure:
-
-```text
-bq_repo_log/
-  README.md
-  AGENTS.md
-
-  docs/
-    repo_workflow.md
-
-  sources/
-    01_current_operating_plan_2026_half.md
-    02_runner_background_and_bq_arc.md
-    03_hanson_half_marathon_framework.md
-    04_planning_rules_and_retro.md
-    05_chat_handoff_summary.md
-
-  plans/
-    2026-half-marathon/
-      00_overview.md
-      01_pre_block_ramp.md
-      02_18_week_hanson_inspired_plan.md
-      week_01_2026-06-01.md
-      week_02_2026-06-08.md
-      week_03_2026-06-15.md
-      ...
-
-  logs/
-    daily/
-    weekly/
-
-  retros/
-    weekly/
-    block/
-    race/
-
-  decisions/
-
-  templates/
-    weekly_plan_template.md
-    daily_log_template.md
-    weekly_retro_template.md
-    decision_gate_template.md
-    six_hat_decision_template.md
-
-  data/
-    coros_exports/
-      COROS_export_YYYY-MM-DD/
-    processed/
-
-  scripts/
-    summarize_coros_fit.py
-```
+See `docs/repo_workflow.md` for the full operating loop, file-naming rules, decision triggers, and data-import workflow. See the repo tree on disk for current structure.

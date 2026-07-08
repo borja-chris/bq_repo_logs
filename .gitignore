@@ -6,7 +6,9 @@
 Thumbs.db
 *.tmp
 .venv/
+.codex
 .codex/
+.tokensave/
 __pycache__/
 *.pyc
 

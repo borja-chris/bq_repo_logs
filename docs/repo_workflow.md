@@ -76,7 +76,7 @@ For a new COROS export:
 6. Add or update `SHA256SUMS.txt` for the loose `.fit` files.
 7. Add or update a manifest for the import.
 8. Put derived summaries in `data/processed/`.
-9. Write both a reviewable CSV summary and a machine-readable `.jsonl` summary when parser support is available.
+9. Write a `.jsonl` summary when parser support is available.
 10. Create or update matching daily-entry blocks inside `logs/weekly/week_YYYY-MM-DD.md` from objective FIT data while preserving manual notes.
 11. Seed daily-entry stubs for past skipped planned run days so manual notes can capture why the day changed.
 12. Refresh the current week summary in `README.md` from the plan plus the weekly log.

@@ -58,7 +58,7 @@ instead of silently leaving weather fields blank.
 - moving loose root-level `.fit` files into the dated batch folder
 - removing `:Zone.Identifier` sidecars
 - writing `SHA256SUMS.txt`
-- generating CSV and JSONL processed summaries
+- generating JSONL processed summaries
 - upserting matching daily-entry blocks inside the active weekly log from objective FIT fields while preserving manual notes
 - attaching explicitly supplied same-turn subjective notes to the matching daily entry during ingest
 - creating daily-entry stubs for past skipped planned run days so manual context has a place to live
@@ -66,19 +66,14 @@ instead of silently leaving weather fields blank.
 - refreshing the managed current-week block in `README.md`
 - writing the batch manifest
 
-`summarize_coros_fit.py` reads FIT files from an import directory and writes a CSV summary to `data/processed/`. It can also write newline-delimited JSON (`.jsonl`) with stable machine-oriented fields such as the import batch, repo-relative source path, FIT activity ID, and SHA-256 hash.
+`summarize_coros_fit.py` reads FIT files from an import directory and writes a newline-delimited JSON (`.jsonl`) summary to `data/processed/` with stable machine-oriented fields such as the import batch, repo-relative source path, FIT activity ID, and SHA-256 hash.
 
 Example:
 
 ```bash
-.venv/bin/python scripts/summarize_coros_fit.py data/coros_exports/COROS_export_2026-05-09 data/processed/coros_export_2026-05-09_summary.csv
-```
-
-```bash
 .venv/bin/python scripts/summarize_coros_fit.py \
   data/coros_exports/COROS_export_2026-05-09 \
-  data/processed/coros_export_2026-05-09_summary.csv \
-  --jsonl data/processed/coros_export_2026-05-09_summary.jsonl
+  data/processed/coros_export_2026-05-09_summary.jsonl
 ```
 
 It requires FIT parser dependencies from `requirements-fit.txt`. `fitdecode` is the practical default for COROS files, with `fitparse` available alongside it.
