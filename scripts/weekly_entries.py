@@ -521,8 +521,6 @@ def build_weekly_log_body(week_plan: WeekPlan, rows: list[str], total_miles: flo
         f"- Actual mileage so far: `{total_miles:.2f}`",
         f"- Primary purpose: {week_plan.primary_purpose}",
         f"- Status: `{status}`",
-        "",
-        *rows,
     ]
     return "\n".join(lines)
 

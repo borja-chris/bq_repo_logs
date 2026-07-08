@@ -6,14 +6,14 @@ Prepare for the 2026-12-06 half marathon with a sub-1:33 checkpoint target while
 
 ## Assumptions
 
-- Start date: 2026-08-03
-- Race date: 2026-12-06
-- Starting base: about 30-35 miles/week, with 35-40 as a better outcome if earned
+Baseline dates, mileage targets, and framework are in [`sources/00_project_context.md`](../../sources/00_project_context.md).
+
+Plan-specific:
+
 - Goal pace: about 7:05/mi for sub-1:33
-- Rhythm: 6 running days/week
+- Weekly rhythm: 6 running days/week
 - Normal off day: Wednesday
 - Monday, Wednesday, and Friday are flexible recovery/easy slots when scheduling requires a swap
-- Expected peak: 52-55 miles/week
 - Stretch peak of 58-60 miles/week is not included by default
 
 ## Weekly Rhythm
