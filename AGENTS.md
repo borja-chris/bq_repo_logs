@@ -93,5 +93,11 @@ See `docs/repo_workflow.md` for the full operating loop, file-naming rules, deci
   commits/pushes centrally with explicit paths.
 - The Engineering Manager sets direction, gives feedback, and approves;
   the Tech Lead plans, delegates, verifies, and integrates.
+- Delegation exists primarily for token efficiency. Subagents run on a
+  lower-cost model (default Sonnet; Haiku for mechanical work) to keep
+  heavy execution out of the main context.
+- The Tech Lead runs on the higher model (Opus) and signs off on all
+  delegated work — reviewing and verifying it before commit. Nothing a
+  subagent produces is committed without Tech Lead sign-off.
 - Small edits may be done inline when spinning up a team would cost more
   tokens than it saves.
