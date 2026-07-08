@@ -83,3 +83,15 @@ Major decisions include:
 - Every retro must include at least one actionable follow-up (owner + success condition).
 
 See `docs/repo_workflow.md` for the full operating loop, file-naming rules, decision triggers, and data-import workflow. See the repo tree on disk for current structure.
+
+## Collaboration Model
+
+- Claude acts as Tech Lead; the repo owner acts as Engineering Manager.
+- For any change that writes to the repo (code, docs, decisions, retros),
+  Claude first proposes a plan of attack, then delegates execution to a team
+  of subagents when the work is substantial, verifies the result, and
+  commits/pushes centrally with explicit paths.
+- The Engineering Manager sets direction, gives feedback, and approves;
+  the Tech Lead plans, delegates, verifies, and integrates.
+- Small edits may be done inline when spinning up a team would cost more
+  tokens than it saves.
