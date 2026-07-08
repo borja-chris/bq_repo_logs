@@ -124,3 +124,55 @@ Example:
 ```bash
 .venv/bin/python scripts/check_markdown_links.py
 ```
+
+## Race Equivalency & Training Paces
+
+`race_equivalency.py` converts a recent race result into (a) equivalent race
+times across the standard distances and (b) Hansons training paces, so plan
+paces can be anchored to a measured race instead of a top-down goal time. It is
+a repo reimplementation of the Luke Humphrey Running (Hansons) Race Equivalency
+Calculator, verified to within about 1 second of that calculator from 5k up.
+
+Method: it uses Pete Riegel's endurance model, `T2 = T1 * (D2/D1)^k`, with
+`k=1.06` for distances at or above 5k (exact against LHR) and `k=1.08` below 5k
+(approximate, within about 5s). Training paces are fixed offsets from the
+equivalent race paces: Easy = Marathon pace +1:30..+2:30/mi; Half tempo =
+Half-marathon pace; Threshold = 10k..HM pace; Speed = 5k..10k; VO2max = 3k..5k;
+Strength = Marathon pace -10s; Strides = mile pace -30s..mile pace.
+
+Examples:
+
+```bash
+.venv/bin/python scripts/race_equivalency.py 5k 25:30
+# reverse a goal time into the fitness/paces it requires
+.venv/bin/python scripts/race_equivalency.py half 1:33:00
+# custom distance in meters
+.venv/bin/python scripts/race_equivalency.py --distance-m 5021 25:32
+```
+
+Accepted distance aliases: `mile`, `3k`, `5k`, `8k`, `10k`, `12k`, `15k`,
+`10mile`, `20k`, `half`, `25k`, `30k`, `marathon` (or `--distance-m` for a
+custom distance in meters). Time accepts `H:MM:SS`, `MM:SS`, or plain seconds.
+
+Trimmed output for `race_equivalency.py 5k 25:30`:
+
+```
+Input: 5k  25:30  (8:12/mi)
+
+Equivalent race performances (Riegel k=1.06):
+  Distance              Time   Pace/mi
+  1 Mile                7:30      7:30
+  5k                   25:30      8:12
+  10k                  53:10      8:33
+  Half Marathon      1:57:18      8:57
+  Marathon           4:04:34      9:20
+
+Training paces (Hansons offsets from equivalent race pace):
+  Easy                        10:50 - 11:50/mi
+  Speed (5k-10k)                8:12 - 8:33/mi
+  VO2max (3k-5k)                7:53 - 8:12/mi
+  Lactate threshold (10k-HM)    8:33 - 8:57/mi
+  Strength (MP-10s)                    9:10/mi
+  Half tempo / HMP                     8:57/mi
+  Strides                       7:00 - 7:30/mi
+```
