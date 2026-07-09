@@ -21,15 +21,15 @@ Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 Week of `2026-07-06`
 
 - Target mileage: `about 29-32`
-- Actual mileage so far: `4.52`
+- Actual mileage so far: `18.81`
 - Primary purpose: absorb the last three weeks and keep momentum without forcing progression
-- Week status: `Monday run logged`
+- Week status: `Wednesday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
 | Monday | Off | 4.52 mi run | 50:58 at 11:17/mi. |
-| Tuesday | 5-6 mi easy | x | x |
-| Wednesday | 4-5 mi very easy | x | x |
+| Tuesday | 5-6 mi easy | 5.73 mi run | 1:01:21 at 10:42/mi. Warm up followed by 3x1 mile repeats with a ~2 min rest in between. Intervals done at ~8:00/mi pace. |
+| Wednesday | 4-5 mi very easy | 8.56 mi run | 1:34:26 at 11:02/mi. Longer run. Kicked up the pace mid-run to see where I was at. Felt pretty good. |
 | Thursday | 6 mi easy | x | x |
 | Friday | Off | x | x |
 | Saturday | 4-5 mi easy | x | x |
