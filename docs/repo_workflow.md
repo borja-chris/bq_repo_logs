@@ -113,8 +113,8 @@ For completed prior-month COROS export batches:
 
 ## Monthly Archive Rule
 
-- On the first repo maintenance pass of a new month, archive all completed COROS export batches from the previous month.
-- On the first repo maintenance pass of a new month, move prior-month daily logs into `logs/daily/YYYY/YYYY-MM/` and generate `monthly_summary.md` in that folder.
+- On the first repo maintenance pass of a new month, archive all completed COROS export batches from the previous month. This remains a separate manual step for now.
+- Prior-month daily-log archiving is automatic: every `scripts/ingest_coros_fit.py` run calls `scripts/monthly_archive.py`, which moves any loose prior-month `logs/daily/YYYY-MM-DD.md` files into `logs/daily/YYYY/YYYY-MM/` and regenerates that month's `monthly_summary.md`. It is idempotent — if no loose prior-month files exist (the normal case, since daily entries live inside weekly logs from mid-June 2026 onward), it is a no-op. Pass `--no-archive` to `ingest_coros_fit.py` to skip it for a single run.
 - Current-week sync must still read and update archived historical daily logs when a week spans a month boundary.
 
 Use `.venv/bin/python scripts/summarize_coros_fit.py` when the optional FIT parser dependency is available.

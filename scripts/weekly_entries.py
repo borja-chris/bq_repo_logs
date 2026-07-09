@@ -252,13 +252,10 @@ def parse_weekly_day_entries(week_start: date) -> dict[date, WeeklyDayEntry]:
     return parse_weekly_day_entries_from_text(path.read_text())
 
 
-def parse_legacy_daily_log_entry(day_date: date) -> WeeklyDayEntry | None:
-    path = resolve_daily_log_path(day_date)
-    if not path.exists():
-        return None
+def parse_daily_log_text(day_date: date, text: str) -> WeeklyDayEntry:
     entry = create_weekly_day_entry(day_date)
     section: str | None = None
-    text = ensure_daily_log_structure(path.read_text())
+    text = ensure_daily_log_structure(text)
     for raw_line in text.splitlines():
         if raw_line.startswith("- Planned:"):
             entry.planned = raw_line.removeprefix("- Planned:").strip()
@@ -299,6 +296,13 @@ def parse_legacy_daily_log_entry(day_date: date) -> WeeklyDayEntry | None:
     entry.managed_notes_lines = normalize_nested_note_lines(entry.managed_notes_lines)
     entry.manual_notes_lines = normalize_nested_note_lines(entry.manual_notes_lines)
     return entry
+
+
+def parse_legacy_daily_log_entry(day_date: date) -> WeeklyDayEntry | None:
+    path = resolve_daily_log_path(day_date)
+    if not path.exists():
+        return None
+    return parse_daily_log_text(day_date, path.read_text())
 
 
 def merge_legacy_entry(target: WeeklyDayEntry, legacy: WeeklyDayEntry) -> None:

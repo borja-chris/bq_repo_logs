@@ -24,6 +24,7 @@ from pathlib import Path
 
 import ingest_coros_fit_batch as batch
 import ingest_coros_fit_weather as weather
+import monthly_archive
 import summarize_coros_fit as summarize
 from weekly_entries import (
     DAILY_ENTRIES_HEADING,
@@ -226,6 +227,11 @@ def parse_args() -> argparse.Namespace:
         help="Fail with a non-zero exit code if any activity is missing weather after enrichment.",
     )
     parser.add_argument(
+        "--no-archive",
+        action="store_true",
+        help="Skip automatic month-boundary daily-log archiving.",
+    )
+    parser.add_argument(
         "--manual-note",
         action="append",
         default=[],
@@ -389,6 +395,10 @@ def main() -> int:
     )
     failures = weather.weather_failures(rows) if weather_enabled and rows else []
 
+    archive_results: list[dict] = []
+    if not args.no_archive:
+        archive_results = monthly_archive.run_monthly_archive(today)
+
     print(f"Import date: {today.isoformat()}")
     print(f"Moved FIT files: {len(moved_files)}")
     if moved_files:
@@ -418,6 +428,11 @@ def main() -> int:
         print(f"README current week refreshed: {summarize.repo_relpath(README_PATH)}")
     if manifest_path is not None:
         print(f"Manifest updated: {summarize.repo_relpath(manifest_path)}")
+    for result in archive_results:
+        print(
+            f"Archived prior-month daily logs: {result['month']} "
+            f"({len(result['moved'])} files) -> {summarize.repo_relpath(result['summary_path'])}"
+        )
     print(
         "Manual follow-up: coaching interpretation, retros, and plan changes remain manual. "
         "Subjective daily notes can be attached during import with --manual-note, --sleep, "
