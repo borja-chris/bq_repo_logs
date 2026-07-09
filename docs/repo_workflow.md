@@ -69,8 +69,8 @@ Use a decision record before:
 For a new COROS export:
 
 1. Drop new raw `.fit` files in the repo root.
-2. Run `.venv/bin/python scripts/ingest_coros_fit.py`.
-3. If the user supplied same-turn subjective notes for the run, pass them into the ingest command with `--manual-note`, `--sleep`, `--soreness`, `--stress`, and `--warning-signs` so they are written into the active weekly log immediately.
+2. Run `scripts/ingest.sh` — the canonical import command. It always invokes `ingest_coros_fit.py` under the repo `.venv`, verifies the FIT parser is importable first, and aborts with a setup hint if the venv is missing or incomplete, so the import cannot silently fall back to a parser-less interpreter. All arguments pass straight through. (Equivalent to `.venv/bin/python scripts/ingest_coros_fit.py`; never invoke the script under a bare system `python`.)
+3. If the user supplied same-turn subjective notes for the run, pass them into `scripts/ingest.sh` with `--manual-note`, `--sleep`, `--soreness`, `--stress`, and `--warning-signs` so they are written into the active weekly log immediately.
 4. Let the script move those files into `data/coros_exports/COROS_export_YYYY-MM-DD/` for the import date.
 5. Do not keep `*:Zone.Identifier` files.
 6. Add or update `SHA256SUMS.txt` for the loose `.fit` files.
