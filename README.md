@@ -30,7 +30,7 @@ Week of `2026-07-06`
 | Monday | Off | 4.52 mi run | 50:58 at 11:17/mi. |
 | Tuesday | 5-6 mi easy | 5.73 mi run | 1:01:21 at 10:42/mi. Warm up followed by 3x1 mile repeats with a ~2 min rest in between. Intervals done at ~8:00/mi pace. |
 | Wednesday | 4-5 mi very easy | 8.56 mi run | 1:34:26 at 11:02/mi. Longer run. Kicked up the pace mid-run to see where I was at. Felt pretty good. |
-| Thursday | 6 mi easy | x | x |
+| Thursday | 6 mi easy | x | Rest day, no run (planned 6 mi easy swapped to rest). Intentional, not fatigue-driven. |
 | Friday | Off | 4.33 mi run | 48:20 at 11:10/mi. |
 | Saturday | 4-5 mi easy | 4.45 mi total (3 runs) | 38:56 at 8:45/mi. Planned parkrun 5k. Mon-Wed quality was front-loaded (7/7 mile repeats, 7/8 longer run) to arrive fresh; Thu-Fri kept easy. Parkrun 5k result (own FIT, 478830233435275572): 3.06 mi in 24:53, 8:08/mi, avg HR 168 / max 188. |
 | Sunday | 9-10 mi easy | x | x |
