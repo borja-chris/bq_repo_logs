@@ -43,6 +43,9 @@ After each week:
 
 ## File Naming
 
+- Cycle plan overview: `plans/2026-half-marathon/README.md`
+- Block-level framework: `plans/2026-half-marathon/03_framework.md`
+- Per-week plan file: `plans/2026-half-marathon/weeks/week_YYYY-MM-DD.md` (same date key as the active weekly log and weekly retro)
 - Active weekly log: `logs/weekly/week_YYYY-MM-DD.md`
 - Historical daily log month folder: `logs/daily/YYYY/YYYY-MM/`
 - Historical daily log: `logs/daily/YYYY/YYYY-MM/YYYY-MM-DD.md`
