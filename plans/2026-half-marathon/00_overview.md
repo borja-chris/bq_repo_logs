@@ -31,7 +31,30 @@
 ## Plan Files
 
 - `01_pre_block_ramp.md`: extended base into the block
-- `02_18_week_hanson_inspired_plan.md`: full daily 18-week training plan
-- `week_01_2026-08-03.md` through `week_18_2026-11-30.md`: week-level working files for adjustments, logs, and review
+- `03_framework.md`: block-level framework — purpose, weekly rhythm, pace guide, and adjustment rules that apply all cycle
+- `weeks/week_YYYY-MM-DD.md`: the single source of truth for each week's day-by-day plan (operational layer)
 
-Use the full 18-week plan as the block reference. Use the individual weekly files as the operational layer once training is underway.
+Use `03_framework.md` for block-level rules. Use the per-week files in `weeks/` as the operational layer once training is underway. Each week's file shares its date key with `logs/weekly/week_YYYY-MM-DD.md` and `retros/weekly/week_YYYY-MM-DD.md`.
+
+## Week Index
+
+| Week | Date | Target mileage | Primary purpose |
+| --- | --- | --- | --- |
+| 1 | 2026-08-03 | about 26-27 | enter the block smoothly while adjusting for Thursday evening travel |
+| 2 | 2026-08-10 | about 34 | add light volume while keeping workouts controlled |
+| 3 | 2026-08-17 | about 36 | continue the gradual load build |
+| 4 | 2026-08-24 | about 32 | absorb the first three weeks |
+| 5 | 2026-08-31 | about 38 | restart the build with stronger aerobic support |
+| 6 | 2026-09-07 | about 40 | establish 40 miles as normal, not heroic |
+| 7 | 2026-09-14 | about 42 | extend stamina without overreaching |
+| 8 | 2026-09-21 | about 36 | down week before the larger build |
+| 9 | 2026-09-28 | about 44 | transition fully into strength and HMP work |
+| 10 | 2026-10-05 | about 46 | build fatigue resistance |
+| 11 | 2026-10-12 | about 48 | consolidate upper-40s mileage |
+| 12 | 2026-10-19 | about 42 | down week before peak-specific work |
+| 13 | 2026-10-26 | about 50 | start the peak phase |
+| 14 | 2026-11-02 | about 52 | extend strength while holding recovery quality |
+| 15 | 2026-11-09 | about 54 | peak week if decision gates are green |
+| 16 | 2026-11-16 | about 48 | begin sharpening while reducing load |
+| 17 | 2026-11-23 | about 40 | taper while keeping touch with pace |
+| 18 | 2026-11-30 | about 28-32 before small rounding differences, including race | arrive fresh and sharp for race day |

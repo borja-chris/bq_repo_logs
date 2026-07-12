@@ -15,7 +15,7 @@ This repo should stay useful during normal training, not become a second workout
 
 Before each week:
 
-- Start from the matching file in `plans/2026-half-marathon/`.
+- Start from the matching week file in `plans/2026-half-marathon/weeks/` (framework-wide rules live in `plans/2026-half-marathon/03_framework.md`).
 - For plan adjustments, propose the exact wording first and only edit after approval.
 - Adjust only that week unless the change affects the whole block.
 - If the adjustment changes a major assumption, add or update a decision in `decisions/`.
