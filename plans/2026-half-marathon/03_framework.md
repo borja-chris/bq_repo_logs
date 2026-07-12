@@ -39,6 +39,33 @@ Plan-specific:
 | Strength reps | Around 10K to half-marathon effort; controlled, not all-out |
 | Speed reps | Faster than half-marathon pace, relaxed, with good form |
 
+## Rep Recovery Guide
+
+Recoveries between SOS reps are not part of the workout — they are continued
+movement to protect Hanson-style cumulative fatigue.
+
+- Recovery jogs are **run, not walked or stood** (strides are the exception).
+- Recovery pace is recovery/easy effort or a touch slower — roughly
+  8:45-9:30/mi, conversational and deliberately loose.
+- Recovery-jog mileage is **included** in each week's listed "X mi total"
+  (warmup + reps + recoveries + cooldown = total).
+
+| Rep type | Recovery jog | ~Time | Note |
+| --- | --- | --- | --- |
+| Speed 400m / 600m | 400m jog | 2:00-2:30 | Repeat form, not full rest |
+| Speed 800m / 1000m | 400-600m jog | 2:30-3:00 | Slightly longer for the longer rep |
+| Strength 1 mi | 400m jog | ~3:00 | Short on purpose |
+| Strength 1.5 mi | 600m jog | ~4:00 | Short on purpose |
+| Strength 2-3 mi | 800m jog | ~5:00 | Short on purpose |
+| Threshold blocks (2x2, 2x3, 2x4) | 400-800m jog | 2:00-4:00 | Brief reset between efforts |
+| HMP reps (3x1, 2x3, 2x4) | 400-800m jog | 2:00-4:00 | Race-rhythm simulation |
+| Strides (6x20s) | Walk/stand to easy breathing | 45-60s | Only standing-rest case |
+| Continuous / progression runs | none | — | No interval recovery by design |
+
+Short strength/threshold/HMP recoveries are intentional: the reps are meant to
+accumulate fatigue, not fully clear between efforts. If paces collapse rather
+than drift, apply the Adjustment Rules below before lengthening recoveries.
+
 ## Adjustment Rules
 
 - If easy days stop feeling easy, reduce the next SOS workout before cutting the long run.
