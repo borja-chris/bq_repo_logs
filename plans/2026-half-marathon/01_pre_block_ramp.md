@@ -243,17 +243,17 @@ If these are not true, repeat this general load shape before progressing.
 ### Week of 2026-07-27
 
 - Target mileage: about 30-34
-- Primary purpose: freshen slightly and arrive ready to start the August 3 block well
+- Primary purpose: freshen slightly around Seattle travel and arrive ready to start the August 3 block well
 
 | Day | Run | Purpose | Notes |
 | --- | --- | --- | --- |
-| Monday | Off | Recovery | Start the week by absorbing rather than chasing volume. |
-| Tuesday | 5-6 mi easy | Easy aerobic | Optional relaxed strides only if they add pop, not fatigue. |
+| Monday | 8-9 mi easy w/ CSRD | Long run / social | Week's long run, run with CSRD in Seattle. Keep it conversational even if the group pace drifts; let feel decide the exact distance. |
+| Tuesday | Off or 3-4 mi very easy | Recovery / travel | Absorb the Monday group run. Keep it short and low-pressure; skip without makeup if travel or legs warrant. |
 | Wednesday | 4-5 mi very easy | Recovery / easy | Keep this short and controlled. |
 | Thursday | 6 mi easy | Easy aerobic | No need to prove fitness here. |
-| Friday | Off | Recovery | Keep the off day. |
-| Saturday | 4-5 mi easy | Easy aerobic | Stay relaxed. |
-| Sunday | 9-10 mi easy | Long run | Finish comfortable and ready to roll into the block. |
+| Friday | 4-5 mi easy | Easy aerobic | Stay relaxed. Moved up from Saturday to clear the travel day. |
+| Saturday | Off | Recovery / travel | Travel day. No makeup mileage. |
+| Sunday | 5-6 mi easy | Easy aerobic | Shorter day to close the week. Finish comfortable and ready to roll into the block. |
 
 ## Block-Entry Standard
 
