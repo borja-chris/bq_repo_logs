@@ -30,14 +30,41 @@ Plan-specific:
 
 ## Pace Guide
 
-| Run Type | Guide |
+All paces are anchored on the goal half-marathon pace of ~7:05/mi (sub-1:33,
+about a 1:32:53 finish). Race-effort references below are equivalents for that
+fitness, not separate goals. If the goal pace changes, re-derive this table.
+
+| Run Type | Pace | Basis |
+| --- | --- | --- |
+| Recovery | 8:45-9:30/mi | HMP + ~1:40-2:25; deliberately loose |
+| Easy aerobic | 8:15-8:50/mi | HMP + ~1:10-1:45; conversational |
+| Long run | 8:00-9:00/mi | Mostly easy; any steady finish no faster than ~7:50/mi |
+| Half-marathon pace (HMP) | 7:00-7:10/mi | Goal race pace (7:05 target) |
+| Threshold (~1-hr effort) | 6:50-7:00/mi | Sustained, controlled hard |
+| Strength reps | 6:45-6:55/mi | HMP - 10s, toward 10K effort; controlled, not all-out |
+| Speed reps | 6:15-6:35/mi | 5K-10K effort; faster for shorter reps, relaxed form |
+
+### Speed reps — target rep times
+
+Run the shorter reps nearer 5K effort, the longer reps nearer 10K effort.
+
+| Rep | Target time | ~Pace |
+| --- | --- | --- |
+| 400m | 1:34-1:37 | 6:18-6:30/mi |
+| 600m | 2:24-2:29 | 6:24-6:38/mi |
+| 800m | 3:12-3:20 | 6:24-6:40/mi |
+| 1000m | 4:02-4:12 | 6:30-6:45/mi |
+| 1200m | 4:54-5:04 | 6:34-6:47/mi |
+| 1 mile | 6:25-6:40 | 6:25-6:40/mi |
+
+### Strength reps — target rep times (at ~6:45-6:55/mi)
+
+| Rep | Target time |
 | --- | --- |
-| Easy / recovery | Conversational; probably around 8:20-9:30/mi depending on fatigue |
-| Long run | Mostly easy to steady; not a race-effort long run |
-| Half-marathon pace | About 7:05/mi |
-| Threshold | Controlled hard; roughly around current 1-hour race effort |
-| Strength reps | Around 10K to half-marathon effort; controlled, not all-out |
-| Speed reps | Faster than half-marathon pace, relaxed, with good form |
+| 1 mi | 6:45-6:55 |
+| 1.5 mi | 10:07-10:22 |
+| 2 mi | 13:30-13:50 |
+| 3 mi | 20:15-20:45 |
 
 ## Rep Recovery Guide
 
