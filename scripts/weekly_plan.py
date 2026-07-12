@@ -7,6 +7,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PLAN_DIR = REPO_ROOT / "plans" / "2026-half-marathon"
+WEEKS_DIR = PLAN_DIR / "weeks"
 PRE_BLOCK_PLAN_PATH = PLAN_DIR / "01_pre_block_ramp.md"
 
 
@@ -65,9 +66,9 @@ def parse_pre_block_week(target_week: date) -> WeekPlan | None:
 
 
 def parse_week_file(target_week: date) -> WeekPlan | None:
-    week_path = PLAN_DIR / f"week_{target_week.isoformat()}.md"
+    week_path = WEEKS_DIR / f"week_{target_week.isoformat()}.md"
     if not week_path.exists():
-        candidates = sorted(PLAN_DIR.glob("week_*_*.md"))
+        candidates = sorted(WEEKS_DIR.glob("week_*_*.md"))
         for path in candidates:
             if path.name.endswith(f"_{target_week.isoformat()}.md"):
                 week_path = path
@@ -98,7 +99,7 @@ def parse_week_file(target_week: date) -> WeekPlan | None:
             )
         )
     return WeekPlan(
-        source_relpath=f"plans/2026-half-marathon/{week_path.name}",
+        source_relpath=f"plans/2026-half-marathon/weeks/{week_path.name}",
         week_start=target_week,
         target_mileage=target_match.group("target"),
         primary_purpose=purpose_match.group("purpose"),

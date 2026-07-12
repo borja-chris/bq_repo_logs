@@ -33,6 +33,7 @@
 - `01_pre_block_ramp.md`: extended base into the block
 - `03_framework.md`: block-level framework — purpose, weekly rhythm, pace guide, and adjustment rules that apply all cycle
 - `weeks/week_YYYY-MM-DD.md`: the single source of truth for each week's day-by-day plan (operational layer)
+- `BLOCK_OVERVIEW.md`: generated at-a-glance view of the whole block (weeks x days grid + arc index); rebuild with `python scripts/block_overview.py` after editing any week file
 
 Use `03_framework.md` for block-level rules. Use the per-week files in `weeks/` as the operational layer once training is underway. Each week's file shares its date key with `logs/weekly/week_YYYY-MM-DD.md` and `retros/weekly/week_YYYY-MM-DD.md`.
 
