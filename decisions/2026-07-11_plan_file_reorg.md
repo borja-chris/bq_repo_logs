@@ -16,12 +16,12 @@ Single source of truth over managed duplication. Keep block-level framework in o
 
 ## Risk
 
-The reorg is content-preserving, so training content is unchanged. The main risk is stale path references elsewhere in the repo. Live references in `00_overview.md`, `docs/repo_workflow.md`, and `sources/05_chat_handoff_summary.md` are updated in the same change. Historical records in `logs/` and `retros/` are left as point-in-time records and intentionally not rewritten.
+The reorg is content-preserving, so training content is unchanged. The main risk is stale path references elsewhere in the repo. Live references in `README.md`, `docs/repo_workflow.md`, and `sources/05_chat_handoff_summary.md` are updated in the same change. Historical records in `logs/` and `retros/` are left as point-in-time records and intentionally not rewritten.
 
 ## Adaptation
 
 New layout:
-- `00_overview.md` — race, volume frame, structure, plan-file map, and a week index table.
+- `README.md` — race, volume frame, structure, plan-file map, and a week index table. Renamed from `00_overview.md` so GitHub renders it inline when browsing the folder.
 - `01_pre_block_ramp.md` — unchanged.
 - `03_framework.md` — block-level framework extracted from the former full plan.
 - `weeks/week_YYYY-MM-DD.md` — one file per week, the single source of truth for that week's day-by-day plan.
@@ -30,4 +30,4 @@ The former `02_18_week_hanson_inspired_plan.md` is removed; regenerating a conca
 
 ## Final Call
 
-Proceed. The reorg removes the duplicate-edit hazard and aligns the plan layer's date key with logs and retros, at the cost of losing filename ordinal-sort in `ls` (mitigated by the week index in `00_overview.md` and the `# Week N` heading inside each file).
+Proceed. The reorg removes the duplicate-edit hazard and aligns the plan layer's date key with logs and retros, at the cost of losing filename ordinal-sort in `ls` (mitigated by the week index in `README.md` and the `# Week N` heading inside each file).

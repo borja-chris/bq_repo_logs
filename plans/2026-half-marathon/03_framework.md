@@ -50,4 +50,4 @@ Plan-specific:
 
 ## Weekly Files
 
-The day-by-day plan for each week lives in one file per week under `weeks/` (`weeks/week_YYYY-MM-DD.md`). Each week's file is the single source of truth for that week and shares its date key with `logs/weekly/week_YYYY-MM-DD.md` and `retros/weekly/week_YYYY-MM-DD.md`. See `00_overview.md` for the week index.
+The day-by-day plan for each week lives in one file per week under `weeks/` (`weeks/week_YYYY-MM-DD.md`). Each week's file is the single source of truth for that week and shares its date key with `logs/weekly/week_YYYY-MM-DD.md` and `retros/weekly/week_YYYY-MM-DD.md`. See `README.md` for the week index.
