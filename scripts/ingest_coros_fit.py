@@ -227,6 +227,11 @@ def parse_args() -> argparse.Namespace:
         help="Fail with a non-zero exit code if any activity is missing weather after enrichment.",
     )
     parser.add_argument(
+        "--require-covered",
+        action="store_true",
+        help="Fail with a non-zero exit code if any imported activity lands in no synced weekly log.",
+    )
+    parser.add_argument(
         "--no-archive",
         action="store_true",
         help="Skip automatic month-boundary daily-log archiving.",
@@ -273,14 +278,14 @@ def monday_of(target: date) -> date:
     return target - timedelta(days=target.weekday())
 
 
-def sync_records(
+def sync_week(
+    week_start: date,
     today: date,
     update_logs: bool,
     update_readme_flag: bool,
     recent_activities: list[weather.Activity] | None = None,
     subjective_updates: dict[date, SubjectiveUpdate] | None = None,
 ) -> dict[str, object]:
-    week_start = monday_of(today)
     week_end = week_start + timedelta(days=6)
     week_plan = load_week_plan(week_start)
     day_entries = parse_weekly_day_entries(week_start)
@@ -319,7 +324,16 @@ def sync_records(
             upsert_activity_entries(entry, dated_activities)
             synced_entry_dates.append(activity_date)
         if subjective_updates:
-            synced_entry_dates.extend(apply_subjective_updates(day_entries, subjective_updates))
+            # Only apply notes dated inside this week; a note for another week is
+            # handled by that week's own sync pass. Without this filter a dated
+            # note would be forced into the wrong weekly log.
+            week_updates = {
+                day_date: update
+                for day_date, update in subjective_updates.items()
+                if week_start <= day_date <= week_end
+            }
+            if week_updates:
+                synced_entry_dates.extend(apply_subjective_updates(day_entries, week_updates))
 
     rows, total_miles, status = build_week_rows(week_plan, day_entries)
     weekly_path: Path | None = None
@@ -333,6 +347,77 @@ def sync_records(
         "synced_entry_dates": sorted(set(synced_entry_dates)),
         "total_miles": total_miles,
         "status": status,
+    }
+
+
+def sync_records(
+    today: date,
+    update_logs: bool,
+    update_readme_flag: bool,
+    recent_activities: list[weather.Activity] | None = None,
+    subjective_updates: dict[date, SubjectiveUpdate] | None = None,
+) -> dict[str, object]:
+    clock_week = monday_of(today)
+    # Import date is independent of activity date: a run may be ingested the same
+    # day, a week later, or months later. Sync the clock week (it owns the README
+    # current-week refresh and planned-day seeding) plus the week of every
+    # imported activity and every dated subjective note, however far in the past.
+    target_weeks = {clock_week}
+    for activity in recent_activities or []:
+        target_weeks.add(monday_of(activity.local_date))
+    for day_date in subjective_updates or {}:
+        target_weeks.add(monday_of(day_date))
+
+    # The clock week syncs first and is the only week allowed to touch README, so
+    # correcting an old week never rolls the current-week block backward.
+    week_results: dict[date, dict[str, object]] = {
+        clock_week: sync_week(
+            clock_week,
+            today,
+            update_logs=update_logs,
+            update_readme_flag=update_readme_flag,
+            recent_activities=recent_activities,
+            subjective_updates=subjective_updates,
+        )
+    }
+    for week_start in sorted(target_weeks - {clock_week}):
+        week_results[week_start] = sync_week(
+            week_start,
+            today,
+            update_logs=update_logs,
+            update_readme_flag=False,
+            recent_activities=recent_activities,
+            subjective_updates=subjective_updates,
+        )
+
+    synced_entry_dates: list[date] = []
+    weekly_paths: list[Path] = []
+    for week_start in sorted(week_results):
+        result = week_results[week_start]
+        synced_entry_dates.extend(result["synced_entry_dates"])  # type: ignore[arg-type]
+        path = result["weekly_path"]
+        if isinstance(path, Path):
+            weekly_paths.append(path)
+
+    # Safety net: with per-activity week syncing, every imported activity should
+    # land in some week's log. If one does not, surface it loudly rather than
+    # reporting a silent success (the exact failure this refactor removes).
+    covered_dates = set(synced_entry_dates)
+    if update_logs and recent_activities:
+        uncovered_activity_dates = sorted(
+            {activity.local_date for activity in recent_activities} - covered_dates
+        )
+    else:
+        uncovered_activity_dates = []
+
+    clock_result = week_results[clock_week]
+    return {
+        "week_plan": clock_result["week_plan"],
+        "weekly_paths": weekly_paths,
+        "synced_entry_dates": sorted(set(synced_entry_dates)),
+        "total_miles": clock_result["total_miles"],
+        "status": clock_result["status"],
+        "uncovered_activity_dates": uncovered_activity_dates,
     }
 
 
@@ -418,12 +503,13 @@ def main() -> int:
                     print(f"  - {activity_id}: {error}")
     synced_entry_dates = sync_result["synced_entry_dates"]
     if isinstance(synced_entry_dates, list) and synced_entry_dates:
-        print(f"Current-week daily entries synced: {len(synced_entry_dates)}")
+        print(f"Daily entries synced: {len(synced_entry_dates)}")
         for day_date in synced_entry_dates:
             print(f"  - {day_date.isoformat()}")
-    weekly_path = sync_result["weekly_path"]
-    if isinstance(weekly_path, Path):
-        print(f"Weekly log updated: {summarize.repo_relpath(weekly_path)}")
+    weekly_paths = sync_result["weekly_paths"]
+    if isinstance(weekly_paths, list):
+        for weekly_path in weekly_paths:
+            print(f"Weekly log updated: {summarize.repo_relpath(weekly_path)}")
     if update_readme_flag:
         print(f"README current week refreshed: {summarize.repo_relpath(README_PATH)}")
     if manifest_path is not None:
@@ -433,6 +519,10 @@ def main() -> int:
             f"Archived prior-month daily logs: {result['month']} "
             f"({len(result['moved'])} files) -> {summarize.repo_relpath(result['summary_path'])}"
         )
+    uncovered_activity_dates = sync_result["uncovered_activity_dates"]
+    if isinstance(uncovered_activity_dates, list) and uncovered_activity_dates:
+        joined = ", ".join(day_date.isoformat() for day_date in uncovered_activity_dates)
+        print(f"WARNING: imported activities landed in no synced weekly log: {joined}")
     print(
         "Manual follow-up: coaching interpretation, retros, and plan changes remain manual. "
         "Subjective daily notes can be attached during import with --manual-note, --sleep, "
@@ -441,6 +531,9 @@ def main() -> int:
     if args.require_weather and failures:
         print("Import failed requirement: weather enrichment missing for one or more activities.")
         return 2
+    if args.require_covered and isinstance(uncovered_activity_dates, list) and uncovered_activity_dates:
+        print("Import failed requirement: one or more activities landed in no synced weekly log.")
+        return 4
     return 0
 
 

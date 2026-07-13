@@ -178,11 +178,12 @@ class IngestCorosFitHelpersTest(unittest.TestCase):
         ):
             result = m.sync_records(today, update_logs=True, update_readme_flag=True)
 
-        self.assertEqual(result["weekly_path"], weekly_path)
+        self.assertEqual(result["weekly_paths"], [weekly_path])
         self.assertEqual(
             result["synced_entry_dates"],
             [week_start.replace(day=9), week_start.replace(day=10)],
         )
+        self.assertEqual(result["uncovered_activity_dates"], [])
         self.assertEqual(result["status"], "Tuesday run logged")
         self.assertAlmostEqual(result["total_miles"], 5.0)
         synced_entries = weekly_calls[0][4]
@@ -267,6 +268,92 @@ class IngestCorosFitHelpersTest(unittest.TestCase):
         self.assertEqual(synced_entry.pace, "10:32/mi")
         self.assertIn("first.fit", "\n".join(synced_entry.managed_notes_lines))
         self.assertIn("second.fit", "\n".join(synced_entry.managed_notes_lines))
+
+    def test_sync_records_files_prior_week_run_imported_later(self) -> None:
+        # Sunday run imported the following week: the activity belongs to the
+        # 2026-07-06 week, but the import happens on Monday 2026-07-13. The run
+        # must land in its own (older) week's log while README only refreshes for
+        # the current clock week.
+        clock_week = date(2026, 7, 13)
+        activity_week = date(2026, 7, 6)
+        run_day = date(2026, 7, 12)
+        today = clock_week
+
+        clock_plan = m.WeekPlan(
+            source_relpath="plans/2026-half-marathon/01_pre_block_ramp.md",
+            week_start=clock_week,
+            target_mileage="33-36",
+            primary_purpose="base",
+            day_plans=[m.DayPlan("Monday", "Off", "Recovery", "", clock_week)],
+        )
+        activity_plan = m.WeekPlan(
+            source_relpath="plans/2026-half-marathon/01_pre_block_ramp.md",
+            week_start=activity_week,
+            target_mileage="29-32",
+            primary_purpose="absorb",
+            day_plans=[m.DayPlan("Sunday", "Long run", "Aerobic", "", run_day)],
+        )
+
+        activity = m.weather.Activity(
+            row={
+                "distance_mi": "8.52",
+                "duration_s": "5578",
+                "sport": "running",
+                "source_relpath": "data/coros_exports/COROS_export_2026-07-13/run.fit",
+                "start_time": "2026-07-12T09:59:38-04:00",
+                "avg_hr": "143",
+                "max_hr": "164",
+                "ascent_m": "103",
+                "weather_temp_f": "75.2",
+                "weather_observation_time": "2026-07-12T09:00",
+                "weather_source": "open-meteo",
+            },
+            local_start=datetime.fromisoformat("2026-07-12T09:59:38-04:00"),
+            local_date=run_day,
+            timezone_name="America/New_York",
+        )
+
+        plans = {clock_week: clock_plan, activity_week: activity_plan}
+        weekly_calls: list[date] = []
+        readme_calls: list[date] = []
+        with patch.object(
+            m, "load_week_plan", side_effect=lambda ws: plans[ws]
+        ), patch.object(
+            m, "parse_weekly_day_entries", side_effect=lambda ws: {}
+        ), patch.object(
+            m, "parse_legacy_daily_log_entry", return_value=None
+        ), patch.object(
+            m.weather, "load_processed_activities_for_week", return_value=[]
+        ), patch.object(
+            m,
+            "upsert_weekly_log",
+            side_effect=lambda week_plan, *rest: (
+                weekly_calls.append(week_plan.week_start)
+                or Path(f"/tmp/week_{week_plan.week_start.isoformat()}.md")
+            ),
+        ), patch.object(
+            m, "update_readme", side_effect=lambda week_plan, *rest: readme_calls.append(week_plan.week_start)
+        ):
+            result = m.sync_records(
+                today,
+                update_logs=True,
+                update_readme_flag=True,
+                recent_activities=[activity],
+            )
+
+        # Both weeks written; README refreshed for the clock week only.
+        self.assertEqual(sorted(weekly_calls), [activity_week, clock_week])
+        self.assertEqual(readme_calls, [clock_week])
+        # The run landed on its true date and nothing was left uncovered.
+        self.assertIn(run_day, result["synced_entry_dates"])
+        self.assertEqual(result["uncovered_activity_dates"], [])
+        self.assertEqual(
+            sorted(result["weekly_paths"]),
+            [
+                Path(f"/tmp/week_{activity_week.isoformat()}.md"),
+                Path(f"/tmp/week_{clock_week.isoformat()}.md"),
+            ],
+        )
 
     def test_main_aborts_when_parser_dependencies_are_missing(self) -> None:
         captured: list[list[Path]] = []
