@@ -89,7 +89,19 @@ clock), not from the dates of the activities actually being imported. Import
 date and activity date are treated as the same thing; they diverge whenever a
 run is imported on a later day — and that gap is unbounded (days to months).
 
-## Proposed Fix (direction, not yet built)
+## Resolution
+
+Fix landed in `f8f2364` (same session). `sync_records` now syncs the clock week
+plus the week of every imported activity and dated subjective note; only the
+clock week refreshes README. Coverage warning + `--require-covered` added.
+Verified by new unit tests (same-day, multi-activity, prior-week-imported-later)
+and a live idempotent `--sync-only` that filed the 2026-07-12 run into the
+2026-07-06 log while leaving README on 2026-07-13. The action item below is
+closed. The one gap versus the original success condition: an explicit
+months-out case is covered by the same code path and the prior-week unit test,
+but not yet exercised by a dedicated live months-old import.
+
+## Proposed Fix (direction, as built)
 
 Recommended primary fix: after processing, drive the daily-entry sync from the
 imported activities' own `local_date`s — sync every distinct Mon–Sun week that
@@ -107,9 +119,9 @@ warning naming the activity and its date (and make it exit non-zero under a
 `--require-covered`-style flag, mirroring `--require-weather`). Success should
 never be reported for an activity that landed in no daily entry.
 
-This is a proposal for a later work session; no script code was changed here.
+Built this session as `f8f2364`.
 
-## Action Item (Tech)
+## Action Item (Tech) — DONE (`f8f2364`)
 
 - Owner: Claude (Tech Lead) — propose exact diff; EM approves before merge.
 - Action: make `scripts/ingest_coros_fit.py` sync the week(s) derived from
