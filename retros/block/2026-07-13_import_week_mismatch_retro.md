@@ -67,20 +67,39 @@
   existing convention.
 - This retro.
 
+## Constraint (EM, 2026-07-13)
+
+Ingest can happen at **any** time relative to when the run occurred: same day,
+a week out, or months out. The fix must treat the activity date as fully
+independent of the import date across arbitrary gaps — the 7/12→7/13 case is
+just the smallest instance of it. A months-out import is the sharpest test:
+using `--date` months in the past to fix an old week would also drag README's
+current-week block and the month-boundary daily-log archiving backward, both of
+which must stay keyed to the real clock.
+
+Relevant disk fact that makes this tractable: `monthly_archive` only relocates
+loose *daily* logs (`logs/daily/*.md` → `logs/daily/YYYY/YYYY-MM/`). Weekly logs
+(`logs/weekly/week_*.md`) are never archived, so the weekly log for any past
+week — however old — is still at its normal path and can be updated in place.
+
 ## Root Cause
 
 `sync_records` derives its one target week from `today` (`args.date` or the
 clock), not from the dates of the activities actually being imported. Import
 date and activity date are treated as the same thing; they diverge whenever a
-run is imported on a later day.
+run is imported on a later day — and that gap is unbounded (days to months).
 
 ## Proposed Fix (direction, not yet built)
 
 Recommended primary fix: after processing, drive the daily-entry sync from the
 imported activities' own `local_date`s — sync every distinct Mon–Sun week that
-contains a freshly imported activity, instead of only `monday_of(today)`. Keep
-README's current-week refresh keyed to the real clock date so fixing a past
-week never disturbs the current-week block (removes the two-step dance).
+contains a freshly imported activity, instead of only `monday_of(today)`. This
+must hold for arbitrary import-to-run gaps (same day to months); update the old
+week's `logs/weekly/week_*.md` in place (it is never archived). Keep README's
+current-week refresh **and** month-boundary daily-log archiving keyed to the
+real clock date, not to the imported activity's week, so importing an old run
+never rolls the current-week block or the archive state backward (removes the
+two-step dance).
 
 Guardrail to add alongside it: after enrichment, if any freshly processed
 activity's `local_date` is not covered by any week the run synced, print a loud
@@ -94,12 +113,14 @@ This is a proposal for a later work session; no script code was changed here.
 
 - Owner: Claude (Tech Lead) — propose exact diff; EM approves before merge.
 - Action: make `scripts/ingest_coros_fit.py` sync the week(s) derived from
-  imported activities' dates (not `monday_of(today)`), decouple the README
-  current-week refresh from `--date`, and warn (loudly, with a fail-flag
-  option) when any processed activity is covered by no synced week. Add a test
-  for the cross-week case (Sunday run imported the following day).
-- Success condition: dropping a single FIT whose start date is in a prior week
-  and running plain `scripts/ingest.sh` once populates the correct daily entry
-  and weekly total with no manual `--date` re-sync, leaves README on the true
-  current week, and prints a warning if any activity falls outside every synced
-  week. Verified by the new test and one live cross-week import.
+  imported activities' dates (not `monday_of(today)`), updating old weekly logs
+  in place; decouple the README current-week refresh and month-boundary daily
+  archiving from `--date`/activity date (keep them on the real clock); and warn
+  (loudly, with a fail-flag option) when any processed activity is covered by no
+  synced week. Add tests for same-day, one-week-out, and months-out imports.
+- Success condition: dropping a single FIT whose start date is same-day, a week
+  old, or months old and running plain `scripts/ingest.sh` once populates the
+  correct daily entry and weekly total with no manual `--date` re-sync, leaves
+  README on the true current week and the archive state untouched, and prints a
+  warning if any activity falls outside every synced week. Verified by the new
+  tests and one live cross-week import.
