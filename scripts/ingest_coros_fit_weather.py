@@ -12,6 +12,7 @@ from urllib.request import urlopen
 from zoneinfo import ZoneInfo
 
 import ingest_coros_fit_batch as batch
+import heat_adjust
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 LOCAL_TZ = ZoneInfo("America/New_York")
@@ -89,6 +90,34 @@ class Activity:
         source = self.row.get("weather_source", "").strip() or "weather"
         return f"- Weather at start: `{temperature_f} F` at `{observed_at}` from `{source}`."
 
+    @property
+    def heat_note(self) -> str:
+        load_sum_raw = self.row.get("heat_load_sum", "").strip()
+        temp_f = self.row.get("weather_temp_f", "").strip()
+        dew_f = self.row.get("weather_dew_point_f", "").strip()
+        if not load_sum_raw or not temp_f or not dew_f:
+            return ""
+        load_sum = int(load_sum_raw)
+        if load_sum < 111:
+            return ""
+        if self.distance_mi <= 0 or self.duration_s <= 0:
+            return ""
+        actual_sec = round(self.duration_s / self.distance_mi)
+        fraction = heat_adjust.pace_adjust_fraction(load_sum)
+        neutral_sec = heat_adjust.heat_neutral_pace_seconds(actual_sec, fraction)
+        label = heat_adjust.heat_band_label(load_sum)
+        pct = self.row.get("heat_pace_adjust_pct", "").strip() or f"{fraction * 100:.1f}"
+
+        def fmt(seconds: int) -> str:
+            minutes, secs = divmod(seconds, 60)
+            return f"{minutes}:{secs:02d}/mi"
+
+        return (
+            f"- Heat: {round(float(temp_f))}°F + {round(float(dew_f))}°F dew = {load_sum} "
+            f"({label}). Heat-neutral equivalent ~{fmt(neutral_sec)} "
+            f"(ran {fmt(actual_sec)}, ~+{pct}%)."
+        )
+
 
 def weather_hour_key(local_start: datetime) -> str:
     hour_start = local_start.replace(minute=0, second=0, microsecond=0)
@@ -118,7 +147,7 @@ def fetch_open_meteo_archive(
         "longitude": longitude,
         "start_date": start_date.isoformat(),
         "end_date": end_date.isoformat(),
-        "hourly": "temperature_2m",
+        "hourly": "temperature_2m,dew_point_2m,apparent_temperature",
         "timezone": timezone_name,
     }
     url = f"{OPEN_METEO_ARCHIVE_URL}?{urlencode(params)}"
@@ -145,13 +174,43 @@ def weather_update_from_hourly(activity: Activity, hourly: dict[str, object]) ->
     if temperature_c in (None, ""):
         return {"weather_fetch_error": f"Open-Meteo blank temperature for {target_time}"}
     temperature_c_float = float(temperature_c)
-    return {
+    temperature_f = (temperature_c_float * 9 / 5) + 32
+
+    update = {
         "weather_temp_c": f"{temperature_c_float:.1f}",
-        "weather_temp_f": f"{(temperature_c_float * 9 / 5) + 32:.1f}",
+        "weather_temp_f": f"{temperature_f:.1f}",
         "weather_source": "open-meteo",
         "weather_observation_time": target_time,
         "weather_fetch_error": "",
+        "weather_dew_point_c": "",
+        "weather_dew_point_f": "",
+        "weather_apparent_temp_c": "",
+        "weather_apparent_temp_f": "",
+        "heat_load_sum": "",
+        "heat_pace_adjust_pct": "",
     }
+
+    dew_points_c = hourly.get("dew_point_2m", [])
+    if isinstance(dew_points_c, list) and index < len(dew_points_c):
+        dew_c = dew_points_c[index]
+        if dew_c not in (None, ""):
+            dew_c_float = float(dew_c)
+            dew_f = (dew_c_float * 9 / 5) + 32
+            update["weather_dew_point_c"] = f"{dew_c_float:.1f}"
+            update["weather_dew_point_f"] = f"{dew_f:.1f}"
+            load_sum = heat_adjust.heat_load_sum(temperature_f, dew_f)
+            update["heat_load_sum"] = str(load_sum)
+            update["heat_pace_adjust_pct"] = f"{heat_adjust.pace_adjust_fraction(load_sum) * 100:.1f}"
+
+    apparent_c = hourly.get("apparent_temperature", [])
+    if isinstance(apparent_c, list) and index < len(apparent_c):
+        app_c = apparent_c[index]
+        if app_c not in (None, ""):
+            app_c_float = float(app_c)
+            update["weather_apparent_temp_c"] = f"{app_c_float:.1f}"
+            update["weather_apparent_temp_f"] = f"{(app_c_float * 9 / 5) + 32:.1f}"
+
+    return update
 
 
 def load_activities(rows: Iterable[dict[str, str]]) -> list[Activity]:

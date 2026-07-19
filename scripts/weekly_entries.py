@@ -164,6 +164,8 @@ def build_managed_notes_lines(activity: Any) -> list[str]:
     managed = [activity.import_note, activity.fit_note]
     if activity.weather_note:
         managed.append(activity.weather_note)
+    if activity.heat_note:
+        managed.append(activity.heat_note)
     return [f"  {line}" for line in managed]
 
 

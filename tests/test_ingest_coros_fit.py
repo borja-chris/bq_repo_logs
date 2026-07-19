@@ -113,6 +113,95 @@ class IngestCorosFitHelpersTest(unittest.TestCase):
         self.assertEqual(success["weather_fetch_error"], "")
         self.assertIn("missing hourly point", missing["weather_fetch_error"])
 
+    def test_weather_update_from_hourly_populates_heat_fields(self) -> None:
+        activity = m.weather.Activity(
+            row={
+                "start_lat": "40.81",
+                "start_lon": "-73.95",
+                "distance_mi": "5.76",
+                "duration_s": "3226",
+            },
+            local_start=datetime(2026, 7, 14, 8, 0),
+            local_date=date(2026, 7, 14),
+            timezone_name="America/New_York",
+        )
+        hourly = {
+            "time": ["2026-07-14T08:00"],
+            "temperature_2m": [33.3],
+            "dew_point_2m": [21.7],
+            "apparent_temperature": [39.0],
+        }
+        update = m.weather.weather_update_from_hourly(activity, hourly)
+        self.assertEqual(update["weather_temp_f"], "91.9")
+        self.assertEqual(update["weather_dew_point_f"], "71.1")
+        self.assertEqual(update["weather_apparent_temp_f"], "102.2")
+        # 92 + 71 = 163 -> heavy -> 7%
+        self.assertEqual(update["heat_load_sum"], "163")
+        self.assertEqual(update["heat_pace_adjust_pct"], "7.0")
+
+    def test_heat_note_renders_above_threshold(self) -> None:
+        activity = m.weather.Activity(
+            row={
+                "distance_mi": "5.76",
+                "duration_s": "3226",  # 560 s/mi = 9:20/mi
+                "weather_temp_f": "91.9",
+                "weather_dew_point_f": "71.1",
+                "heat_load_sum": "163",
+                "heat_pace_adjust_pct": "7.0",
+            },
+            local_start=datetime(2026, 7, 14, 8, 0),
+            local_date=date(2026, 7, 14),
+            timezone_name="America/New_York",
+        )
+        note = activity.heat_note
+        self.assertIn("163", note)
+        self.assertIn("heavy", note)
+        self.assertIn("8:43/mi", note)
+        self.assertIn("9:20/mi", note)
+
+    def test_heat_note_empty_below_threshold_or_missing(self) -> None:
+        low = m.weather.Activity(
+            row={"distance_mi": "5.0", "duration_s": "3000", "heat_load_sum": "90"},
+            local_start=datetime(2026, 5, 1, 8, 0),
+            local_date=date(2026, 5, 1),
+            timezone_name="America/New_York",
+        )
+        self.assertEqual(low.heat_note, "")
+        absent = m.weather.Activity(
+            row={"distance_mi": "5.0", "duration_s": "3000"},
+            local_start=datetime(2026, 5, 1, 8, 0),
+            local_date=date(2026, 5, 1),
+            timezone_name="America/New_York",
+        )
+        self.assertEqual(absent.heat_note, "")
+
+    def test_build_managed_notes_includes_heat_note_after_weather(self) -> None:
+        activity = m.weather.Activity(
+            row={
+                "source_relpath": "data/x.fit",
+                "distance_mi": "5.76",
+                "duration_s": "3226",
+                "sport": "running",
+                "start_time": "2026-07-14T08:00:00-04:00",
+                "avg_hr": "150",
+                "max_hr": "165",
+                "ascent_m": "40",
+                "weather_temp_f": "91.9",
+                "weather_dew_point_f": "71.1",
+                "weather_observation_time": "2026-07-14T08:00",
+                "weather_source": "open-meteo",
+                "heat_load_sum": "163",
+                "heat_pace_adjust_pct": "7.0",
+            },
+            local_start=datetime(2026, 7, 14, 8, 0),
+            local_date=date(2026, 7, 14),
+            timezone_name="America/New_York",
+        )
+        lines = m.build_managed_notes_lines(activity)
+        weather_idx = next(i for i, ln in enumerate(lines) if "Weather at start" in ln)
+        heat_idx = next(i for i, ln in enumerate(lines) if "Heat:" in ln)
+        self.assertGreater(heat_idx, weather_idx)
+
     def test_sync_records_seeds_entries_merges_legacy_and_upserts_activity(self) -> None:
         week_start = date(2026, 6, 8)
         today = date(2026, 6, 10)
