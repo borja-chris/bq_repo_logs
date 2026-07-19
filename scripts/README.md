@@ -125,6 +125,22 @@ Example:
 .venv/bin/python scripts/check_markdown_links.py
 ```
 
+## Weekly Mileage Reconciliation
+
+`reconcile_weekly_mileage.py` checks that every rendered weekly log's
+`Actual mileage so far` equals the sum of `distance_mi` for that week's
+activities in `data/processed/*.jsonl`. Historical logs can silently drift from
+the source data (for example a stale mid-week snapshot that was never
+re-rendered); this surfaces that drift deliberately instead of by accident during
+an unrelated full re-render. Exits `0` when everything reconciles and `1` with an
+expected-vs-actual line per mismatch.
+
+Example:
+
+```bash
+.venv/bin/python scripts/reconcile_weekly_mileage.py
+```
+
 ## Race Equivalency & Training Paces
 
 `race_equivalency.py` converts a recent race result into (a) equivalent race
