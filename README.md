@@ -21,17 +21,17 @@ Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 Week of `2026-07-13`
 
 - Target mileage: `about 33-36`
-- Actual mileage so far: `3.13`
+- Actual mileage so far: `14.70`
 - Primary purpose: extend the low-30s base and make a 6-day rhythm optional rather than mandatory
-- Week status: `Monday run logged`
+- Week status: `Friday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
 | Monday | Off or 3 mi very easy | 3.13 mi run | 30:51 at 9:51/mi. Group run — pushed to hold a sub-10 pace with a group. Hit 9:52/mi moving over 3.13 mi, avg HR 141 (max 177). Felt sustainable; group pull worked without redlining. |
-| Tuesday | 6 mi easy | x | x |
+| Tuesday | 6 mi easy | 5.76 mi run | 1:10:06 at 12:10/mi. |
 | Wednesday | 5 mi very easy | x | x |
 | Thursday | 6-7 mi easy | x | x |
-| Friday | Off | x | x |
+| Friday | Off | 5.81 mi run | 1:05:53 at 11:20/mi. |
 | Saturday | 5 mi easy | x | x |
 | Sunday | 10-11 mi easy | x | x |
 
