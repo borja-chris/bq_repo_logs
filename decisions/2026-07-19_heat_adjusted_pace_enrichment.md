@@ -25,14 +25,17 @@ README with no manual note.
 - Re-rendered the current-week log (`logs/weekly/week_2026-07-13.md`), which now shows
   heat notes for the 7/14 and 7/17 runs.
 
-## Deferred
+## Historical logs (done in a follow-up pass)
 
-- Re-rendering the 8 pre-existing historical weekly logs (2026-05-11 .. 2026-07-06) is
-  NOT done here. Those files are in the legacy log format (`## Auto Summary` /
-  `## Manual Notes`); `sync_week` would migrate them to the current format in the same
-  pass, producing large churn on system-of-record files unrelated to heat. Left as a
-  separate, explicit decision. The underlying JSONL data is fully backfilled regardless,
-  so any later re-render will surface the heat notes.
+- All 8 pre-existing historical weekly logs (2026-05-11 .. 2026-07-06) were re-rendered
+  after the initial decision, migrating them from the legacy format (`## Auto Summary` /
+  `## Manual Notes`) to the current format and adding heat notes (40 total). Manual and
+  subjective prose was preserved (sourced from the untouched daily logs and the renamed
+  weekly manual-notes section; verified no prose fragment was lost).
+- Side effect, verified correct: three weeks' `Actual mileage so far` totals changed
+  (05-18 9.02->20.77, 06-15 38.47->46.84, 06-22 22.95->30.03). The old logs were stale
+  mid-week snapshots; each new total exactly equals the sum of that week's processed
+  activities, so this is a correction to complete, accurate data, not a miscount.
 
 ## Risk / Adaptation
 
