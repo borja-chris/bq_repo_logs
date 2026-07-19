@@ -159,6 +159,28 @@ class IngestCorosFitHelpersTest(unittest.TestCase):
         self.assertIn("8:43/mi", note)
         self.assertIn("9:20/mi", note)
 
+    def test_heat_note_displayed_sum_is_internally_consistent(self) -> None:
+        # temp 92.5 + dew 67.4 = 159.9 -> stored load_sum rounds to 160, but the
+        # rounded components (92, 67) sum to 159. The printed line must show the
+        # component sum so it always adds up; pct comes from the fraction for 160.
+        activity = m.weather.Activity(
+            row={
+                "distance_mi": "5.0",
+                "duration_s": "3000",
+                "weather_temp_f": "92.5",
+                "weather_dew_point_f": "67.4",
+                "heat_load_sum": "160",
+                "heat_pace_adjust_pct": "5.2",
+            },
+            local_start=datetime(2026, 7, 14, 8, 0),
+            local_date=date(2026, 7, 14),
+            timezone_name="America/New_York",
+        )
+        note = activity.heat_note
+        self.assertIn("92°F + 67°F dew = 159", note)
+        self.assertNotIn("= 160", note)
+        self.assertIn("~+5.2%", note)
+
     def test_heat_note_empty_below_threshold_or_missing(self) -> None:
         low = m.weather.Activity(
             row={"distance_mi": "5.0", "duration_s": "3000", "heat_load_sum": "90"},

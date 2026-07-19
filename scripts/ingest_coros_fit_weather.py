@@ -106,14 +106,20 @@ class Activity:
         fraction = heat_adjust.pace_adjust_fraction(load_sum)
         neutral_sec = heat_adjust.heat_neutral_pace_seconds(actual_sec, fraction)
         label = heat_adjust.heat_band_label(load_sum)
-        pct = self.row.get("heat_pace_adjust_pct", "").strip() or f"{fraction * 100:.1f}"
+        # Display the rounded components and their own sum so the printed line always
+        # adds up. The stored, unrounded load_sum stays authoritative for the band,
+        # threshold, and fraction; pct is derived from that same fraction so the
+        # percentage and the neutral-pace math can never disagree within one note.
+        temp_display = round(float(temp_f))
+        dew_display = round(float(dew_f))
+        pct = f"{fraction * 100:.1f}"
 
         def fmt(seconds: int) -> str:
             minutes, secs = divmod(seconds, 60)
             return f"{minutes}:{secs:02d}/mi"
 
         return (
-            f"- Heat: {round(float(temp_f))}°F + {round(float(dew_f))}°F dew = {load_sum} "
+            f"- Heat: {temp_display}°F + {dew_display}°F dew = {temp_display + dew_display} "
             f"({label}). Heat-neutral equivalent ~{fmt(neutral_sec)} "
             f"(ran {fmt(actual_sec)}, ~+{pct}%)."
         )
