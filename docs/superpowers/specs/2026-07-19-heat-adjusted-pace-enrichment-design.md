@@ -95,7 +95,7 @@ Returns `""` when heat fields are absent or `heat_load_sum < 111`.
 
 Format:
 ```
-- Heat: 92°F + 71°F dew = 163 (heavy). Heat-neutral equivalent ~8:42/mi (ran 9:20/mi, ~+7%).
+- Heat: 92°F + 71°F dew = 163 (heavy). Heat-neutral equivalent ~8:43/mi (ran 9:20/mi, ~+7%).
 ```
 
 ### 4. `scripts/weekly_entries.py` — surface in notes
@@ -133,7 +133,7 @@ Backfill is a one-time operation, run and verified by the Tech Lead before commi
 
 - `tests/` — new unit tests for `heat_adjust.py`: band boundaries (100, 101, 110, 111,
   180, 181), midpoint values, neutral-pace back-calc, the worked example (92 + 71 = 163,
-  9:20/mi → ~8:42/mi @ 7%).
+  9:20/mi → ~8:43/mi @ 7%).
 - Extend `tests/test_ingest_coros_fit.py`:
   - `weather_update_from_hourly` populates the new fields from a mocked hourly payload.
   - `Activity.heat_note` renders above threshold and is empty below it / when fields absent.
