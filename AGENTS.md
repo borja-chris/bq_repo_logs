@@ -75,6 +75,25 @@ Major decisions include:
 - Adjusting long-run structure
 - Switching from half-marathon training to marathon training
 
+## Operating Discipline (hard rules)
+
+- **Staging**: Never use `git add -A` or `git add .` in this repo — untracked local tooling
+  state (`.codex`, `.tokensave/`) lives at root and will get swept in. Always stage explicit
+  file paths; use `git mv` for renames.
+- **Commit cadence**: For multi-phase execution plans, commit and push after each phase
+  completes and verifies, before starting the next phase. Report the commit sha before moving on.
+- **Action item ownership**: When drafting retro action items or follow-ups, default to
+  Claude as owner for anything Claude can execute (scripts in sync-only mode, doc refreshes,
+  greps). Only assign the operator a step that genuinely requires operator-only input
+  (dropping a new `.fit` file, a real-world observation, a subjective call).
+- **Diff generation**: Build review-package diffs with a direct `git diff ... > file` redirect,
+  never a piped or grouped command — the RTK hook silently truncates diff output inside
+  compound commands.
+- **Verbatim data reporting**: When restating numeric data (pace, distance, time, dates) from a
+  file or tool output into a summary, table, or reply, copy it directly from the output just
+  read — do not retype from recollection. Before sending, spot-check the summary against the
+  source.
+
 ## Editing and Retros
 
 - Do not edit files unless explicitly asked; for planning changes, propose exact text first.
