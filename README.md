@@ -18,22 +18,22 @@ The active weekly log lives in `logs/weekly/week_YYYY-MM-DD.md`; daily entries a
 <!-- current-week:start -->
 Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 
-Week of `2026-07-13`
+Week of `2026-07-20`
 
-- Target mileage: `about 33-36`
-- Actual mileage so far: `14.70`
-- Primary purpose: extend the low-30s base and make a 6-day rhythm optional rather than mandatory
-- Week status: `Friday run logged`
+- Target mileage: `about 34-37`
+- Actual mileage so far: `11.19`
+- Primary purpose: build a stable block-entry platform without increasing strain faster than durability
+- Week status: `Wednesday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | Off or 3 mi very easy | 3.13 mi run | 30:51 at 9:51/mi. Group run — pushed to hold a sub-10 pace with a group. Hit 9:52/mi moving over 3.13 mi, avg HR 141 (max 177). Felt sustainable; group pull worked without redlining. |
-| Tuesday | 6 mi easy | 5.76 mi run | 1:10:06 at 12:10/mi. |
-| Wednesday | 5 mi very easy | x | x |
-| Thursday | 6-7 mi easy | x | x |
-| Friday | Off | 5.81 mi run | 1:05:53 at 11:20/mi. |
-| Saturday | 5 mi easy | x | x |
-| Sunday | 10-11 mi easy | x | x |
+| Monday | Off or 3 mi very easy | 5.57 mi run | 59:46 at 10:44/mi. |
+| Tuesday | 6 mi easy | x | x |
+| Wednesday | 5 mi very easy | 5.62 mi run | 1:01:47 at 11:00/mi. Cut run short-ish; slight sharp pains in right calf. Possibly related to post-run jump rope sessions. Warning signs: Right calf: slight sharp pain, watch closely. |
+| Thursday | 7 mi easy or light steady finish | x | x |
+| Friday | Off | x | x |
+| Saturday | 5-6 mi easy | x | x |
+| Sunday | 11 mi easy | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
