@@ -18,22 +18,22 @@ The active weekly log lives in `logs/weekly/week_YYYY-MM-DD.md`; daily entries a
 <!-- current-week:start -->
 Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
 
-Week of `2026-07-20`
+Week of `2026-07-27`
 
-- Target mileage: `about 34-37`
-- Actual mileage so far: `11.19`
-- Primary purpose: build a stable block-entry platform without increasing strain faster than durability
-- Week status: `Wednesday run logged`
+- Target mileage: `about 30-34`
+- Actual mileage so far: `0.00`
+- Primary purpose: freshen slightly around Seattle travel and arrive ready to start the August 3 block well
+- Week status: `Saturday off logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | Off or 3 mi very easy | 5.57 mi run | 59:46 at 10:44/mi. |
-| Tuesday | 6 mi easy | x | x |
-| Wednesday | 5 mi very easy | 5.62 mi run | 1:01:47 at 11:00/mi. Cut run short-ish; slight sharp pains in right calf. Possibly related to post-run jump rope sessions. Warning signs: Right calf: slight sharp pain, watch closely. |
-| Thursday | 7 mi easy or light steady finish | x | x |
-| Friday | Off | x | x |
-| Saturday | 5-6 mi easy | x | x |
-| Sunday | 11 mi easy | x | x |
+| Monday | 8-9 mi easy w/ CSRD | x | x |
+| Tuesday | Off or 3-4 mi very easy | x | x |
+| Wednesday | 4-5 mi very easy | x | x |
+| Thursday | 6 mi easy | x | x |
+| Friday | 4-5 mi easy | x | x |
+| Saturday | Off | off | x |
+| Sunday | 5-6 mi easy | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
