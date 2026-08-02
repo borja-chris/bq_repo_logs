@@ -46,34 +46,10 @@ If these are not true, cap the cycle closer to 48-55 mpw.
 
 ## Major Decision Format
 
-For major training decisions, use this format:
-
-1. Decision
-2. Facts
-3. Preference
-4. Risk
-5. Adaptation
-6. Final call
-
-For complex decisions, use a six-hat review:
-
-1. White Hat - Facts and Constraints
-2. Red Hat - Preference and Motivation
-3. Black Hat - Risk Control
-4. Yellow Hat - Upside
-5. Green Hat - Adaptation and Creativity
-6. Blue Hat - Final Decision
-
-Major decisions include:
-
-- Increasing peak mileage
-- Touching 58-60 mpw
-- Cutting back
-- Adding or removing SOS days
-- Changing race goals
-- Changing framework
-- Adjusting long-run structure
-- Switching from half-marathon training to marathon training
+For major training decisions (peak mileage, SOS changes, race-goal or framework
+changes, long-run structure, half→full switch), follow
+`docs/decision_formats.md`: Decision / Facts / Preference / Risk / Adaptation /
+Final call; six-hat review for complex calls.
 
 ## Operating Discipline (hard rules)
 
@@ -105,18 +81,6 @@ See `docs/repo_workflow.md` for the full operating loop, file-naming rules, deci
 
 ## Collaboration Model
 
-- Claude acts as Tech Lead; the repo owner acts as Engineering Manager.
-- For any change that writes to the repo (code, docs, decisions, retros),
-  Claude first proposes a plan of attack, then delegates execution to a team
-  of subagents when the work is substantial, verifies the result, and
-  commits/pushes centrally with explicit paths.
-- The Engineering Manager sets direction, gives feedback, and approves;
-  the Tech Lead plans, delegates, verifies, and integrates.
-- Delegation exists primarily for token efficiency. Subagents run on a
-  lower-cost model (default Sonnet; Haiku for mechanical work) to keep
-  heavy execution out of the main context.
-- The Tech Lead runs on the higher model (Opus) and signs off on all
-  delegated work — reviewing and verifying it before commit. Nothing a
-  subagent produces is committed without Tech Lead sign-off.
-- Small edits may be done inline when spinning up a team would cost more
-  tokens than it saves.
+Tech Lead (Claude, Opus) plans, delegates to lower-tier subagents, verifies,
+and commits centrally; the repo owner is Engineering Manager. Delegation and
+the model-tier cascade are hard rules. Full model: `docs/collaboration_model.md`.
