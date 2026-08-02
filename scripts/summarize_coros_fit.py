@@ -57,6 +57,29 @@ FIELDS = [
     "parse_error",
 ]
 
+# Written to data/processed/*.jsonl. FIELDS stays the parse-time skeleton;
+# slimming happens only at write time so parse/weather code is untouched.
+OUTPUT_FIELDS = [
+    "activity_id", "source_file", "source_sha256",
+    "start_time", "start_timezone", "start_lat", "start_lon",
+    "sport", "distance_mi", "duration_s", "avg_hr", "max_hr", "ascent_m",
+    "weather_temp_f", "weather_dew_point_f", "weather_apparent_temp_f",
+    "weather_source", "weather_observation_time",
+    "heat_load_sum", "heat_pace_adjust_pct",
+    "parser",
+]
+ERROR_FIELDS = ["parse_error", "weather_fetch_error"]
+
+
+def slim_row(row: dict[str, str]) -> dict[str, str]:
+    out = {key: row.get(key, "") for key in OUTPUT_FIELDS}
+    for key in ERROR_FIELDS:
+        value = row.get(key, "").strip()
+        if value:
+            out[key] = value
+    return out
+
+
 DEFAULT_TIMEZONE = "America/New_York"
 
 def stringify_datetime(value: Any) -> str:
@@ -351,8 +374,7 @@ def write_jsonl(output_path: Path, rows: list[dict[str, str]]) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w") as handle:
         for row in rows:
-            handle.write(json.dumps(row, sort_keys=True))
-            handle.write("\n")
+            handle.write(json.dumps(slim_row(row), sort_keys=True) + "\n")
 
 
 def main() -> int:

@@ -70,7 +70,10 @@ class Activity:
 
     @property
     def import_note(self) -> str:
-        return f"- Imported from `{self.row['source_relpath']}`."
+        # Slim schema keeps only the file name; full provenance stays in the
+        # JSONL record (source_sha256) and data/coros_exports/ on disk.
+        source = self.row.get("source_relpath", "").strip() or self.row.get("source_file", "")
+        return f"- Imported from `{source}`."
 
     @property
     def fit_note(self) -> str:

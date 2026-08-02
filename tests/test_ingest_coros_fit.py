@@ -525,5 +525,34 @@ class IngestCorosFitSectionHelpersTest(unittest.TestCase):
         self.assertIn("## Daily Entries\n\nbody", updated)
 
 
+class SummarizeCorosFitSlimRowTest(unittest.TestCase):
+    def test_slim_row_drops_redundant_fields_and_empty_errors(self) -> None:
+        import summarize_coros_fit as s
+        full = {f: "" for f in s.FIELDS}
+        full.update({
+            "activity_id": "123", "source_file": "123.fit", "source_sha256": "abc",
+            "start_time": "2026-07-20T17:25:54-04:00", "start_time_raw": "x",
+            "start_time_utc": "x", "start_time_resolution": "x",
+            "start_timezone": "America/New_York", "import_batch": "tmpdir",
+            "source_relpath": "/tmp/tmpdir/123.fit", "sub_sport": "",
+            "weather_temp_c": "19.9", "weather_temp_f": "67.8",
+            "weather_dew_point_c": "-4.4", "weather_dew_point_f": "24.1",
+            "weather_apparent_temp_c": "16.4", "weather_apparent_temp_f": "61.5",
+            "heat_load_sum": "92", "heat_pace_adjust_pct": "0.0",
+            "parse_error": "", "weather_fetch_error": "boom",
+        })
+        slim = s.slim_row(full)
+        for dropped in ("start_time_raw", "start_time_utc", "start_time_resolution",
+                        "import_batch", "source_relpath", "sub_sport",
+                        "weather_temp_c", "weather_dew_point_c",
+                        "weather_apparent_temp_c"):
+            assert dropped not in slim
+        assert "parse_error" not in slim          # empty error omitted
+        assert slim["weather_fetch_error"] == "boom"  # non-empty error kept
+        assert slim["start_time"] == "2026-07-20T17:25:54-04:00"
+        assert slim["weather_temp_f"] == "67.8"
+        assert slim["heat_load_sum"] == "92"
+
+
 if __name__ == "__main__":
     unittest.main()
