@@ -6,7 +6,7 @@ Prepare for the 2026-12-06 half marathon with a sub-1:33 checkpoint target while
 
 ## Assumptions
 
-Baseline dates, mileage targets, and framework are in [`sources/00_project_context.md`](../../sources/00_project_context.md).
+Baseline dates, mileage targets, and framework are in [`sources/00_canonical_context.md`](../../sources/00_canonical_context.md).
 
 Plan-specific:
 

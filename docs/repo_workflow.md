@@ -38,7 +38,7 @@ After each week:
 
 - Add one weekly retro in `retros/weekly/`.
 - Capture what changed, what was skipped, and what recovery signals said.
-- Feed repeated patterns into `sources/04_planning_rules_and_retro.md`.
+- Feed repeated patterns into `sources/00_canonical_context.md`.
 - Preserve the distinction between facts, inference, and coaching opinion when writing adjustments or retros.
 
 ## File Naming

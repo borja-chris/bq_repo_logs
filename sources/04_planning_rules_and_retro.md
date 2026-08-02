@@ -1,36 +1,3 @@
-# Planning Rules and Retro
+# Moved
 
-## Core Rules
-
-- Preserve consistency as the top constraint.
-- Start from the preferred Hanson-inspired framework.
-- Adapt the framework to the runner's current situation and race distance.
-- Manage risk through decision gates.
-- Distinguish "not now" from "not possible."
-- Separate facts, inference, and opinion.
-- Do not treat mileage targets as identity markers.
-
-## Decision Gate for 58-60 mpw
-
-Require evidence that:
-
-- 6 days/week is consistent.
-- 45-50 mpw feels normal, not heroic.
-- Easy days still feel easy.
-- SOS days are not degrading.
-- Long runs do not require multi-day recovery.
-- Runs are not being skipped because of accumulated fatigue.
-- No warning signs appear in calves, Achilles, plantar fascia, knees, hips, or hamstrings.
-- Sleep, work stress, and life stress are not obviously undermining recovery.
-
-If these are not true, cap the cycle closer to 48-55 mpw.
-
-## Retro Notes
-
-- Every retro must produce at least one actionable follow-up, not just summary commentary.
-- The action should name the next change, decision, or verification step clearly enough that it can be executed.
-- When a user requests a plan-text change, restate the current file accurately and wait for the exact requested adjustment before redesigning the week.
-- Treat stale or inconsistent details as verification targets, not as permission to broaden the scope of the requested planning change.
-- Keep facts, inference, and decisions visibly separate during planning edits so a stale detail does not silently become a redesign trigger.
-- For external data enrichment during repo maintenance, fail loudly when a required field does not land instead of treating the import as complete.
-- Keep a repair path that can re-run enrichment from processed summaries without reimporting raw FIT files.
+Merged into [`00_canonical_context.md`](00_canonical_context.md) on 2026-08-01.
