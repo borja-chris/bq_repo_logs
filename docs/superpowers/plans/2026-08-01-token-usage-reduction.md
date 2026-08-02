@@ -73,16 +73,16 @@ and dominates any grep over `data/processed/`. Nothing in `scripts/` reads it by
 name; `reconcile_weekly_mileage.py` and weather re-enrichment operate on the
 current-block week window only.
 
-- [ ] **Step 1: Verify nothing depends on the file by name or by pre-block dates**
+- [x] **Step 1: Verify nothing depends on the file by name or by pre-block dates**
   Run: `grep -rn "2026-05-09_summary" scripts/ tests/`
   Expected: no matches (the ingest derives processed paths from the export dir name
   of the batch being imported, not from a fixed list).
-- [ ] **Step 2: Move with git mv**
+- [x] **Step 2: Move with git mv**
   ```bash
   mkdir -p data/archive/pre_block_history
   git mv data/processed/coros_export_2026-05-09_summary.jsonl data/archive/pre_block_history/
   ```
-- [ ] **Step 3: Write the README**
+- [x] **Step 3: Write the README**
   Create `data/archive/pre_block_history/README.md`:
   ```markdown
   # Pre-block history (quarantined)
@@ -93,10 +93,10 @@ current-block week window only.
   never sweep it in. Schema is the pre-2026-08 verbose schema; it was
   intentionally NOT migrated (audit copy).
   ```
-- [ ] **Step 4: Run full test suite**
+- [x] **Step 4: Run full test suite**
   Run: `.venv/bin/python -m pytest tests/ -v`
   Expected: all pass.
-- [ ] **Step 5: Commit (Tech Lead, after review)**
+- [x] **Step 5: Commit (Tech Lead, after review)**
   ```bash
   git add data/archive/pre_block_history/README.md
   git commit -m "Quarantine pre-block history JSONL out of data/processed"
@@ -114,7 +114,7 @@ Rule: content is *relocated*, never dropped. The auto-loaded file keeps: role
 statement, Default Context Loading, Core Coaching Rules, Decision Gates,
 Operating Discipline, Editing and Retros, plus one-line pointers.
 
-- [ ] **Step 1: Create `docs/collaboration_model.md`**
+- [x] **Step 1: Create `docs/collaboration_model.md`**
   Move the entire `## Collaboration Model` section body from `AGENTS.md` verbatim
   under a `# Collaboration Model (Tech Lead / EM)` heading, prefixed with:
   ```markdown
@@ -122,7 +122,7 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
 
   Referenced from `AGENTS.md`. Load when planning delegated work.
   ```
-- [ ] **Step 2: Create `docs/decision_formats.md`**
+- [x] **Step 2: Create `docs/decision_formats.md`**
   Move the `## Major Decision Format` section body (both the 6-step format and the
   six-hat list, and the "Major decisions include" list) verbatim under:
   ```markdown
@@ -132,7 +132,7 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   decision. Templates live in `templates/six_hat_decision_template.md` and
   `templates/decision_gate_template.md`.
   ```
-- [ ] **Step 3: Replace the moved sections in `AGENTS.md` with pointers**
+- [x] **Step 3: Replace the moved sections in `AGENTS.md` with pointers**
   ```markdown
   ## Major Decision Format
 
@@ -147,15 +147,15 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   and commits centrally; the repo owner is Engineering Manager. Delegation and
   the model-tier cascade are hard rules. Full model: `docs/collaboration_model.md`.
   ```
-- [ ] **Step 4: Verify no rule text was lost**
+- [x] **Step 4: Verify no rule text was lost**
   For each line removed from `AGENTS.md`, confirm it exists in one of the two new
   docs: `grep -F "<distinctive phrase>" docs/collaboration_model.md docs/decision_formats.md`
   for at least: "Nothing a", "six-hat", "Sub-agents run on a lower-cost model"
   (adjust phrases to actual text). Zero misses allowed.
-- [ ] **Step 5: Link check + tests**
+- [x] **Step 5: Link check + tests**
   Run: `.venv/bin/python scripts/check_markdown_links.py && .venv/bin/python -m pytest tests/ -v`
   Expected: both pass.
-- [ ] **Step 6: Commit + push Phase 0 (Tech Lead)**
+- [x] **Step 6: Commit + push Phase 0 (Tech Lead)**
   ```bash
   git add AGENTS.md docs/collaboration_model.md docs/decision_formats.md
   git commit -m "Slim AGENTS.md: relocate collaboration model and decision formats to docs/"
