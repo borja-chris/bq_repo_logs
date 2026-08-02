@@ -184,7 +184,7 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
 - Internal `FIELDS` (parse-time row skeleton) is unchanged; slimming happens at
   write time only, so parsing/weather/heat code keeps working untouched.
 
-- [ ] **Step 1: Write failing test** — append to `tests/test_ingest_coros_fit.py`:
+- [x] **Step 1: Write failing test** — append to `tests/test_ingest_coros_fit.py`:
   ```python
   def test_slim_row_drops_redundant_fields_and_empty_errors():
       import summarize_coros_fit as s
@@ -213,10 +213,10 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
       assert slim["weather_temp_f"] == "67.8"
       assert slim["heat_load_sum"] == "92"
   ```
-- [ ] **Step 2: Run it, verify it fails**
+- [x] **Step 2: Run it, verify it fails**
   Run: `.venv/bin/python -m pytest tests/test_ingest_coros_fit.py::test_slim_row_drops_redundant_fields_and_empty_errors -v`
   Expected: FAIL — `AttributeError: ... no attribute 'slim_row'`.
-- [ ] **Step 3: Implement in `scripts/summarize_coros_fit.py`** (below `FIELDS`):
+- [x] **Step 3: Implement in `scripts/summarize_coros_fit.py`** (below `FIELDS`):
   ```python
   # Written to data/processed/*.jsonl. FIELDS stays the parse-time skeleton;
   # slimming happens only at write time so parse/weather code is untouched.
@@ -240,14 +240,14 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
               out[key] = value
       return out
   ```
-- [ ] **Step 4: Apply at every JSONL write site**
+- [x] **Step 4: Apply at every JSONL write site**
   Run: `grep -n "jsonl\|json.dumps" scripts/summarize_coros_fit.py scripts/ingest_coros_fit_batch.py scripts/ingest_coros_fit_weather.py`
   In each function that serializes rows to a processed `*_summary.jsonl`
   (`write_processed_outputs` in `ingest_coros_fit_batch.py`, the CLI writer in
   `summarize_coros_fit.py`, and the re-enrich writer in
   `ingest_coros_fit_weather.py` if it writes directly), wrap the row:
   `handle.write(json.dumps(slim_row(row), sort_keys=True) + "\n")`.
-- [ ] **Step 5: Fix `Activity.import_note` for slim rows** — in
+- [x] **Step 5: Fix `Activity.import_note` for slim rows** — in
   `scripts/ingest_coros_fit_weather.py` replace lines 71-73 with:
   ```python
   @property
@@ -257,12 +257,12 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
       source = self.row.get("source_relpath", "").strip() or self.row.get("source_file", "")
       return f"- Imported from `{source}`."
   ```
-- [ ] **Step 6: Run the new test, then the full suite**
+- [x] **Step 6: Run the new test, then the full suite**
   Run: `.venv/bin/python -m pytest tests/ -v`
   Expected: new test passes; if any existing test asserts dropped keys in written
   output, update that assertion to the slim schema (it is a schema change, not a
   regression — note it in the task report).
-- [ ] **Step 7: Commit (Tech Lead, after review)**
+- [x] **Step 7: Commit (Tech Lead, after review)**
   ```bash
   git add scripts/summarize_coros_fit.py scripts/ingest_coros_fit_batch.py scripts/ingest_coros_fit_weather.py tests/test_ingest_coros_fit.py
   git commit -m "Slim processed JSONL output schema (write-time filter)"
@@ -278,7 +278,7 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
 - Consumes: `summarize_coros_fit.slim_row` (Task 3).
 - Produces: CLI `scripts/migrate_processed_slim.py [--processed-dir PATH]`.
 
-- [ ] **Step 1: Write failing test** — create `tests/test_migrate_processed_slim.py`:
+- [x] **Step 1: Write failing test** — create `tests/test_migrate_processed_slim.py`:
   ```python
   import json
   import subprocess
@@ -315,10 +315,10 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
       assert "weather_temp_c" not in migrated[0]
       assert "parse_error" not in migrated[0]
   ```
-- [ ] **Step 2: Run it, verify it fails**
+- [x] **Step 2: Run it, verify it fails**
   Run: `.venv/bin/python -m pytest tests/test_migrate_processed_slim.py -v`
   Expected: FAIL (script does not exist).
-- [ ] **Step 3: Implement `scripts/migrate_processed_slim.py`**
+- [x] **Step 3: Implement `scripts/migrate_processed_slim.py`**
   ```python
   #!/usr/bin/env python3
   """One-shot: rewrite data/processed/*_summary.jsonl to the slim output schema.
@@ -370,10 +370,10 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   if __name__ == "__main__":
       main()
   ```
-- [ ] **Step 4: Run test, verify pass; run full suite**
+- [x] **Step 4: Run test, verify pass; run full suite**
   Run: `.venv/bin/python -m pytest tests/test_migrate_processed_slim.py tests/ -v`
   Expected: PASS.
-- [ ] **Step 5: Commit (Tech Lead, after review)**
+- [x] **Step 5: Commit (Tech Lead, after review)**
   ```bash
   git add scripts/migrate_processed_slim.py tests/test_migrate_processed_slim.py
   git commit -m "Add one-shot slim migration for processed JSONL"
@@ -381,20 +381,20 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
 
 ### Task 5: Run the migration over real data (Haiku)
 
-- [ ] **Step 1: Record pre-migration facts**
+- [x] **Step 1: Record pre-migration facts**
   Run: `wc -l data/processed/*_summary.jsonl && du -sh data/processed`
   Save the output verbatim in the task report.
-- [ ] **Step 2: Run the migration**
+- [x] **Step 2: Run the migration**
   Run: `.venv/bin/python scripts/migrate_processed_slim.py`
   Expected: one `migrated <file>: N rows` line per file; N values must equal the
   pre-migration `wc -l` counts exactly.
-- [ ] **Step 3: Post-checks**
+- [x] **Step 3: Post-checks**
   Run: `wc -l data/processed/*_summary.jsonl && du -sh data/processed && .venv/bin/python scripts/reconcile_weekly_mileage.py && bash scripts/ingest.sh --sync-only && .venv/bin/python -m pytest tests/ -v`
   Expected: identical line counts, smaller size (~40-60%), reconcile clean,
   sync-only re-render succeeds (proves slim rows still drive weekly logs), tests
   pass. If sync-only rewrites weekly logs, inspect `git diff logs/` — expected:
   no changes (Managed Notes format unchanged until Phase 3).
-- [ ] **Step 4: Commit + push Phase 1 Lane 3 (Tech Lead)**
+- [x] **Step 4: Commit + push Phase 1 Lane 3 (Tech Lead)**
   ```bash
   git add data/processed
   git commit -m "Migrate processed JSONL files to slim schema"
@@ -411,7 +411,7 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
 - Modify: `sources/04_planning_rules_and_retro.md` (→ redirect stub)
 - Modify: `AGENTS.md` (Default Context Loading)
 
-- [ ] **Step 1: Create `sources/00_canonical_context.md`**
+- [x] **Step 1: Create `sources/00_canonical_context.md`**
   Concatenate the two source files with zero content loss: full text of
   `00_project_context.md` (sections: Long-Term Frame, Current Goal, Current
   Training Assumptions, Planning Principle), then full text of
@@ -427,13 +427,13 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   Deduplicate only exact-duplicate bullets that appear in both files (e.g.
   "Distinguish \"not now\" from \"not possible\"" / consistency-as-top-constraint
   appear in both Planning Principle and Core Rules — keep one, in Core Rules).
-- [ ] **Step 2: Reduce old files to redirect stubs** — each becomes exactly:
+- [x] **Step 2: Reduce old files to redirect stubs** — each becomes exactly:
   ```markdown
   # Moved
 
   Merged into [`00_canonical_context.md`](00_canonical_context.md) on 2026-08-01.
   ```
-- [ ] **Step 3: Update every reference**
+- [x] **Step 3: Update every reference**
   Run: `grep -rln "00_project_context\|04_planning_rules" --include="*.md" .`
   Update `AGENTS.md` Default Context Loading to:
   ```markdown
@@ -445,11 +445,11 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   Update all other referencing markdown files to point at the canonical file
   (plans/decisions/retros may keep historical mentions in past-tense narrative;
   update only live instructions and link targets).
-- [ ] **Step 4: Verify**
+- [x] **Step 4: Verify**
   Run: `.venv/bin/python scripts/check_markdown_links.py && .venv/bin/python -m pytest tests/ -v`
   Expected: pass. Also `wc -l sources/00_canonical_context.md` ≈ 60-65 (sum of
   originals minus merged headers/dupes).
-- [ ] **Step 5: Commit + push Phase 1 complete (Tech Lead)**
+- [x] **Step 5: Commit + push Phase 1 complete (Tech Lead)**
   ```bash
   git add sources/00_canonical_context.md sources/00_project_context.md sources/04_planning_rules_and_retro.md AGENTS.md
   git add <other updated referencing files, explicit paths>
