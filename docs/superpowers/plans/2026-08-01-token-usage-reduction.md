@@ -477,7 +477,7 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   day_entries: dict[date, WeeklyDayEntry]) -> str` — new 5th parameter; body now
   contains `- Days:` and `- Warnings:` lines that Task 8's parser reads.
 
-- [ ] **Step 1: Write failing test** — create `tests/test_weekly_summary.py`:
+- [x] **Step 1: Write failing test** — create `tests/test_weekly_summary.py`:
   ```python
   from datetime import date
   import sys
@@ -520,10 +520,10 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   ```
   (If `WeekPlan`'s constructor differs, mirror its real signature from
   `scripts/weekly_plan.py` — check first with `grep -n "class WeekPlan" -A 12 scripts/weekly_plan.py`.)
-- [ ] **Step 2: Run, verify failure**
+- [x] **Step 2: Run, verify failure**
   Run: `.venv/bin/python -m pytest tests/test_weekly_summary.py -v`
   Expected: FAIL — `build_weekly_log_body() takes 4 positional arguments but 5 were given`.
-- [ ] **Step 3: Implement** — replace `build_weekly_log_body` in
+- [x] **Step 3: Implement** — replace `build_weekly_log_body` in
   `scripts/weekly_entries.py`:
   ```python
   def day_digest(entry: WeeklyDayEntry) -> str:
@@ -563,11 +563,11 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   ```
   In `upsert_weekly_log` change the call to
   `build_weekly_log_body(week_plan, rows, total_miles, status, day_entries)`.
-- [ ] **Step 4: Run tests, re-render current week, eyeball**
+- [x] **Step 4: Run tests, re-render current week, eyeball**
   Run: `.venv/bin/python -m pytest tests/ -v && bash scripts/ingest.sh --sync-only && head -20 logs/weekly/week_2026-07-20.md`
   Expected: tests pass; the auto-summary block of the current week shows the two
   new lines with real data matching the daily entries verbatim.
-- [ ] **Step 5: Commit (Tech Lead, after review)**
+- [x] **Step 5: Commit (Tech Lead, after review)**
   ```bash
   git add scripts/weekly_entries.py tests/test_weekly_summary.py logs/weekly README.md
   git commit -m "Enrich weekly auto-summary with day digest and warning rollup"
@@ -588,7 +588,7 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   writing `STATUS.md`. Fails loud (`SystemExit`, nonzero) on unparseable blocks —
   never emits a guessed number.
 
-- [ ] **Step 1: Write failing test** — create `tests/test_status_digest.py`:
+- [x] **Step 1: Write failing test** — create `tests/test_status_digest.py`:
   ```python
   import subprocess
   import sys
@@ -636,8 +636,8 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
       )
       assert result.returncode != 0
   ```
-- [ ] **Step 2: Run, verify failure** (script missing).
-- [ ] **Step 3: Implement `scripts/status_digest.py`**
+- [x] **Step 2: Run, verify failure** (script missing).
+- [x] **Step 3: Implement `scripts/status_digest.py`**
   ```python
   #!/usr/bin/env python3
   """Generate STATUS.md — the one-file 'am I on track?' digest.
@@ -746,11 +746,11 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   if __name__ == "__main__":
       main()
   ```
-- [ ] **Step 4: Run tests, then generate the real file**
+- [x] **Step 4: Run tests, then generate the real file**
   Run: `.venv/bin/python -m pytest tests/test_status_digest.py -v && .venv/bin/python scripts/status_digest.py && cat STATUS.md`
   Expected: tests pass; STATUS.md under 60 lines; every number matches the source
   auto-summary blocks verbatim (spot-check against `logs/weekly/week_2026-07-20.md`).
-- [ ] **Step 5: Commit (Tech Lead, after review)**
+- [x] **Step 5: Commit (Tech Lead, after review)**
   ```bash
   git add scripts/status_digest.py tests/test_status_digest.py STATUS.md
   git commit -m "Add status digest generator and root STATUS.md view"
@@ -763,7 +763,7 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
 - Modify: `AGENTS.md` (Default Context Loading — drop the "(if present)" hedge)
 - Modify: `README.md` (one pointer line near the top)
 
-- [ ] **Step 1: ingest.sh runs the digest after every ingest** — replace the final
+- [x] **Step 1: ingest.sh runs the digest after every ingest** — replace the final
   `exec "${venv_python}" "${ingest_script}" "$@"` with:
   ```bash
   "${venv_python}" "${ingest_script}" "$@"
@@ -771,14 +771,14 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   ```
   (No `exec`: the digest must run after the ingest finishes; `set -e` still
   aborts on ingest failure so a failed import never regenerates the view.)
-- [ ] **Step 2: AGENTS.md** — Default Context Loading item 1 becomes:
+- [x] **Step 2: AGENTS.md** — Default Context Loading item 1 becomes:
   `1. \`STATUS.md\` — generated current-status digest`
-- [ ] **Step 3: README.md** — add under the title:
+- [x] **Step 3: README.md** — add under the title:
   `Current status at a glance: [STATUS.md](STATUS.md) (generated; regenerate via \`scripts/status_digest.py\`).`
-- [ ] **Step 4: Verify end-to-end**
+- [x] **Step 4: Verify end-to-end**
   Run: `bash scripts/ingest.sh --sync-only && git diff --stat && .venv/bin/python scripts/check_markdown_links.py && .venv/bin/python -m pytest tests/ -v`
   Expected: ingest completes and rewrites STATUS.md; links and tests pass.
-- [ ] **Step 5: Commit + push Phase 2 (Tech Lead)**
+- [x] **Step 5: Commit + push Phase 2 (Tech Lead)**
   ```bash
   git add scripts/ingest.sh AGENTS.md README.md STATUS.md
   git commit -m "Regenerate STATUS.md on every ingest; point default context at it"

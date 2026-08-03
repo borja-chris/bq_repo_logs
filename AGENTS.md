@@ -8,7 +8,7 @@ This repository is the system of record for a multi-year Boston Marathon qualify
 
 Before answering training-plan questions, read:
 
-1. `STATUS.md` — generated current-status digest (if present)
+1. `STATUS.md` — generated current-status digest
 2. `sources/00_canonical_context.md` — canonical facts and planning rules
 
 When Hanson-specific plan structure is needed, also read `sources/03_hanson_half_marathon_framework.md`. When repo workflow or prior chat context is needed, also read `sources/05_chat_handoff_summary.md` or `docs/repo_workflow.md`.

@@ -1,5 +1,7 @@
 # BQ Repo Log
 
+Current status at a glance: [STATUS.md](STATUS.md) (generated; regenerate via `scripts/status_digest.py`).
+
 System of record for a multi-year Boston Marathon qualifying attempt.
 
 Current working frame:

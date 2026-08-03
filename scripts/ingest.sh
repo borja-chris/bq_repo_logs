@@ -38,4 +38,5 @@ if ! "${venv_python}" -c "import sys; sys.path.insert(0, '${repo_root}/scripts')
   exit 1
 fi
 
-exec "${venv_python}" "${ingest_script}" "$@"
+"${venv_python}" "${ingest_script}" "$@"
+"${venv_python}" "${repo_root}/scripts/status_digest.py"
