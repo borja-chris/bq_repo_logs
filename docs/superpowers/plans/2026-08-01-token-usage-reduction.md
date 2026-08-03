@@ -1080,7 +1080,7 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
 - Modify: `docs/repo_workflow.md` (only sections describing the verbose Managed
   Notes format, the two-file mandated pre-read, or `data/processed` layout)
 
-- [ ] **Step 1: Write the decision record**
+- [x] **Step 1: Write the decision record**
   ```markdown
   # 2026-08-01 — Record/view split for token-usage reduction
 
@@ -1101,12 +1101,12 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   6. **Final call**: Adopted; executed by Opus-led subagent team under the
      mandatory tier cascade (globally hook-enforced).
   ```
-- [ ] **Step 2: Refresh `docs/repo_workflow.md`** — update only stale statements
+- [x] **Step 2: Refresh `docs/repo_workflow.md`** — update only stale statements
   found via: `grep -n "FIT summary\|00_project_context\|04_planning_rules\|Managed Notes" docs/repo_workflow.md`
-- [ ] **Step 3: Final full verification**
+- [x] **Step 3: Final full verification**
   Run: `.venv/bin/python -m pytest tests/ -v && .venv/bin/python scripts/check_markdown_links.py && .venv/bin/python scripts/status_digest.py`
   Expected: all green.
-- [ ] **Step 4: Commit + push Phase 3 complete (Tech Lead)**
+- [x] **Step 4: Commit + push Phase 3 complete (Tech Lead)**
   ```bash
   git add decisions/2026-08-01_token_usage_record_view_split.md docs/repo_workflow.md
   git commit -m "Record the record/view split decision; refresh workflow doc"
