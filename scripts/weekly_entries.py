@@ -520,13 +520,38 @@ def update_readme(week_plan: WeekPlan, rows: list[str], total_miles: float, stat
     README_PATH.write_text(updated)
 
 
-def build_weekly_log_body(week_plan: WeekPlan, rows: list[str], total_miles: float, status: str) -> str:
+def day_digest(entry: WeeklyDayEntry) -> str:
+    label = entry.day_date.strftime("%a")
+    miles = entry.distance.removesuffix(" mi").strip()
+    part = f"{label} {miles}mi" if miles else f"{label} {entry.completed or 'logged'}"
+    if entry.pace:
+        part += f" @{entry.pace}"
+    if entry.warning_signs:
+        part += " ⚠"
+    return part
+
+
+def build_weekly_log_body(
+    week_plan: WeekPlan,
+    rows: list[str],
+    total_miles: float,
+    status: str,
+    day_entries: dict[date, WeeklyDayEntry],
+) -> str:
+    logged = [e for _, e in sorted(day_entries.items()) if e.has_content]
+    days = " | ".join(day_digest(e) for e in logged) or "none yet"
+    warnings = "; ".join(
+        f"{e.day_date.strftime('%a')}: {e.warning_signs}"
+        for e in logged if e.warning_signs
+    ) or "none logged"
     lines = [
         f"- Source plan: `{week_plan.source_relpath}`",
         f"- Target mileage: `{week_plan.target_mileage}`",
         f"- Actual mileage so far: `{total_miles:.2f}`",
         f"- Primary purpose: {week_plan.primary_purpose}",
         f"- Status: `{status}`",
+        f"- Days: {days}",
+        f"- Warnings: {warnings}",
     ]
     return "\n".join(lines)
 
@@ -539,7 +564,7 @@ def upsert_weekly_log(
     day_entries: dict[date, WeeklyDayEntry],
 ) -> Path:
     weekly_path = weekly_log_path(week_plan.week_start)
-    body = build_weekly_log_body(week_plan, rows, total_miles, status)
+    body = build_weekly_log_body(week_plan, rows, total_miles, status, day_entries)
     if weekly_path.exists():
         text = ensure_weekly_log_structure(weekly_path.read_text())
     else:
