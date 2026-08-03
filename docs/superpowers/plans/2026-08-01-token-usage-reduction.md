@@ -1052,20 +1052,20 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
 
 ### Task 12: Run log migration + end-to-end reconcile (Haiku)
 
-- [ ] **Step 1: Snapshot manual sections before migration**
+- [x] **Step 1: Snapshot manual sections before migration**
   Run: `grep -c "Warning signs:" logs/weekly/*.md && wc -l logs/weekly/*.md`
   Record the output verbatim in the task report (compared again in Step 3).
-- [ ] **Step 2: Run the migrator**
+- [x] **Step 2: Run the migrator**
   Run: `.venv/bin/python scripts/migrate_managed_notes.py`
   Expected: one `compacted week_*.md` line per file that had verbose notes.
-- [ ] **Step 3: Verify manual sections untouched**
+- [x] **Step 3: Verify manual sections untouched**
   Run: `git diff logs/weekly/ | grep '^[-+]' | grep -v '^[-+][-+]' | grep -v 'Imported\|FIT summary\|Weather at start\|Heat:'`
   Expected: empty output — every changed line is a managed-note line.
-- [ ] **Step 4: End-to-end**
+- [x] **Step 4: End-to-end**
   Run: `bash scripts/ingest.sh --sync-only && .venv/bin/python scripts/reconcile_weekly_mileage.py && .venv/bin/python -m pytest tests/ -v`
   Expected: sync-only leaves logs stable (`git diff --stat logs/` shows no *new*
   churn beyond the migration), reconcile clean, tests pass.
-- [ ] **Step 5: Commit + push (Tech Lead)**
+- [x] **Step 5: Commit + push (Tech Lead)**
   ```bash
   git add logs/weekly STATUS.md README.md
   git commit -m "Compact Managed Notes across existing weekly logs"
