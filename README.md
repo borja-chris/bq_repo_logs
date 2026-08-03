@@ -18,24 +18,24 @@ The active weekly log lives in `logs/weekly/week_YYYY-MM-DD.md`; daily entries a
 ## Current Week
 
 <!-- current-week:start -->
-Source: [01_pre_block_ramp.md](plans/2026-half-marathon/01_pre_block_ramp.md)
+Source: [week_2026-08-03.md](plans/2026-half-marathon/weeks/week_2026-08-03.md)
 
-Week of `2026-07-27`
+Week of `2026-08-03`
 
-- Target mileage: `about 30-34`
+- Target mileage: `about 26-27`
 - Actual mileage so far: `0.00`
-- Primary purpose: freshen slightly around Seattle travel and arrive ready to start the August 3 block well
-- Week status: `Saturday off logged`
+- Primary purpose: enter the block smoothly while adjusting for Thursday evening travel
+- Week status: `No days logged yet`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 8-9 mi easy w/ CSRD | x | x |
-| Tuesday | Off or 3-4 mi very easy | x | x |
-| Wednesday | 4-5 mi very easy | x | x |
-| Thursday | 6 mi easy | x | x |
-| Friday | 4-5 mi easy | x | x |
-| Saturday | Off | off | x |
-| Sunday | 5-6 mi easy | x | x |
+| Monday | 3 mi easy | x | x |
+| Tuesday | 5 mi easy with 6 x 20 sec strides | x | x |
+| Wednesday | 7 mi easy | x | x |
+| Thursday | 4 mi easy | x | x |
+| Friday | 4 mi easy | x | x |
+| Saturday | 3 mi easy shakeout | x | x |
+| Sunday | Off | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
