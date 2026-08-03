@@ -886,7 +886,7 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
 - Produces: those lines replaced by one compact line (Task 10's format). ALL other
   lines byte-identical.
 
-- [ ] **Step 1: Write failing test** — create `tests/test_migrate_managed_notes.py`:
+- [x] **Step 1: Write failing test** — create `tests/test_migrate_managed_notes.py`:
   ```python
   import subprocess
   import sys
@@ -950,8 +950,8 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
       subprocess.run([sys.executable, str(SCRIPT), "--weekly-dir", str(tmp_path)], check=True)
       assert log.read_text() == once
   ```
-- [ ] **Step 2: Run, verify failure** (script missing).
-- [ ] **Step 3: Implement `scripts/migrate_managed_notes.py`**
+- [x] **Step 2: Run, verify failure** (script missing).
+- [x] **Step 3: Implement `scripts/migrate_managed_notes.py`**
   ```python
   #!/usr/bin/env python3
   """One-shot: compress verbose Managed Notes blocks in logs/weekly/*.md.
@@ -1041,10 +1041,10 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
   if __name__ == "__main__":
       main()
   ```
-- [ ] **Step 4: Run tests**
+- [x] **Step 4: Run tests**
   Run: `.venv/bin/python -m pytest tests/test_migrate_managed_notes.py tests/ -v`
   Expected: PASS.
-- [ ] **Step 5: Commit (Tech Lead, after review)**
+- [x] **Step 5: Commit (Tech Lead, after review)**
   ```bash
   git add scripts/migrate_managed_notes.py tests/test_migrate_managed_notes.py
   git commit -m "Add one-shot Managed Notes compaction migrator"
