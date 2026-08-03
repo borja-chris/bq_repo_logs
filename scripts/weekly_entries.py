@@ -161,12 +161,22 @@ def create_weekly_day_entry(day_date: date, planned: str = "") -> WeeklyDayEntry
 
 
 def build_managed_notes_lines(activity: Any) -> list[str]:
-    managed = [activity.import_note, activity.fit_note]
-    if activity.weather_note:
-        managed.append(activity.weather_note)
-    if activity.heat_note:
-        managed.append(activity.heat_note)
-    return [f"  {line}" for line in managed]
+    # One compact line; full provenance stays in data/processed JSONL.
+    row = activity.row
+    parts = [f"Imported {row.get('source_file', '') or row.get('source_relpath', '')}"]
+    start = row.get("start_time", "")
+    if len(start) >= 16:
+        parts.append(f"start {start[11:16]}")
+    if row.get("avg_hr", "").strip():
+        parts.append(f"HR {row['avg_hr']}/{row.get('max_hr', '').strip() or '?'}")
+    if row.get("ascent_m", "").strip():
+        parts.append(f"asc {row['ascent_m']}m")
+    heat = activity.heat_note
+    if heat:
+        parts.append(heat.removeprefix("- Heat: ").rstrip("."))
+    elif row.get("weather_temp_f", "").strip():
+        parts.append(f"{row['weather_temp_f']}°F")
+    return [f"  - {' | '.join(parts)}"]
 
 
 def parse_weekly_day_entry(day_date: date, block_lines: list[str]) -> WeeklyDayEntry:

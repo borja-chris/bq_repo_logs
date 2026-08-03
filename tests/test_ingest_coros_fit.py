@@ -197,7 +197,10 @@ class IngestCorosFitHelpersTest(unittest.TestCase):
         )
         self.assertEqual(absent.heat_note, "")
 
-    def test_build_managed_notes_includes_heat_note_after_weather(self) -> None:
+    def test_build_managed_notes_includes_heat_note(self) -> None:
+        # Managed Notes are now a single compact line per import; heat detail
+        # (when present) is folded into that line instead of a separate
+        # "Weather at start" / "Heat:" pair.
         activity = m.weather.Activity(
             row={
                 "source_relpath": "data/x.fit",
@@ -220,9 +223,10 @@ class IngestCorosFitHelpersTest(unittest.TestCase):
             timezone_name="America/New_York",
         )
         lines = m.build_managed_notes_lines(activity)
-        weather_idx = next(i for i, ln in enumerate(lines) if "Weather at start" in ln)
-        heat_idx = next(i for i, ln in enumerate(lines) if "Heat:" in ln)
-        self.assertGreater(heat_idx, weather_idx)
+        self.assertEqual(len(lines), 1)
+        self.assertIn("163", lines[0])
+        self.assertIn("heavy", lines[0])
+        self.assertIn("Heat-neutral equivalent", lines[0])
 
     def test_sync_records_seeds_entries_merges_legacy_and_upserts_activity(self) -> None:
         week_start = date(2026, 6, 8)

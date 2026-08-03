@@ -803,7 +803,7 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
 - Produces: one managed-note line per activity:
   `  - Imported 479051765975646409.fit | start 17:25 | HR 141/161 | asc 66m | 84°F + 49°F dew = 133 (moderate). Heat-neutral equivalent ~10:28/mi (ran 10:44/mi, ~+2.5%)`
 
-- [ ] **Step 1: Write failing test** — append to `tests/test_weekly_summary.py`:
+- [x] **Step 1: Write failing test** — append to `tests/test_weekly_summary.py`:
   ```python
   from datetime import datetime
   from zoneinfo import ZoneInfo
@@ -843,8 +843,8 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
           "  - Imported 479051765975646409.fit | start 17:25 | HR 141/161 | asc 66m | 83.7°F"
       ]
   ```
-- [ ] **Step 2: Run, verify failure** (current builder returns 3-4 lines).
-- [ ] **Step 3: Implement** — replace `build_managed_notes_lines` in
+- [x] **Step 2: Run, verify failure** (current builder returns 3-4 lines).
+- [x] **Step 3: Implement** — replace `build_managed_notes_lines` in
   `scripts/weekly_entries.py`:
   ```python
   def build_managed_notes_lines(activity: Any) -> list[str]:
@@ -865,10 +865,10 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
           parts.append(f"{row['weather_temp_f']}°F")
       return [f"  - {' | '.join(parts)}"]
   ```
-- [ ] **Step 4: Run full suite; update any existing assertions on the old 4-line
+- [x] **Step 4: Run full suite; update any existing assertions on the old 4-line
   format** (they are format expectations, not behavior — note each in the report).
   Run: `.venv/bin/python -m pytest tests/ -v`
-- [ ] **Step 5: Commit (Tech Lead, after review)**
+- [x] **Step 5: Commit (Tech Lead, after review)**
   ```bash
   git add scripts/weekly_entries.py tests/test_weekly_summary.py
   git commit -m "Compress Managed Notes to one line per import"
