@@ -1118,10 +1118,18 @@ Operating Discipline, Editing and Retros, plus one-line pointers.
 
 ## Success criteria (from spec — verify at the end)
 
-- [ ] "Am I on track?" answerable from `STATUS.md` alone (< 60 lines).
-- [ ] Auto-loaded instruction bytes (AGENTS.md + mandated pre-reads) down ≥ 40%:
+- [x] "Am I on track?" answerable from `STATUS.md` alone (< 60 lines).
+      **28 lines.**
+- [x] Auto-loaded instruction bytes (AGENTS.md + mandated pre-reads) down ≥ 40%:
       compare `wc -c AGENTS.md sources/00_canonical_context.md STATUS.md` against
       the pre-change `wc -c AGENTS.md sources/00_project_context.md sources/04_planning_rules_and_retro.md` baseline.
-- [ ] Weekly-log generated content per filled day down ≥ 50% (4 managed lines → 1).
+      **8794 → 5272 bytes = 40.1%** (closed by Task 14; ceiling 5276).
+- [x] Weekly-log generated content per filled day down ≥ 50% (4 managed lines → 1).
+      **4 → 1 managed lines = 75%**; 11 weekly logs 41732 → 32182 bytes.
 - [ ] JSONL rows ≥ 50% smaller (Task 5 du/wc evidence); pre-block history out of
       `data/processed/`; reconcile and full suite green.
+      **Partially met — accepted gap.** Rows 1080.8 → 663.6 bytes/row = **38.6%**,
+      short of 50%; reaching 50% requires dropping `source_sha256`, the
+      content-integrity key. Pre-block history is out of `data/processed/` ✓;
+      reconcile and 71/71 tests green ✓. Rationale recorded in
+      `decisions/2026-08-01_token_usage_record_view_split.md`.
