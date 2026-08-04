@@ -41,6 +41,13 @@ After each week:
 - Feed repeated patterns into `sources/00_canonical_context.md`.
 - Preserve the distinction between facts, inference, and coaching opinion when writing adjustments or retros.
 
+## Retro Lessons
+
+- Every retro must produce at least one actionable follow-up (owner + success condition) — not just summary commentary — named clearly enough to execute.
+- On a plan-text change request, restate the current file accurately and wait for the exact requested adjustment before redesigning the week; treat stale or inconsistent details as verification targets, not license to broaden scope.
+- Keep facts, inference, and decisions visibly separate during planning edits so a stale detail doesn't silently become a redesign trigger.
+- For external data enrichment during repo maintenance, fail loudly when a required field doesn't land instead of treating the import as complete; keep a repair path that can re-run enrichment from processed summaries without reimporting raw FIT files.
+
 ## File Naming
 
 - Cycle plan overview: `plans/2026-half-marathon/README.md`

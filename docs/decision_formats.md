@@ -32,3 +32,25 @@ Major decisions include:
 - Changing framework
 - Adjusting long-run structure
 - Switching from half-marathon training to marathon training
+
+## Decision Gates
+
+Referenced from `AGENTS.md`. Apply a decision gate when deciding whether to
+increase load, reduce load, add workouts, remove workouts, or touch peak
+mileage — gates apply in both directions, not just upward.
+
+### 58-60 mpw Gate
+
+Before increasing load, adding workouts, or touching peak mileage toward
+58-60 mpw specifically, require evidence that:
+
+- 6 days/week is consistent.
+- 45-50 mpw feels normal, not heroic.
+- Easy days stay easy.
+- SOS days aren't degrading.
+- Long runs don't require multi-day recovery.
+- Runs aren't being skipped from accumulated fatigue.
+- No warning signs in calves, Achilles, plantar fascia, knees, hips, or hamstrings.
+- Sleep, work stress, and life stress aren't undermining recovery.
+
+If these aren't true, cap the cycle closer to 48-55 mpw.
