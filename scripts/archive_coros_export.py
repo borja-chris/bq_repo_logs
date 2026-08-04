@@ -4,34 +4,8 @@
 from __future__ import annotations
 
 import argparse
-import json
 import tarfile
 from pathlib import Path
-
-
-def repo_relpath(path: Path, repo_root: Path) -> str:
-    return str(path.resolve().relative_to(repo_root.resolve()))
-
-
-def update_jsonl(export_dir: Path, archive_path: Path, repo_root: Path) -> None:
-    processed_name = f"{export_dir.name.lower()}_summary.jsonl"
-    jsonl_path = repo_root / "data" / "processed" / processed_name
-    if not jsonl_path.exists():
-        return
-
-    lines: list[str] = []
-    archive_relpath = repo_relpath(archive_path, repo_root)
-    with jsonl_path.open() as handle:
-        for raw_line in handle:
-            row = json.loads(raw_line)
-            row["source_archive_relpath"] = archive_relpath
-            row["source_archive_member"] = row.get("source_file", "")
-            lines.append(json.dumps(row, sort_keys=True))
-
-    with jsonl_path.open("w") as handle:
-        for line in lines:
-            handle.write(line)
-            handle.write("\n")
 
 
 def archive_batch(export_dir: Path) -> int:
@@ -43,7 +17,6 @@ def archive_batch(export_dir: Path) -> int:
     if archive_path.exists():
         raise SystemExit(f"Archive already exists: {archive_path}")
 
-    repo_root = Path.cwd()
     with tarfile.open(archive_path, "w:gz") as archive:
         for path in fit_files:
             archive.add(path, arcname=path.name)
@@ -53,8 +26,6 @@ def archive_batch(export_dir: Path) -> int:
     expected_members = [path.name for path in fit_files]
     if members != expected_members:
         raise SystemExit("Archive verification failed: member list mismatch.")
-
-    update_jsonl(export_dir, archive_path, repo_root)
 
     for path in fit_files:
         path.unlink()

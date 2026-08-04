@@ -3,7 +3,12 @@
 
 Reads weekly-log auto-summary blocks only (never raw daily entries): the
 record/view contract says views are built from what weekly_entries.py already
-distilled. Fails loud on unparseable blocks rather than guessing numbers.
+distilled. A weekly log with an unparseable filename date, or with no
+auto-summary block at all, is tolerated and omitted from the digest so one
+in-progress or oddly-named file cannot hard-fail an ingest that already wrote
+its data. A present-but-malformed auto-summary block (missing a required
+field) still fails loud, as does having no weekly logs at all -- those
+indicate real corruption or a broken repo layout, not an in-progress file.
 """
 from __future__ import annotations
 
@@ -19,10 +24,15 @@ MARKER = re.compile(r"<!-- auto-summary:start -->\n(?P<body>.*?)<!-- auto-summar
 FIELD = re.compile(r"^- (?P<key>[^:]+): ?(?P<value>.*)$")
 
 
-def parse_summary(path: Path) -> dict[str, str]:
-    match = MARKER.search(path.read_text())
+def parse_summary(path: Path) -> dict[str, str] | None:
+    """Return this weekly log's parsed auto-summary fields, or None if it has
+    no auto-summary block at all (tolerated -- e.g. a week just scaffolded
+    and not yet filled in). A block that IS present but missing a required
+    field still raises: that's corruption, not an absent block.
+    """
+    match = MARKER.search(path.read_text(encoding="utf-8"))
     if match is None:
-        raise SystemExit(f"{path.name}: no auto-summary block")
+        return None
     fields: dict[str, str] = {}
     for line in match.group("body").splitlines():
         field = FIELD.match(line.strip())
@@ -35,8 +45,14 @@ def parse_summary(path: Path) -> dict[str, str]:
     return fields
 
 
-def week_start_of(path: Path) -> date:
-    return date.fromisoformat(path.stem.removeprefix("week_"))
+def week_start_of(path: Path) -> date | None:
+    """Parse the ISO week-start date from a weekly log's filename stem, or
+    None if the stem isn't a valid date (tolerated -- one oddly-named file
+    must not hard-fail the whole digest)."""
+    try:
+        return date.fromisoformat(path.stem.removeprefix("week_"))
+    except ValueError:
+        return None
 
 
 def build(repo_root: Path, today: date) -> str:
@@ -44,7 +60,15 @@ def build(repo_root: Path, today: date) -> str:
     files = sorted(weekly_dir.glob("week_*.md"))
     if not files:
         raise SystemExit(f"no weekly logs under {weekly_dir}")
-    summaries = {week_start_of(p): parse_summary(p) for p in files}
+    summaries: dict[date, dict[str, str]] = {}
+    for p in files:
+        start = week_start_of(p)
+        if start is None:
+            continue
+        fields = parse_summary(p)
+        if fields is None:
+            continue
+        summaries[start] = fields
     current_start = today - timedelta(days=today.weekday())
     current = summaries.get(current_start)
 
@@ -98,7 +122,7 @@ def main() -> None:
     parser.add_argument("--today", type=date.fromisoformat, default=date.today())
     args = parser.parse_args()
     output = build(args.repo_root, args.today)
-    (args.repo_root / "STATUS.md").write_text(output)
+    (args.repo_root / "STATUS.md").write_text(output, encoding="utf-8")
     print(f"wrote {args.repo_root / 'STATUS.md'}")
 
 

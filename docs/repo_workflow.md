@@ -116,10 +116,9 @@ For completed prior-month COROS export batches:
 1. Archive only batches whose processed summaries already exist.
 2. Create `fit_files.tar.gz` inside the batch folder.
 3. Verify archive membership before removing loose `.fit` files.
-4. Update processed JSONL rows with `source_archive_relpath` and `source_archive_member`.
-5. Remove loose `.fit` files only after archive verification succeeds.
-6. Keep `manifest.md`, `SHA256SUMS.txt`, processed summaries, and `fit_files.tar.gz`.
-7. Update the manifest to record archive size, member count, and that loose FIT files were removed.
+4. Remove loose `.fit` files only after archive verification succeeds.
+5. Keep `manifest.md`, `SHA256SUMS.txt`, processed summaries, and `fit_files.tar.gz`.
+6. Update the manifest to record archive size, member count, and that loose FIT files were removed.
 
 ## Monthly Archive Rule
 

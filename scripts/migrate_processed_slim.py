@@ -3,8 +3,12 @@
 
 Writes each file to a .tmp sibling, verifies that the ordered sequence of
 (activity_id, source_sha256, distance_mi, duration_s) tuples is identical
-before and after slimming -- catching dropped, reordered, duplicated, or
-value-corrupted rows -- then atomically replaces. Idempotent.
+before and after slimming -- catching value corruption of those four
+identity fields introduced by slim_row -- then atomically replaces. The
+slimming step (`slim = [slim_row(r) for r in rows]`) is a 1:1,
+order-preserving list comprehension, so rows cannot be dropped, reordered,
+or duplicated here; this check cannot and does not claim to catch that.
+Idempotent.
 """
 from __future__ import annotations
 
@@ -27,15 +31,19 @@ def _identity_key(row: dict[str, str]) -> tuple[str, ...]:
 
 
 def migrate_file(path: Path) -> int:
-    rows = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
     slim = [slim_row(row) for row in rows]
     before = [_identity_key(row) for row in rows]
     after = [_identity_key(row) for row in slim]
     if before != after:
-        raise SystemExit(f"{path.name}: row identity changed (dropped, reordered, "
-                          f"duplicated, or corrupted rows)")
+        raise SystemExit(f"{path.name}: row identity fields changed during slimming "
+                          f"(activity_id, source_sha256, distance_mi, or duration_s "
+                          f"corrupted)")
     tmp = path.with_name(path.name + ".tmp")
-    tmp.write_text("".join(json.dumps(row, sort_keys=True) + "\n" for row in slim))
+    tmp.write_text(
+        "".join(json.dumps(row, sort_keys=True) + "\n" for row in slim),
+        encoding="utf-8",
+    )
     tmp.replace(path)
     return len(slim)
 

@@ -65,6 +65,14 @@ def _segment_block(block: list[str]) -> tuple[list[str], list[list[str]]]:
 
 
 def _compact_segment(segment: list[str]) -> list[str]:
+    """Compact one activity segment (Imported/FIT/Weather/Heat lines) to a
+    single summary line, preserving any unrecognized aside as an extra line.
+
+    An aside inside the segment that matches none of the four verbose
+    patterns is content-preserving but not position-preserving: it may be
+    relocated to the end of this block's compacted line rather than staying
+    at its original position within the segment.
+    """
     joined = "\n".join(segment)
     imported = IMPORTED.search(joined)
     fit = FIT.search(joined)
@@ -108,9 +116,18 @@ def _iter_lines_with_managed_blocks(text: str):
     other line in the file, is passthrough content. Shared by migrate_text
     and the verifier so both agree on exactly which bytes are eligible to
     change.
+
+    Splits on a literal '\n' only -- NOT str.splitlines(), which also treats
+    CR, CRLF, and several Unicode line separators (U+2028, U+2029, U+0085,
+    \x0b, \x0c) as line breaks. A manual line containing one of those
+    characters must never be silently split in two, and CRLF content must
+    never be silently collapsed to LF.
     """
     in_managed = False
-    for line in text.splitlines():
+    lines = text.split("\n")
+    if text.endswith("\n"):
+        lines = lines[:-1]  # matches splitlines()'s no-trailing-empty behavior
+    for line in lines:
         if line == "- Managed Notes:":
             in_managed = True
             yield False, line

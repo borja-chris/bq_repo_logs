@@ -69,13 +69,6 @@ class Activity:
         return f"{minutes}:{secs:02d}"
 
     @property
-    def import_note(self) -> str:
-        # Slim schema keeps only the file name; full provenance stays in the
-        # JSONL record (source_sha256) and data/coros_exports/ on disk.
-        source = self.row.get("source_relpath", "").strip() or self.row.get("source_file", "")
-        return f"- Imported from `{source}`."
-
-    @property
     def fit_note(self) -> str:
         start_display = self.row.get("start_time", "").strip()
         return (

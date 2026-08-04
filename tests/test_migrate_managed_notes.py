@@ -97,6 +97,7 @@ MULTI_IMPORT = """### 2026-07-11
 # '- Stress: ', and '- Warning signs: ' lines all carry one trailing space).
 for _blank_field in ("Sleep", "Soreness", "Stress", "Warning signs"):
     MULTI_IMPORT = MULTI_IMPORT.replace(f"- {_blank_field}:\n", f"- {_blank_field}: \n")
+    assert f"- {_blank_field}: \n" in MULTI_IMPORT
 assert MULTI_IMPORT.endswith("- Warning signs: \n")
 
 # Dedicated fixture for the trailing-whitespace regression (fix round 2,
@@ -353,3 +354,78 @@ def test_trailing_whitespace_on_non_managed_lines_survives_migration(tmp_path):
         "- Warning signs: \n",
     ):
         assert expected_line in migrated, f"trailing whitespace lost on: {expected_line!r}"
+
+
+def test_manual_line_with_unicode_line_separator_survives_byte_identically():
+    # F2 regression: str.splitlines() treats U+2028 (LINE SEPARATOR) as a
+    # line break, so a hand-typed manual line containing one would be split
+    # into two lines by the old splitlines()-based implementation -- while
+    # verify_migration agreed because it used the same splitlines() logic on
+    # both sides, so the corruption was undetectable. migrate_text must
+    # split on '\n' only.
+    module = _load_migrate_module()
+    text = "- Manual Notes:\n  - line with sep\n"
+    migrated = module.migrate_text(text)
+    assert migrated == text, f"{migrated!r} != {text!r}"
+
+
+def test_crlf_line_endings_survive_byte_identically():
+    # F2 regression: str.splitlines() also treats CR and CRLF as line
+    # breaks, so migrate_text used to silently collapse every CRLF in the
+    # file to LF. migrate_text must split on '\n' only, leaving any '\r'
+    # attached to the preceding line's content untouched.
+    module = _load_migrate_module()
+    text = (
+        "- Managed Notes:\r\n"
+        "  - Imported from `a.fit`\r\n"
+        "- Manual Notes:\r\n"
+        "  - hand typed\r\n"
+    )
+    migrated = module.migrate_text(text)
+    assert migrated == text, f"{migrated!r} != {text!r}"
+
+
+def test_all_manual_sections_survive_migration_verbatim():
+    # F3: the existing byte-identity tests reimplement the production
+    # classifier's exact rule (== "- Managed Notes:" / startswith("  - "))
+    # locally as `strip_managed`, so they would agree with a bug in that
+    # classifier rather than catch it. This test does not reference the
+    # classifier at all: it builds a fixture with all six named manual
+    # headers, each holding distinctive content derived from the header
+    # names, and asserts that content is present verbatim in migrate_text's
+    # output.
+    fixture = """## Manual Weekly Notes
+
+- ZQX_WEEKLY_NOTES distinctive weekly-notes content.
+
+### 2026-07-25
+
+- Planned: 4 mi easy
+- Completed: 4.10 mi run
+- Time: 40:00
+- Distance: 4.10 mi
+- Pace: 9:45/mi
+- Effort: imported
+- Managed Notes:
+  - Imported from `data/coros_exports/COROS_export_2026-07-28/900000000000000001.fit`.
+  - FIT summary: start `2026-07-25T07:00:00-04:00`, avg HR `130`, max HR `150`, ascent `5 m`.
+- Manual Notes:
+  - ZQX_MANUAL_NOTES distinctive manual-notes content.
+- Sleep: ZQX_SLEEP distinctive sleep content
+- Soreness: ZQX_SORENESS distinctive soreness content
+- Stress: ZQX_STRESS distinctive stress content
+- Warning signs: ZQX_WARNING distinctive warning content
+"""
+    module = _load_migrate_module()
+    migrated = module.migrate_text(fixture)
+    assert "FIT summary" not in migrated  # confirm compaction actually ran
+
+    for expected in (
+        "ZQX_WEEKLY_NOTES distinctive weekly-notes content.",
+        "ZQX_MANUAL_NOTES distinctive manual-notes content.",
+        "ZQX_SLEEP distinctive sleep content",
+        "ZQX_SORENESS distinctive soreness content",
+        "ZQX_STRESS distinctive stress content",
+        "ZQX_WARNING distinctive warning content",
+    ):
+        assert expected in migrated, f"missing: {expected!r}"

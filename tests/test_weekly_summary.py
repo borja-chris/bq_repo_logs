@@ -38,6 +38,20 @@ def test_body_without_warnings_says_none():
     assert "- Days: none yet" in body
 
 
+def test_body_day_digest_uses_completed_label_when_no_distance():
+    # F8: day_digest's branch for a day with no distance (falls back to
+    # "{label} {completed or 'logged'}" instead of "{label} {miles}mi") was
+    # untested -- e.g. a rest day or a skipped-run entry logged with only a
+    # completed label and no FIT-derived distance.
+    entries = {
+        date(2026, 7, 21): WeeklyDayEntry(
+            day_date=date(2026, 7, 21), completed="Off - rest day",
+            distance="", pace="", effort="manual"),
+    }
+    body = build_weekly_log_body(make_plan(), [], 0.0, "Tuesday rest day", entries)
+    assert "- Days: Tue Off - rest day" in body
+
+
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from ingest_coros_fit_weather import Activity
