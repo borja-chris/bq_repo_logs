@@ -287,3 +287,34 @@ def test_main_returns_one_on_malformed_manifest(tmp_path, monkeypatch):
     monkeypatch.setattr(fetch_coros, "REPO_ROOT", tmp_path)
     monkeypatch.setattr(fetch_coros, "LEDGER_PATH", tmp_path / "ledger.json")
     assert fetch_coros.main(["--manifest", str(manifest)]) == 1
+
+
+def test_run_persists_prior_success_to_disk_before_later_entry_is_attempted(tmp_path, monkeypatch):
+    ledger_path = tmp_path / "ledger.json"
+    second_entry = dict(
+        VALID_ENTRY,
+        labelId="479378486279045523",
+        url="https://s3.coros.com/fit/452218867308052480/479378486279045523.fit",
+    )
+    data = _fake_fit_bytes()
+    observed_mid_run = {}
+
+    def fake_download(url):
+        if url == VALID_ENTRY["url"]:
+            return data
+        # Second entry's download: inspect the ledger ON DISK right now, before
+        # this function returns and before run() has any chance to react to
+        # this entry's outcome. This is the only moment that can distinguish
+        # "save_ledger after each success" from "save_ledger once at the end"
+        # — after run() returns, both designs have already flushed everything.
+        observed_mid_run.update(fetch_coros.load_ledger(ledger_path))
+        return b"<html>404</html>"
+
+    monkeypatch.setattr(fetch_coros, "download_bytes", fake_download)
+    fetched, skipped, failed = fetch_coros.run(
+        [VALID_ENTRY, second_entry], tmp_path, ledger_path, False
+    )
+    assert (fetched, skipped, failed) == (1, 0, 1)
+
+    assert VALID_ENTRY["labelId"] in observed_mid_run
+    assert observed_mid_run[VALID_ENTRY["labelId"]]["sha256"] == hashlib.sha256(data).hexdigest()
