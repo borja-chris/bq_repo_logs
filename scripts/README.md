@@ -7,6 +7,34 @@ Near-term candidates:
 - Weekly rollover helper: create the weekly log summary, daily-entry scaffolding, and weekly retro from templates.
 - Decision gate helper: collect recent weekly retros before mileage or workout changes.
 
+## FIT Fetching
+
+`fetch_coros.py` downloads COROS FIT files from a Claude-supplied manifest to the repo root, so they land where `ingest_coros_fit.py` expects a manually dropped file and the operator flow below continues unchanged from the "drop" step onward.
+
+Claude supplies the manifest by calling the COROS MCP server's `querySportRecords` and `queryActivityFitFileDownloadUrls` tools. `fetch_coros.py` itself contains no MCP or OAuth code — it only takes URLs and downloads them.
+
+Usage:
+
+```bash
+.venv/bin/python scripts/fetch_coros.py --manifest -
+.venv/bin/python scripts/fetch_coros.py --manifest manifest.json
+.venv/bin/python scripts/fetch_coros.py --manifest - --dry-run
+```
+
+`--manifest -` reads a JSON manifest from stdin; `--manifest FILE` reads it from a path. `--dry-run` reports fetch/skip decisions without touching the network or disk.
+
+The manifest is a JSON array. Each entry requires `labelId` (string), `sportType` (integer COROS sport code, e.g. `100` = outdoor run), `date` (`YYYY-MM-DD`), and `url` (https); `latitude` and `longitude` are optional.
+
+For each entry, the script skips any `labelId` already recorded in the ledger, downloads the rest to `<repo root>/<labelId>.fit`, validates that the payload carries the `.FIT` signature at bytes 8-11, and records a ledger entry per file that lands. It prints a `N fetched, N skipped, N failed` summary and exits `0` on success or `1` on any failure.
+
+The ledger lives at `data/coros_fetch_ledger.json`, keyed by `labelId`, and stores `sportType`, `date`, `sha256`, `fetched_at`, `latitude`, `longitude`, and `filename`. It exists to prevent re-downloading — COROS FIT downloads are rate-limited daily (max 10 per call, plus a daily cap) — so the skip decision is made before spending quota.
+
+After a successful fetch, run:
+
+```bash
+bash scripts/ingest.sh
+```
+
 ## FIT Summaries
 
 The expected operator flow is:
