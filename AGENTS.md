@@ -52,3 +52,8 @@ See `docs/repo_workflow.md` for the operating loop, naming, decision triggers, d
 Tech Lead (Claude, Opus) plans, delegates to lower-tier subagents, verifies,
 commits centrally; repo owner is Engineering Manager. Delegation and
 model-tier cascade are hard rules. Model: `docs/collaboration_model.md`.
+
+Every subagent dispatch is bound by `docs/subagent_contract.md` — reports to
+files, evidence artifacts over prose, falsifiable specifics, mutation evidence
+for data-safety tests. Applies to ad-hoc dispatches too, not just the
+definitions in `.claude/agents/`.
