@@ -9,11 +9,14 @@ a manually dropped file.
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import http.client
 import json
+import sys
 import urllib.error
 import urllib.request
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -154,3 +157,98 @@ def fetch_activity(entry: dict, dest_dir: Path) -> tuple[Path, str]:
         raise DownloadError(f"{entry['labelId']}: could not write file: {exc}") from exc
 
     return destination, hashlib.sha256(data).hexdigest()
+
+
+def run(
+    entries: list[dict],
+    dest_dir: Path,
+    ledger_path: Path,
+    dry_run: bool,
+) -> tuple[int, int, int]:
+    """Fetch every entry not already known. Returns (fetched, skipped, failed)."""
+    ledger = load_ledger(ledger_path)
+    fetched = skipped = failed = 0
+
+    for entry in entries:
+        label_id = entry["labelId"]
+        destination = dest_dir / f"{label_id}.fit"
+
+        if label_id in ledger:
+            print(f"skip  {label_id} ({entry['date']}) — already in ledger")
+            skipped += 1
+            continue
+
+        if destination.exists():
+            print(f"skip  {label_id} ({entry['date']}) — {destination.name} already on disk")
+            skipped += 1
+            continue
+
+        if dry_run:
+            print(f"fetch {label_id} ({entry['date']}) — would download {entry['url']}")
+            fetched += 1
+            continue
+
+        try:
+            path, digest = fetch_activity(entry, dest_dir)
+        except DownloadError as exc:
+            print(f"FAIL  {exc}", file=sys.stderr)
+            failed += 1
+            continue
+
+        ledger[label_id] = {
+            "sportType": entry["sportType"],
+            "date": entry["date"],
+            "sha256": digest,
+            "fetched_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+            "latitude": entry["latitude"],
+            "longitude": entry["longitude"],
+            "filename": path.name,
+        }
+        save_ledger(ledger_path, ledger)
+        print(f"fetch {label_id} ({entry['date']}) — {path.name}")
+        fetched += 1
+
+    return fetched, skipped, failed
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Download COROS FIT files from a Claude-supplied manifest."
+    )
+    parser.add_argument(
+        "--manifest",
+        required=True,
+        help="Path to a JSON manifest, or '-' to read it from stdin.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Report fetch/skip decisions without touching the network or disk.",
+    )
+    args = parser.parse_args(argv)
+
+    try:
+        text = sys.stdin.read() if args.manifest == "-" else Path(args.manifest).read_text(
+            encoding="utf-8"
+        )
+    except OSError as exc:
+        print(f"error: cannot read manifest: {exc}", file=sys.stderr)
+        return 1
+
+    try:
+        entries = parse_manifest(text)
+        fetched, skipped, failed = run(entries, REPO_ROOT, LEDGER_PATH, args.dry_run)
+    except (ManifestError, LedgerError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+
+    print(f"\n{fetched} fetched, {skipped} skipped, {failed} failed")
+    if failed:
+        return 1
+    if fetched and not args.dry_run:
+        print("Next: bash scripts/ingest.sh")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

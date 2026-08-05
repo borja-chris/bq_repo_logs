@@ -207,3 +207,83 @@ def test_fetch_activity_cleans_up_when_write_fails(tmp_path, monkeypatch):
     with pytest.raises(fetch_coros.DownloadError):
         fetch_coros.fetch_activity(VALID_ENTRY, tmp_path)
     assert list(tmp_path.iterdir()) == []
+
+
+def test_run_skips_activities_already_in_ledger(tmp_path, monkeypatch):
+    ledger_path = tmp_path / "ledger.json"
+    fetch_coros.save_ledger(ledger_path, {VALID_ENTRY["labelId"]: {"date": "2026-08-04"}})
+
+    def unexpected(url):
+        raise AssertionError("must not download a ledgered activity")
+
+    monkeypatch.setattr(fetch_coros, "download_bytes", unexpected)
+    fetched, skipped, failed = fetch_coros.run([VALID_ENTRY], tmp_path, ledger_path, False)
+    assert (fetched, skipped, failed) == (0, 1, 0)
+
+
+def test_run_records_ledger_entry_after_success(tmp_path, monkeypatch):
+    ledger_path = tmp_path / "ledger.json"
+    data = _fake_fit_bytes()
+    monkeypatch.setattr(fetch_coros, "download_bytes", lambda url: data)
+    fetched, skipped, failed = fetch_coros.run([VALID_ENTRY], tmp_path, ledger_path, False)
+    assert (fetched, skipped, failed) == (1, 0, 0)
+
+    record = fetch_coros.load_ledger(ledger_path)[VALID_ENTRY["labelId"]]
+    assert record["sha256"] == hashlib.sha256(data).hexdigest()
+    assert record["date"] == "2026-08-04"
+    assert record["sportType"] == 100
+    assert record["latitude"] == 40.811001
+    assert record["filename"] == "479396244626636805.fit"
+    assert record["fetched_at"]
+
+
+def test_run_skips_existing_file_without_overwriting(tmp_path, monkeypatch):
+    ledger_path = tmp_path / "ledger.json"
+    existing = tmp_path / "479396244626636805.fit"
+    existing.write_bytes(b"original")
+
+    def unexpected(url):
+        raise AssertionError("must not download over an existing file")
+
+    monkeypatch.setattr(fetch_coros, "download_bytes", unexpected)
+    fetched, skipped, failed = fetch_coros.run([VALID_ENTRY], tmp_path, ledger_path, False)
+    assert (fetched, skipped, failed) == (0, 1, 0)
+    assert existing.read_bytes() == b"original"
+
+
+def test_run_counts_failure_and_writes_no_ledger_entry(tmp_path, monkeypatch):
+    ledger_path = tmp_path / "ledger.json"
+    monkeypatch.setattr(fetch_coros, "download_bytes", lambda url: b"<html>404</html>")
+    fetched, skipped, failed = fetch_coros.run([VALID_ENTRY], tmp_path, ledger_path, False)
+    assert (fetched, skipped, failed) == (0, 0, 1)
+    assert fetch_coros.load_ledger(ledger_path) == {}
+
+
+def test_run_dry_run_touches_neither_network_nor_disk(tmp_path, monkeypatch):
+    ledger_path = tmp_path / "ledger.json"
+
+    def unexpected(url):
+        raise AssertionError("dry run must not download")
+
+    monkeypatch.setattr(fetch_coros, "download_bytes", unexpected)
+    fetched, skipped, failed = fetch_coros.run([VALID_ENTRY], tmp_path, ledger_path, True)
+    assert (fetched, skipped, failed) == (1, 0, 0)
+    assert not ledger_path.exists()
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_main_reads_manifest_file_and_returns_zero(tmp_path, monkeypatch):
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(json.dumps([VALID_ENTRY]), encoding="utf-8")
+    monkeypatch.setattr(fetch_coros, "download_bytes", lambda url: _fake_fit_bytes())
+    monkeypatch.setattr(fetch_coros, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(fetch_coros, "LEDGER_PATH", tmp_path / "ledger.json")
+    assert fetch_coros.main(["--manifest", str(manifest)]) == 0
+
+
+def test_main_returns_one_on_malformed_manifest(tmp_path, monkeypatch):
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text("{broken", encoding="utf-8")
+    monkeypatch.setattr(fetch_coros, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(fetch_coros, "LEDGER_PATH", tmp_path / "ledger.json")
+    assert fetch_coros.main(["--manifest", str(manifest)]) == 1
