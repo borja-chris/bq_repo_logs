@@ -23,14 +23,14 @@ Source: [week_2026-08-03.md](plans/2026-half-marathon/weeks/week_2026-08-03.md)
 Week of `2026-08-03`
 
 - Target mileage: `about 26-27`
-- Actual mileage so far: `0.00`
+- Actual mileage so far: `14.71`
 - Primary purpose: enter the block smoothly while adjusting for Thursday evening travel
-- Week status: `No days logged yet`
+- Week status: `Tuesday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 3 mi easy | x | x |
-| Tuesday | 5 mi easy with 6 x 20 sec strides | x | x |
+| Monday | 3 mi easy | 5.70 mi run | 59:17 at 10:24/mi. |
+| Tuesday | 5 mi easy with 6 x 20 sec strides | 9.01 mi run | 1:37:34 at 10:50/mi. |
 | Wednesday | 7 mi easy | x | x |
 | Thursday | 4 mi easy | x | x |
 | Friday | 4 mi easy | x | x |
