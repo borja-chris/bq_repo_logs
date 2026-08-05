@@ -1,4 +1,5 @@
 import hashlib
+import http.client
 import importlib.util
 import json
 import sys
@@ -180,6 +181,29 @@ def test_fetch_activity_cleans_up_when_download_raises(tmp_path, monkeypatch):
         raise OSError("connection reset")
 
     monkeypatch.setattr(fetch_coros, "download_bytes", boom)
+    with pytest.raises(fetch_coros.DownloadError):
+        fetch_coros.fetch_activity(VALID_ENTRY, tmp_path)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_fetch_activity_wraps_incomplete_read_and_leaves_no_file(tmp_path, monkeypatch):
+    def boom(url):
+        raise http.client.IncompleteRead(b"partial")
+
+    monkeypatch.setattr(fetch_coros, "download_bytes", boom)
+    with pytest.raises(fetch_coros.DownloadError):
+        fetch_coros.fetch_activity(VALID_ENTRY, tmp_path)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_fetch_activity_cleans_up_when_write_fails(tmp_path, monkeypatch):
+    data = _fake_fit_bytes()
+    monkeypatch.setattr(fetch_coros, "download_bytes", lambda url: data)
+
+    def boom_write(self, _data):
+        raise OSError("disk full")
+
+    monkeypatch.setattr(Path, "write_bytes", boom_write)
     with pytest.raises(fetch_coros.DownloadError):
         fetch_coros.fetch_activity(VALID_ENTRY, tmp_path)
     assert list(tmp_path.iterdir()) == []

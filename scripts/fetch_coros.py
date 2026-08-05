@@ -10,6 +10,7 @@ a manually dropped file.
 from __future__ import annotations
 
 import hashlib
+import http.client
 import json
 import urllib.error
 import urllib.request
@@ -132,7 +133,7 @@ def fetch_activity(entry: dict, dest_dir: Path) -> tuple[Path, str]:
     destination = dest_dir / f"{entry['labelId']}.fit"
     try:
         data = download_bytes(entry["url"])
-    except (urllib.error.URLError, OSError) as exc:
+    except (urllib.error.URLError, OSError, http.client.HTTPException) as exc:
         raise DownloadError(f"{entry['labelId']}: download failed: {exc}") from exc
 
     if not has_fit_magic(data):
@@ -141,7 +142,11 @@ def fetch_activity(entry: dict, dest_dir: Path) -> tuple[Path, str]:
             f"({len(data)} bytes, missing .FIT signature)"
         )
 
-    dest_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        dest_dir.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        raise DownloadError(f"{entry['labelId']}: could not create {dest_dir}: {exc}") from exc
+
     try:
         destination.write_bytes(data)
     except OSError as exc:
