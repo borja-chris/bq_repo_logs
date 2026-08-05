@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 import json
 import sys
@@ -142,3 +143,43 @@ def test_save_ledger_roundtrips_and_creates_parent(tmp_path):
     fetch_coros.save_ledger(path, {"123": {"date": "2026-08-04"}})
     assert fetch_coros.load_ledger(path) == {"123": {"date": "2026-08-04"}}
     assert path.read_text(encoding="utf-8").endswith("\n")
+
+
+def _fake_fit_bytes(payload=b"body"):
+    # Bytes 8-11 carry the .FIT signature; the header before it is not inspected.
+    return b"\x0e\x20\xa6\x52\xcb\x53\x03\x00" + b".FIT" + payload
+
+
+def test_has_fit_magic_accepts_real_signature():
+    assert fetch_coros.has_fit_magic(_fake_fit_bytes())
+
+
+def test_has_fit_magic_rejects_short_and_wrong_payloads():
+    assert not fetch_coros.has_fit_magic(b"tiny")
+    assert not fetch_coros.has_fit_magic(b"x" * 40)
+
+
+def test_fetch_activity_writes_file_and_returns_sha(tmp_path, monkeypatch):
+    data = _fake_fit_bytes()
+    monkeypatch.setattr(fetch_coros, "download_bytes", lambda url: data)
+    path, digest = fetch_coros.fetch_activity(VALID_ENTRY, tmp_path)
+    assert path == tmp_path / "479396244626636805.fit"
+    assert path.read_bytes() == data
+    assert digest == hashlib.sha256(data).hexdigest()
+
+
+def test_fetch_activity_rejects_non_fit_payload_and_leaves_no_file(tmp_path, monkeypatch):
+    monkeypatch.setattr(fetch_coros, "download_bytes", lambda url: b"<html>404</html>")
+    with pytest.raises(fetch_coros.DownloadError):
+        fetch_coros.fetch_activity(VALID_ENTRY, tmp_path)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_fetch_activity_cleans_up_when_download_raises(tmp_path, monkeypatch):
+    def boom(url):
+        raise OSError("connection reset")
+
+    monkeypatch.setattr(fetch_coros, "download_bytes", boom)
+    with pytest.raises(fetch_coros.DownloadError):
+        fetch_coros.fetch_activity(VALID_ENTRY, tmp_path)
+    assert list(tmp_path.iterdir()) == []

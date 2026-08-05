@@ -9,7 +9,10 @@ a manually dropped file.
 
 from __future__ import annotations
 
+import hashlib
 import json
+import urllib.error
+import urllib.request
 from pathlib import Path
 from typing import Any
 
@@ -99,3 +102,50 @@ def save_ledger(path: Path, ledger: dict) -> None:
     """Write the ledger as sorted, indented JSON."""
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(ledger, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+FIT_MAGIC = b".FIT"
+DOWNLOAD_TIMEOUT_S = 60
+
+
+class DownloadError(Exception):
+    """Raised when an activity file cannot be downloaded or is not a FIT file."""
+
+
+def has_fit_magic(data: bytes) -> bool:
+    """True when the payload carries the FIT signature at bytes 8-11."""
+    return len(data) >= 12 and data[8:12] == FIT_MAGIC
+
+
+def download_bytes(url: str) -> bytes:
+    """Fetch a URL and return its body. Sole network call; monkeypatched in tests."""
+    with urllib.request.urlopen(url, timeout=DOWNLOAD_TIMEOUT_S) as response:
+        return response.read()
+
+
+def fetch_activity(entry: dict, dest_dir: Path) -> tuple[Path, str]:
+    """Download one activity to dest_dir, returning (path, sha256_hex).
+
+    Nothing is written unless the payload validates as a FIT file, so a failed
+    run is always safe to retry.
+    """
+    destination = dest_dir / f"{entry['labelId']}.fit"
+    try:
+        data = download_bytes(entry["url"])
+    except (urllib.error.URLError, OSError) as exc:
+        raise DownloadError(f"{entry['labelId']}: download failed: {exc}") from exc
+
+    if not has_fit_magic(data):
+        raise DownloadError(
+            f"{entry['labelId']}: response is not a FIT file "
+            f"({len(data)} bytes, missing .FIT signature)"
+        )
+
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        destination.write_bytes(data)
+    except OSError as exc:
+        destination.unlink(missing_ok=True)
+        raise DownloadError(f"{entry['labelId']}: could not write file: {exc}") from exc
+
+    return destination, hashlib.sha256(data).hexdigest()
