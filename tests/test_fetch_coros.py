@@ -37,7 +37,18 @@ def test_parse_manifest_accepts_valid_entry():
     assert len(entries) == 1
     assert entries[0]["labelId"] == "479396244626636805"
     assert entries[0]["sportType"] == 100
+    assert entries[0]["date"] == "2026-08-04"
+    assert entries[0]["url"] == "https://s3.coros.com/fit/452218867308052480/479396244626636805.fit"
     assert entries[0]["latitude"] == 40.811001
+    assert entries[0]["longitude"] == -73.954002
+
+
+def test_parse_manifest_accepts_multiple_entries():
+    second = dict(VALID_ENTRY, labelId="111222333444555666")
+    entries = fetch_coros.parse_manifest(json.dumps([VALID_ENTRY, second]))
+    assert len(entries) == 2
+    assert entries[0]["labelId"] == "479396244626636805"
+    assert entries[1]["labelId"] == "111222333444555666"
 
 
 def test_parse_manifest_allows_missing_coordinates():
@@ -74,3 +85,29 @@ def test_parse_manifest_rejects_label_id_with_path_separator():
     entry = dict(VALID_ENTRY, labelId="../../etc/passwd")
     with pytest.raises(fetch_coros.ManifestError):
         fetch_coros.parse_manifest(json.dumps([entry]))
+
+
+@pytest.mark.parametrize("bad_value", [True, "abc"])
+def test_parse_manifest_rejects_non_numeric_latitude(bad_value):
+    entry = dict(VALID_ENTRY, latitude=bad_value)
+    with pytest.raises(fetch_coros.ManifestError):
+        fetch_coros.parse_manifest(json.dumps([entry]))
+
+
+@pytest.mark.parametrize("bad_value", [True, "abc"])
+def test_parse_manifest_rejects_non_numeric_longitude(bad_value):
+    entry = dict(VALID_ENTRY, longitude=bad_value)
+    with pytest.raises(fetch_coros.ManifestError):
+        fetch_coros.parse_manifest(json.dumps([entry]))
+
+
+@pytest.mark.parametrize("bad_value", ["abc", []])
+def test_parse_manifest_rejects_non_integer_sport_type(bad_value):
+    entry = dict(VALID_ENTRY, sportType=bad_value)
+    with pytest.raises(fetch_coros.ManifestError):
+        fetch_coros.parse_manifest(json.dumps([entry]))
+
+
+def test_parse_manifest_rejects_non_dict_entry():
+    with pytest.raises(fetch_coros.ManifestError):
+        fetch_coros.parse_manifest(json.dumps([1, 2, 3]))
