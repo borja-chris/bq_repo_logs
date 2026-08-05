@@ -74,3 +74,28 @@ def parse_manifest(text: str) -> list[dict]:
             }
         )
     return entries
+
+
+class LedgerError(Exception):
+    """Raised when the fetch ledger cannot be read."""
+
+
+def load_ledger(path: Path) -> dict:
+    """Load the fetch ledger, or an empty dict when it does not exist yet."""
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        # Fail loudly: silently resetting would re-download every activity and
+        # burn the daily COROS FIT download quota.
+        raise LedgerError(f"ledger at {path} is corrupt: {exc}") from exc
+    if not isinstance(payload, dict):
+        raise LedgerError(f"ledger at {path} must contain a JSON object")
+    return payload
+
+
+def save_ledger(path: Path, ledger: dict) -> None:
+    """Write the ledger as sorted, indented JSON."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(ledger, indent=2, sort_keys=True) + "\n", encoding="utf-8")

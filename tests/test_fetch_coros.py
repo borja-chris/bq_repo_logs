@@ -111,3 +111,34 @@ def test_parse_manifest_rejects_non_integer_sport_type(bad_value):
 def test_parse_manifest_rejects_non_dict_entry():
     with pytest.raises(fetch_coros.ManifestError):
         fetch_coros.parse_manifest(json.dumps([1, 2, 3]))
+
+
+def test_load_ledger_returns_empty_dict_when_absent(tmp_path):
+    assert fetch_coros.load_ledger(tmp_path / "nope.json") == {}
+
+
+def test_load_ledger_reads_existing_entries(tmp_path):
+    path = tmp_path / "ledger.json"
+    path.write_text(json.dumps({"123": {"date": "2026-08-04"}}), encoding="utf-8")
+    assert fetch_coros.load_ledger(path)["123"]["date"] == "2026-08-04"
+
+
+def test_load_ledger_raises_on_corrupt_json(tmp_path):
+    path = tmp_path / "ledger.json"
+    path.write_text("{broken", encoding="utf-8")
+    with pytest.raises(fetch_coros.LedgerError):
+        fetch_coros.load_ledger(path)
+
+
+def test_load_ledger_raises_on_non_object(tmp_path):
+    path = tmp_path / "ledger.json"
+    path.write_text(json.dumps(["not", "an", "object"]), encoding="utf-8")
+    with pytest.raises(fetch_coros.LedgerError):
+        fetch_coros.load_ledger(path)
+
+
+def test_save_ledger_roundtrips_and_creates_parent(tmp_path):
+    path = tmp_path / "nested" / "ledger.json"
+    fetch_coros.save_ledger(path, {"123": {"date": "2026-08-04"}})
+    assert fetch_coros.load_ledger(path) == {"123": {"date": "2026-08-04"}}
+    assert path.read_text(encoding="utf-8").endswith("\n")
