@@ -10,8 +10,8 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 
 | Wk | Week of | Mon | Tue | Wed | Thu | Fri | Sat | Sun | Target |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 2026-08-03 | 3 ez | 5 strd | 7 LR | 4 ez | 4 ez | 3 ez | Off | 26-27 |
-| 2 | 2026-08-10 | 3 ez | **6 spd** | Off | **7 thr** | 5 ez | 3 ez | 10 LR | 34 |
+| 1 | 2026-08-03 | 3 ez | 5 strd | 4-5 ez | 4 ez | 4 ez | 3 ez | Off | 30 |
+| 2 | 2026-08-10 | 3 ez | **6 spd** | Off | 6 ez | 4 ez | 3 ez | 9 LR | 31 |
 | 3 | 2026-08-17 | 3 ez | **7 spd** | Off | **7 thr** | 5 ez | 4 ez | 10 LR | 36 |
 | 4 | 2026-08-24 | 3 ez | **6 spd** | Off | **6 SOS** | 4 ez | 4 ez | 9 LR | 32 |
 | 5 | 2026-08-31 | 3 ez | **7 spd** | Off | **8 thr** | 6 ez | 3 ez | 11 LR | 38 |
@@ -33,9 +33,9 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 
 | Wk | Week of | Target | Delta | Long run | SOS days | Primary purpose |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 2026-08-03 | 26-27 | - | 7 LR | - | enter the block smoothly while adjusting for Thursday evening travel |
-| 2 | 2026-08-10 | 34 | +7.5 | 10 LR | Tue, Thu | add light volume while keeping workouts controlled |
-| 3 | 2026-08-17 | 36 | +2 | 10 LR | Tue, Thu | continue the gradual load build |
+| 1 | 2026-08-03 | 30 | - | - | - | enter the block smoothly while adjusting for Thursday evening travel |
+| 2 | 2026-08-10 | 31 | +1 | 9 LR | Tue | add light volume with one SOS day while the pace anchor is provisional |
+| 3 | 2026-08-17 | 36 | +5 | 10 LR | Tue, Thu | continue the gradual load build |
 | 4 | 2026-08-24 | 32 | -4 | 9 LR | Tue, Thu | absorb the first three weeks |
 | 5 | 2026-08-31 | 38 | +6 | 11 LR | Tue, Thu | restart the build with stronger aerobic support |
 | 6 | 2026-09-07 | 40 | +2 | 11 LR | Tue, Thu | establish 40 miles as normal, not heroic |

@@ -9,7 +9,9 @@ link, not restate.
 - BQ category: Male 35–39; posted standard 3:00:00; practical target ~2:55:00 or faster
 - Known limiter: consistency/discontinuity after gaps, not injury fragility
 - Working assumption: this cycle is a foundation step in the marathon arc
-- Goal A: half marathon 2026-12-06; sub-1:33 checkpoint
+- Goal A: half marathon 2026-12-06; sub-1:50 primary, sub-1:45 stretch
+- Arc checkpoint: sub-1:33 half, deferred beyond this block
+- Measured anchor: 5K ~24:35 equivalent (2026-07-11 parkrun, split-repaired); HMP ~8:38/mi
 - 18-week block start: 2026-08-03; framework: Hanson-inspired
 
 ## Current Training Assumptions
