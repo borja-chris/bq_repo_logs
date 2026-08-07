@@ -2,7 +2,7 @@
 
 # Training Status
 
-Updated 2026-08-05. Regenerate: `.venv/bin/python scripts/status_digest.py`.
+Updated 2026-08-07. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 
 ## Current Week (week of 2026-08-03)
 

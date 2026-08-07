@@ -235,6 +235,7 @@ def load_activities(rows: Iterable[dict[str, str]]) -> list[Activity]:
 
 def load_processed_activities_for_week(week_start: date) -> list[Activity]:
     activities: list[Activity] = []
+    seen_activity_ids: set[str] = set()
     week_end = week_start + timedelta(days=6)
     for path in sorted((REPO_ROOT / "data" / "processed").glob("*.jsonl")):
         with path.open() as handle:
@@ -246,6 +247,13 @@ def load_processed_activities_for_week(week_start: date) -> list[Activity]:
                 local_start = parse_start_time(start_time_value)
                 local_date = local_start.date()
                 if week_start <= local_date <= week_end:
+                    activity_id = row.get("activity_id", "")
+                    if activity_id:
+                        if activity_id in seen_activity_ids:
+                            # Same activity re-exported into a later file (sorted
+                            # by filename) — keep the first occurrence only.
+                            continue
+                        seen_activity_ids.add(activity_id)
                     activities.append(
                         Activity(
                             row=row,

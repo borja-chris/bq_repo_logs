@@ -68,6 +68,38 @@ def write_sha256s(export_dir: Path, rows: Iterable[dict[str, str]]) -> int:
     return count
 
 
+def existing_activity_ids(exclude_path: Path) -> set[str]:
+    """Collect activity_ids already present in other data/processed/*.jsonl files.
+
+    `exclude_path` is the output file this batch is about to (re)write, so it
+    is skipped — a re-run for the same import date must not treat its own
+    prior output as a foreign duplicate.
+    """
+    processed_dir = exclude_path.parent
+    ids: set[str] = set()
+    for path in sorted(processed_dir.glob("*.jsonl")):
+        if path == exclude_path:
+            continue
+        for row in load_processed_rows(path):
+            activity_id = row.get("activity_id", "")
+            if activity_id:
+                ids.add(activity_id)
+    return ids
+
+
+def dedup_against_processed(
+    rows: list[dict[str, str]],
+    output_jsonl: Path,
+) -> list[dict[str, str]]:
+    """Drop rows whose activity_id already exists in a different processed file."""
+    if not output_jsonl.parent.exists():
+        return rows
+    known_ids = existing_activity_ids(output_jsonl)
+    if not known_ids:
+        return rows
+    return [row for row in rows if row.get("activity_id", "") not in known_ids]
+
+
 def generate_summaries(export_dir: Path) -> tuple[Path, list[dict[str, str]]]:
     import_date = export_dir.name.removeprefix("COROS_export_")
     output_jsonl = processed_paths_for(date.fromisoformat(import_date))
@@ -85,6 +117,7 @@ def generate_summaries(export_dir: Path) -> tuple[Path, list[dict[str, str]]]:
                     archive.extractall(temp_dir)
                 archived_fit_files = sorted(temp_dir.rglob("*.fit"))
                 rows = summarize.parse_fit_files(archived_fit_files)
+    rows = dedup_against_processed(rows, output_jsonl)
     summarize.write_jsonl(output_jsonl, rows)
     return output_jsonl, rows
 
