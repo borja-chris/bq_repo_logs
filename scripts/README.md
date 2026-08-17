@@ -11,7 +11,7 @@ Near-term candidates:
 
 `fetch_coros.py` downloads COROS FIT files from a Claude-supplied manifest to the repo root, so they land where `ingest_coros_fit.py` expects a manually dropped file and the operator flow below continues unchanged from the "drop" step onward.
 
-Claude supplies the manifest by calling the COROS MCP server's `querySportRecords` and `queryActivityFitFileDownloadUrls` tools. `fetch_coros.py` itself contains no MCP or OAuth code — it only takes URLs and downloads them.
+Claude supplies the manifest by calling the COROS MCP server's `querySportRecords` and `queryActivityFitFileDownloadUrls` tools. `fetch_coros.py` itself contains no MCP or OAuth code — it only takes URLs and downloads them. The call shapes those two tools accept, and the ones they reject, are in `../docs/import_runbook.md`.
 
 Usage:
 

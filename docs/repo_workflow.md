@@ -76,7 +76,10 @@ Use a decision record before:
 
 ## Data Import Loop
 
-For a new COROS export:
+For a new COROS export. The end-to-end procedure — finding the activities on
+the COROS MCP server, fetching them, and integrating the result — is
+`docs/import_runbook.md`; the steps below are what the ingest script itself
+does once the `.fit` files are in place.
 
 1. Drop new raw `.fit` files in the repo root.
 2. Run `scripts/ingest.sh` — the canonical import command. It always invokes `ingest_coros_fit.py` under the repo `.venv`, verifies the FIT parser is importable first, and aborts with a setup hint if the venv is missing or incomplete, so the import cannot silently fall back to a parser-less interpreter. All arguments pass straight through. (Equivalent to `.venv/bin/python scripts/ingest_coros_fit.py`; never invoke the script under a bare system `python`.)
