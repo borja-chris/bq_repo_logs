@@ -12,10 +12,10 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 2026-08-03 | 3 ez | 5 strd | 4-5 ez | 4 ez | 4 ez | 3 ez | Off | 30 |
 | 2 | 2026-08-10 | 3 ez | **6 spd** | Off | 6 ez | 4 ez | 3 ez | 9 LR | 31 |
-| 3 | 2026-08-17 | 3 ez | **7 spd** | Off | **7 thr** | 5 ez | 4 ez | 10 LR | 36 |
-| 4 | 2026-08-24 | 3 ez | **6 spd** | Off | **6 SOS** | 4 ez | 4 ez | 9 LR | 32 |
-| 5 | 2026-08-31 | 3 ez | **7 spd** | Off | **8 thr** | 6 ez | 3 ez | 11 LR | 38 |
-| 6 | 2026-09-07 | 3 ez | **7 spd** | Off | **8 thr** | 6 ez | 5 ez | 11 LR | 40 |
+| 3 | 2026-08-17 | Off | Off | 4 ez | Off | 4 ez | Off | 5 LR | 13 |
+| 4 | 2026-08-24 | 4 ez | Off | 4 ez | Off | 4 ez | Off | 6 LR | 18 |
+| 5 | 2026-08-31 | 4 ez | 4 ez | Off | 5 ez | 4 ez | Off | 8 LR | 25 |
+| 6 | 2026-09-07 | 4 ez | 4 ez | Off | 5 ez | 4 ez | 4 ez | 9 LR | 30 |
 | 7 | 2026-09-14 | 4 ez | **8 str** | Off | **8 stam** | 6 ez | 4 ez | 12 LR | 42 |
 | 8 | 2026-09-21 | 3 ez | **7 spd** | Off | **7 thr** | 5 ez | 4 ez | 10 LR | 36 |
 | 9 | 2026-09-28 | 4 ez | **8 str** | Off | **9 HMP** | 6 ez | 5 ez | 12 LR | 44 |
@@ -35,11 +35,11 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 2026-08-03 | 30 | - | - | - | enter the block smoothly while adjusting for Thursday evening travel |
 | 2 | 2026-08-10 | 31 | +1 | 9 LR | Tue | add light volume with one SOS day while the pace anchor is provisional |
-| 3 | 2026-08-17 | 36 | +5 | 10 LR | Tue, Thu | continue the gradual load build |
-| 4 | 2026-08-24 | 32 | -4 | 9 LR | Tue, Thu | absorb the first three weeks |
-| 5 | 2026-08-31 | 38 | +6 | 11 LR | Tue, Thu | restart the build with stronger aerobic support |
-| 6 | 2026-09-07 | 40 | +2 | 11 LR | Tue, Thu | establish 40 miles as normal, not heroic |
-| 7 | 2026-09-14 | 42 | +2 | 12 LR | Tue, Thu | extend stamina without overreaching |
+| 3 | 2026-08-17 | 13 | -18 | 5 LR | - | return-to-run test after shin splints; no SOS, no back-to-back running days |
+| 4 | 2026-08-24 | 18 | +5 | 6 LR | - | confirm shin durability while adding a 4th easy running day; still no SOS |
+| 5 | 2026-08-31 | 25 | +7 | 8 LR | - | extend to 5 easy running days if week 4 stayed pain-free; still no SOS |
+| 6 | 2026-09-07 | 30 | +5 | 9 LR | - | restore 6-day rhythm; reassess reintroducing SOS at the gate below |
+| 7 | 2026-09-14 | 42 | +12 | 12 LR | Tue, Thu | extend stamina without overreaching |
 | 8 | 2026-09-21 | 36 | -6 | 10 LR | Tue, Thu | down week before the larger build |
 | 9 | 2026-09-28 | 44 | +8 | 12 LR | Tue, Thu | transition fully into strength and HMP work |
 | 10 | 2026-10-05 | 46 | +2 | 13 LR | Tue, Thu | build fatigue resistance |

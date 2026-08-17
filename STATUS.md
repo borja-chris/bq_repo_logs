@@ -6,11 +6,11 @@ Updated 2026-08-17. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 
 ## Current Week (week of 2026-08-17)
 
-- Target mileage: `about 36`
+- Target mileage: `about 13`
 - Actual mileage so far: `0.00`
-- Status: `No days logged yet`
-- Primary purpose: continue the gradual load build
-- Days: none yet
+- Status: `Monday off logged`
+- Primary purpose: return-to-run test after shin splints; no SOS, no back-to-back running days
+- Days: Mon off
 - Warnings: none logged
 
 ## Block Position
@@ -25,4 +25,4 @@ Updated 2026-08-17. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 | 2026-07-27 | `about 30-34` | `27.74` | `Sunday run logged` |
 | 2026-08-03 | `about 26-27` | `14.71` | `Tuesday run logged` |
 | 2026-08-10 | `about 31` | `8.62` | `Sunday run logged` |
-| 2026-08-17 | `about 36` | `0.00` | `No days logged yet` |
+| 2026-08-17 | `about 13` | `0.00` | `Monday off logged` |

@@ -22,20 +22,20 @@ Source: [week_2026-08-17.md](plans/2026-half-marathon/weeks/week_2026-08-17.md)
 
 Week of `2026-08-17`
 
-- Target mileage: `about 36`
+- Target mileage: `about 13`
 - Actual mileage so far: `0.00`
-- Primary purpose: continue the gradual load build
-- Week status: `No days logged yet`
+- Primary purpose: return-to-run test after shin splints; no SOS, no back-to-back running days
+- Week status: `Monday off logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 3 mi easy | x | x |
-| Tuesday | 7 mi total with 5 x 800m controlled | x | x |
-| Wednesday | Off | x | x |
-| Thursday | 7 mi total with 4 mi steady threshold | x | x |
-| Friday | 5 mi easy | x | x |
-| Saturday | 4 mi easy | x | x |
-| Sunday | 10 mi with last 2 mi steady | x | x |
+| Monday | Off | off | x |
+| Tuesday | Off | x | x |
+| Wednesday | 4 mi easy | x | x |
+| Thursday | Off | x | x |
+| Friday | 4 mi easy | x | x |
+| Saturday | Off | x | x |
+| Sunday | 5 mi easy | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
