@@ -50,6 +50,10 @@ dispatcher supplies in the prompt — the dispatcher passes an explicit
 artifact directory for this purpose. Subagents must not scatter artifacts
 into the repo tree, and must never leave untracked files in the repo.
 
+Name the report for the task (`import-report.md`, `task-3-report.md`), not
+bare `report.md` — the harness refuses that exact filename from a subagent,
+which costs a retry mid-task. Dispatchers: name it in the brief.
+
 ## Report file format
 
 ```
