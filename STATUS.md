@@ -2,27 +2,27 @@
 
 # Training Status
 
-Updated 2026-08-22. Regenerate: `.venv/bin/python scripts/status_digest.py`.
+Updated 2026-08-26. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 
-## Current Week (week of 2026-08-17)
+## Current Week (week of 2026-08-24)
 
-- Target mileage: `about 13`
-- Actual mileage so far: `4.09`
-- Status: `Saturday off logged`
-- Primary purpose: return-to-run test after shin splints; no SOS, no back-to-back running days
-- Days: Mon off | Tue off | Wed 4.09mi @11:08/mi | Thu off | Sat off
+- Target mileage: `about 18`
+- Actual mileage so far: `3.55`
+- Status: `Tuesday off logged`
+- Primary purpose: confirm shin durability while adding a 4th easy running day; still no SOS
+- Days: Mon 3.55mi @9:58/mi | Tue off
 - Warnings: none logged
 
 ## Block Position
 
-- 2026 half-marathon block: week 3 of 18 (starts 2026-08-03, race 2026-12-06)
+- 2026 half-marathon block: week 4 of 18 (starts 2026-08-03, race 2026-12-06)
 - Grid: `plans/2026-half-marathon/BLOCK_OVERVIEW.md`; facts/rules: `sources/00_canonical_context.md`
 
 ## Recent Weeks
 
 | Week of | Target | Actual | Status |
 | --- | --- | --- | --- |
-| 2026-07-27 | `about 30-34` | `27.74` | `Sunday run logged` |
 | 2026-08-03 | `about 26-27` | `14.71` | `Tuesday run logged` |
 | 2026-08-10 | `about 31` | `8.62` | `Sunday run logged` |
-| 2026-08-17 | `about 13` | `4.09` | `Saturday off logged` |
+| 2026-08-17 | `about 13` | `14.36` | `Sunday run logged` |
+| 2026-08-24 | `about 18` | `3.55` | `Tuesday off logged` |
