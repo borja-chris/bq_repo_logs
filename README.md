@@ -23,14 +23,14 @@ Source: [week_2026-08-24.md](plans/2026-half-marathon/weeks/week_2026-08-24.md)
 Week of `2026-08-24`
 
 - Target mileage: `about 18`
-- Actual mileage so far: `3.55`
+- Actual mileage so far: `9.13`
 - Primary purpose: confirm shin durability while adding a 4th easy running day; still no SOS
-- Week status: `Tuesday off logged`
+- Week status: `Tuesday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
 | Monday | 4 mi easy | 3.55 mi run | 35:23 at 9:58/mi. |
-| Tuesday | Off | off | x |
+| Tuesday | Off | 5.58 mi run | 59:56 at 10:44/mi. Felt pretty good. |
 | Wednesday | 4 mi easy | x | x |
 | Thursday | Off | x | x |
 | Friday | 4 mi easy | x | x |
