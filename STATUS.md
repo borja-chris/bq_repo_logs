@@ -2,15 +2,15 @@
 
 # Training Status
 
-Updated 2026-08-26. Regenerate: `.venv/bin/python scripts/status_digest.py`.
+Updated 2026-08-30. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 
 ## Current Week (week of 2026-08-24)
 
 - Target mileage: `about 18`
-- Actual mileage so far: `9.13`
-- Status: `Tuesday run logged`
+- Actual mileage so far: `13.41`
+- Status: `Saturday off logged`
 - Primary purpose: confirm shin durability while adding a 4th easy running day; still no SOS
-- Days: Mon 3.55mi @9:58/mi | Tue 5.58mi @10:44/mi
+- Days: Mon 3.55mi @9:58/mi | Tue 5.58mi @10:44/mi | Wed 4.28mi @10:50/mi | Thu off | Sat off
 - Warnings: none logged
 
 ## Block Position
@@ -25,4 +25,4 @@ Updated 2026-08-26. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 | 2026-08-03 | `about 26-27` | `14.71` | `Tuesday run logged` |
 | 2026-08-10 | `about 31` | `8.62` | `Sunday run logged` |
 | 2026-08-17 | `about 13` | `14.36` | `Sunday run logged` |
-| 2026-08-24 | `about 18` | `9.13` | `Tuesday run logged` |
+| 2026-08-24 | `about 18` | `13.41` | `Saturday off logged` |
