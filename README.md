@@ -23,9 +23,9 @@ Source: [week_2026-08-24.md](plans/2026-half-marathon/weeks/week_2026-08-24.md)
 Week of `2026-08-24`
 
 - Target mileage: `about 18`
-- Actual mileage so far: `13.41`
+- Actual mileage so far: `21.48`
 - Primary purpose: confirm shin durability while adding a 4th easy running day; still no SOS
-- Week status: `Saturday off logged`
+- Week status: `Sunday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
@@ -34,8 +34,8 @@ Week of `2026-08-24`
 | Wednesday | 4 mi easy | 4.28 mi run | 46:23 at 10:50/mi. Shin splints flared up after Wednesday jump-rope cross-training session; shelving cross-training indefinitely, focusing on running mileage only. |
 | Thursday | Off | off | x |
 | Friday | 4 mi easy | x | x |
-| Saturday | Off | off | x |
-| Sunday | 6 mi easy | x | x |
+| Saturday | Off | 4.90 mi run | 55:48 at 11:23/mi. |
+| Sunday | 6 mi easy | 3.17 mi run | 36:17 at 11:27/mi. |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->

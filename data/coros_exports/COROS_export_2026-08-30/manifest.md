@@ -2,22 +2,22 @@
 
 ## Import
 
-- Source file: `479914696034517092.fit`
+- Source files: `3` files
 - Repo folder: `data/coros_exports/COROS_export_2026-08-30/`
 - Imported on: 2026-08-30
-- FIT files: 1
-- FIT payload bytes: 104,033
+- FIT files: 3
+- FIT payload bytes: 310,527
 - Removed sidecars: 0 `*:Zone.Identifier` files
 
 ## Integrity
 
 - Hash file: `SHA256SUMS.txt`
-- Hash entries: 1
+- Hash entries: 3
 
 ## Processing
 
 - Processed JSONL: `data/processed/coros_export_2026-08-30_summary.jsonl`
-- JSONL rows: 1
+- JSONL rows: 3
 - Summary row count matches FIT count: yes
 - Parser used for this batch: `fitdecode`
 
@@ -25,7 +25,7 @@
 
 - Archive status: not archived yet
 - Reason: current-month loose FIT files stay available for repair, reparse, or enrichment
-- Folder bytes with loose FIT files: 104,165
+- Folder bytes with loose FIT files: 311,811
 
 ## Notes
 
