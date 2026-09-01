@@ -61,3 +61,29 @@ until the week 6 gate is reached.
 Adopt the return-to-run ramp for weeks 3(remainder)-6. `logs/weekly/week_2026-08-17.md`
 day plans updated to match. Revisit this record at the week 6 gate and record
 the reintroduction decision (or the extension) as a follow-up.
+
+## Addendum - 2026-08-30
+
+**New fact:** Second shin-splint flare-up, 2026-08-26, triggered by jump-rope
+cross-training (not the day's run, which was on-plan and unremarkable).
+Week 4 closed at 21.48 mi actual vs. 18 mi target — over target, not under,
+despite the mid-week flare.
+
+**Decision:** Runner assesses this flare as minor and is continuing the
+mileage build unchanged. Cross-training (jump rope specifically, and
+cross-training generally) is shelved indefinitely. Self-management via
+nightly massage and gym work, no professional evaluation sought at this
+time.
+
+**Risk:** This is the second flare-up inside a ramp designed to prevent
+exactly this. No adjustment made in response. The week 6 gate
+(2026-09-07) criteria — especially "no shin pain during or in the 48h
+after any run" — should be assessed strictly given this pattern; a third
+flare-up or any at-rest/gait-change symptom would warrant professional
+evaluation rather than continued self-management.
+
+**Adaptation:** No change to week 5 target (about 25 mi, 5 easy running
+days). Cross-training removed as a training input going forward.
+
+**Final call:** Proceed at week 5's planned 25 mi target. Revisit at the
+week 6 gate alongside the original SOS-reintroduction decision.
