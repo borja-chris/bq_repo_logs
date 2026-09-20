@@ -18,24 +18,24 @@ The active weekly log lives in `logs/weekly/week_YYYY-MM-DD.md`; daily entries a
 ## Current Week
 
 <!-- current-week:start -->
-Source: [week_2026-08-24.md](plans/2026-half-marathon/weeks/week_2026-08-24.md)
+Source: [week_2026-09-14.md](plans/2026-half-marathon/weeks/week_2026-09-14.md)
 
-Week of `2026-08-24`
+Week of `2026-09-14`
 
-- Target mileage: `about 18`
-- Actual mileage so far: `21.48`
-- Primary purpose: confirm shin durability while adding a 4th easy running day; still no SOS
-- Week status: `Sunday run logged`
+- Target mileage: `about 42`
+- Actual mileage so far: `7.40`
+- Primary purpose: extend stamina without overreaching
+- Week status: `Wednesday off logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 4 mi easy | 3.55 mi run | 35:23 at 9:58/mi. |
-| Tuesday | Off | 5.58 mi run | 59:56 at 10:44/mi. Felt pretty good. |
-| Wednesday | 4 mi easy | 4.28 mi run | 46:23 at 10:50/mi. Shin splints flared up after Wednesday jump-rope cross-training session; shelving cross-training indefinitely, focusing on running mileage only. |
-| Thursday | Off | off | x |
-| Friday | 4 mi easy | x | x |
-| Saturday | Off | 4.90 mi run | 55:48 at 11:23/mi. |
-| Sunday | 6 mi easy | 3.17 mi run | 36:17 at 11:27/mi. |
+| Monday | 4 mi easy | 3.34 mi run | 37:41 at 11:17/mi. |
+| Tuesday | 8 mi total with 3 x 1 mi controlled | 4.06 mi run | 51:19 at 12:38/mi. |
+| Wednesday | Off | off | x |
+| Thursday | 8 mi total with 6 mi progression toward HMP | x | x |
+| Friday | 6 mi easy | x | x |
+| Saturday | 4 mi easy | x | x |
+| Sunday | 12 mi easy | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
