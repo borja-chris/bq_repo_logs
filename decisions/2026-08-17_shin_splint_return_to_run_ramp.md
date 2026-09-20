@@ -87,3 +87,29 @@ days). Cross-training removed as a training input going forward.
 
 **Final call:** Proceed at week 5's planned 25 mi target. Revisit at the
 week 6 gate alongside the original SOS-reintroduction decision.
+
+## Addendum - 2026-09-20
+
+**Decision:** Hold the week 6 SOS-reintroduction gate for two more weeks.
+Week 8 (2026-09-21) is rewritten easy-only at the same 36 mi target
+instead of the two SOS days (speed, threshold) on the original grid.
+
+**Facts:** Runner has been sick since 2026-09-16, no running logged since
+2026-09-15. The week 6 gate (2026-09-07) was never formally assessed, and
+the block grid carried SOS days into week 7 (current) and week 8 anyway.
+Week 7 landed well under target (7.40 vs. 42 mi) due to illness.
+
+**Preference:** Runner asked to hold off the gate decision for two weeks
+rather than assess now, and confirmed 36 mi total for week 8 is fine.
+
+**Risk:** Reintroducing SOS work with no gate check, coming off illness,
+risks a third shin-splint flare or an illness relapse; holding volume
+flat while dropping SOS content avoids both without cutting mileage.
+
+**Adaptation:** Week 8 rewritten easy-only, mileage unchanged at 36
+(Mon 3, Tue 7, Thu 7, Fri 5, Sat 4, Sun 10 LR). Week 9 (2026-09-28) and
+beyond left untouched pending the gate reassessment.
+
+**Final call:** Proceed at week 8's 36 mi target, no SOS. Reassess the
+week 6 gate — now effectively deferred to week 10 (2026-10-05) — once
+two more weeks of consistent, pain-free running are logged.
