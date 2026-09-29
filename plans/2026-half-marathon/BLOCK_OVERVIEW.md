@@ -18,7 +18,7 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 | 6 | 2026-09-07 | 4 ez | 4 ez | Off | 5 ez | 4 ez | 4 ez | 9 LR | 30 |
 | 7 | 2026-09-14 | 4 ez | **8 str** | Off | **8 stam** | 6 ez | 4 ez | 12 LR | 42 |
 | 8 | 2026-09-21 | 3 ez | 7 ez | Off | 7 ez | 5 ez | 4 ez | 10 LR | 36 |
-| 9 | 2026-09-28 | 4 ez | **8 str** | Off | **9 HMP** | 6 ez | 5 ez | 12 LR | 44 |
+| 9 | 2026-09-28 | 4 ez | **6 str** | Off | **7 HMP** | 5 ez | 4 ez | 9 LR | 35 |
 | 10 | 2026-10-05 | 4 ez | **8 str** | Off | **9 HMP** | 7 ez | 5 ez | 13 LR | 46 |
 | 11 | 2026-10-12 | 4 ez | **9 str** | Off | **9 HMP** | 7 ez | 6 ez | 13 LR | 48 |
 | 12 | 2026-10-19 | 4 ez | **8 spd** | Off | **7 thr** | 6 ez | 6 ez | 11 LR | 42 |
@@ -41,8 +41,8 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 | 6 | 2026-09-07 | 30 | +5 | 9 LR | - | restore 6-day rhythm; reassess reintroducing SOS at the gate below |
 | 7 | 2026-09-14 | 42 | +12 | 12 LR | Tue, Thu | extend stamina without overreaching |
 | 8 | 2026-09-21 | 36 | -6 | 10 LR | - | hold gate two more weeks; no SOS, easy mileage only |
-| 9 | 2026-09-28 | 44 | +8 | 12 LR | Tue, Thu | transition fully into strength and HMP work |
-| 10 | 2026-10-05 | 46 | +2 | 13 LR | Tue, Thu | build fatigue resistance |
+| 9 | 2026-09-28 | 35 | -1 | 9 LR | Tue, Thu | reintroduce SOS work with a moderated mileage ramp off week 8 |
+| 10 | 2026-10-05 | 46 | +11 | 13 LR | Tue, Thu | build fatigue resistance |
 | 11 | 2026-10-12 | 48 | +2 | 13 LR | Tue, Thu | consolidate upper-40s mileage |
 | 12 | 2026-10-19 | 42 | -6 | 11 LR | Tue, Thu | down week before peak-specific work |
 | 13 | 2026-10-26 | 50 | +8 | 14 LR | Tue, Thu | start the peak phase |

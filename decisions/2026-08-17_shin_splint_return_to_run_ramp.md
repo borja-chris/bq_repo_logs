@@ -149,3 +149,26 @@ than another self-managed hold, per the 2026-08-30 addendum's risk note.
 
 **Final call:** Proceed with week 9 as gridded, SOS days included,
 starting 2026-09-29.
+
+## Addendum - 2026-09-29 (mileage ramp)
+
+**Decision:** Trim week 9's mileage rather than running the original
+44 mi grid, while keeping both SOS days.
+
+**Facts:** Week 9's original target (44) is +16 over week 8's actual
+(28.27), a ~56% jump in the same week SOS is being reintroduced.
+Runner flagged this as too large a jump on its own, separate from the
+SOS-timing question above.
+
+**Preference:** Runner wants a total of about 35 mi this week, with
+Thursday's HMP day staying larger than Tuesday's strength day (matches
+the original grid's relative ordering, 9 > 8).
+
+**Adaptation:** `plans/2026-half-marathon/weeks/week_2026-09-28.md` and
+`logs/weekly/week_2026-09-28.md` rewritten: Tue 6mi w/ 3x1mi strength,
+Thu 7mi w/ 4mi near HMP, Fri 5 ez, Sat 4 ez, Sun 9mi w/ last 2mi steady
+(Mon 3.69 already logged). New total ~35 (34.69), scaled proportionally
+from the original grid's remaining-day mileage.
+
+**Final call:** Proceed at ~35 mi for week 9, SOS days included at the
+trimmed volumes above.
