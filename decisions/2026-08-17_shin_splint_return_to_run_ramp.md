@@ -113,3 +113,39 @@ beyond left untouched pending the gate reassessment.
 **Final call:** Proceed at week 8's 36 mi target, no SOS. Reassess the
 week 6 gate — now effectively deferred to week 10 (2026-10-05) — once
 two more weeks of consistent, pain-free running are logged.
+
+## Addendum - 2026-09-29
+
+**Decision:** Reopen the SOS-reintroduction gate now, one week early
+relative to the 2026-09-20 addendum's week 10 (2026-10-05) target.
+Week 9's original grid (`plans/2026-half-marathon/weeks/week_2026-09-28.md`,
+left untouched since 2026-09-20) runs as written: Tue 8mi w/ 4x1mi
+strength, Thu 9mi w/ 5mi near HMP, Sun 12mi w/ last 3mi steady.
+
+**Facts:** Week 8 closed 28.27/36 mi, 5 of 6 planned days run (Sat
+2026-09-26 missed, no entry). Sun 2026-09-27: 8.24mi @ 9:37/mi, HR
+156/185 — notably faster than the week's other easy paces
+(10:08-10:43/mi). Mon 2026-09-28: 3.69mi @ 10:29/mi, HR 140/157, plus
+unlogged strides the runner reports felt great. No soreness/warning-sign
+fields were filled in either day's log (blank, not explicitly "none").
+Only one week of post-illness running is logged, not the two weeks the
+2026-09-20 addendum asked for, and Saturday's miss means that one week
+wasn't fully clean either.
+
+**Preference:** Runner wants to start SOS this week based on Sunday's
+pace and Monday's strides, rather than holding to the 2026-10-05 date.
+
+**Risk:** This is the third reintroduction attempt after two prior
+shin-splint flares, on less evidence than the addendum itself called
+for (one week, one missed day, no explicit soreness confirmation).
+Mitigation: no separate adjustment made beyond flagging it here —
+runner's call, made with the gap between evidence and criteria stated
+plainly.
+
+**Adaptation:** No plan file changes — week 9 runs as already gridded.
+Watch Tue/Thu SOS days and the 48h after each for shin pain or gait
+change; a third flare should trigger professional evaluation rather
+than another self-managed hold, per the 2026-08-30 addendum's risk note.
+
+**Final call:** Proceed with week 9 as gridded, SOS days included,
+starting 2026-09-29.
