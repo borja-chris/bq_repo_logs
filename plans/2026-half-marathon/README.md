@@ -51,15 +51,15 @@ Use `03_framework.md` for block-level rules. Use the per-week files in `weeks/` 
 
 | Week | Date | Target mileage | Primary purpose |
 | --- | --- | --- | --- |
-| 1 | 2026-08-03 | about 26-27 | enter the block smoothly while adjusting for Thursday evening travel |
-| 2 | 2026-08-10 | about 34 | add light volume while keeping workouts controlled |
-| 3 | 2026-08-17 | about 36 | continue the gradual load build |
-| 4 | 2026-08-24 | about 32 | absorb the first three weeks |
-| 5 | 2026-08-31 | about 38 | restart the build with stronger aerobic support |
-| 6 | 2026-09-07 | about 40 | establish 40 miles as normal, not heroic |
+| 1 | 2026-08-03 | about 30 | enter the block smoothly while adjusting for Thursday evening travel |
+| 2 | 2026-08-10 | about 31 | add light volume with one SOS day while the pace anchor is provisional |
+| 3 | 2026-08-17 | about 13 | return-to-run test after shin splints; no SOS, no back-to-back running days |
+| 4 | 2026-08-24 | about 18 | confirm shin durability while adding a 4th easy running day; still no SOS |
+| 5 | 2026-08-31 | about 25 | extend to 5 easy running days if week 4 stayed pain-free; still no SOS |
+| 6 | 2026-09-07 | about 30 | restore 6-day rhythm; reassess reintroducing SOS at the gate below |
 | 7 | 2026-09-14 | about 42 | extend stamina without overreaching |
-| 8 | 2026-09-21 | about 36 | down week before the larger build |
-| 9 | 2026-09-28 | about 44 | transition fully into strength and HMP work |
+| 8 | 2026-09-21 | about 36 | hold gate two more weeks; no SOS, easy mileage only |
+| 9 | 2026-09-28 | about 35 | reintroduce SOS work with a moderated mileage ramp off week 8 |
 | 10 | 2026-10-05 | about 46 | build fatigue resistance |
 | 11 | 2026-10-12 | about 48 | consolidate upper-40s mileage |
 | 12 | 2026-10-19 | about 42 | down week before peak-specific work |
