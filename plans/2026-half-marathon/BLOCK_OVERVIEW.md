@@ -19,8 +19,8 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 | 7 | 2026-09-14 | 4 ez | **8 str** | Off | **8 stam** | 6 ez | 4 ez | 12 LR | 42 |
 | 8 | 2026-09-21 | 3 ez | 7 ez | Off | 7 ez | 5 ez | 4 ez | 10 LR | 36 |
 | 9 | 2026-09-28 | 4 ez | **6 str** | Off | **7 HMP** | 5 ez | 4 ez | 9 LR | 35 |
-| 10 | 2026-10-05 | 4 ez | **8 str** | Off | **9 HMP** | 7 ez | 5 ez | 13 LR | 46 |
-| 11 | 2026-10-12 | 4 ez | **9 str** | Off | **9 HMP** | 7 ez | 6 ez | 13 LR | 48 |
+| 10 | 2026-10-05 | 3 ez | **8 str** | Off | **9 HMP** | 5 ez | 3 ez | 12 LR | 40 |
+| 11 | 2026-10-12 | 3 ez | **9 str** | Off | **9 HMP** | 6 ez | 5 ez | 13 LR | 45 |
 | 12 | 2026-10-19 | 4 ez | **8 spd** | Off | **7 thr** | 6 ez | 6 ez | 11 LR | 42 |
 | 13 | 2026-10-26 | 4 ez | **9 str** | Off | **10 HMP** | 7 ez | 6 ez | 14 LR | 50 |
 | 14 | 2026-11-02 | 4 ez | **10 str** | Off | **10 HMP** | 7 ez | 7 ez | 14 LR | 52 |
@@ -42,9 +42,9 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 | 7 | 2026-09-14 | 42 | +12 | 12 LR | Tue, Thu | extend stamina without overreaching |
 | 8 | 2026-09-21 | 36 | -6 | 10 LR | - | hold gate two more weeks; no SOS, easy mileage only |
 | 9 | 2026-09-28 | 35 | -1 | 9 LR | Tue, Thu | reintroduce SOS work with a moderated mileage ramp off week 8 |
-| 10 | 2026-10-05 | 46 | +11 | 13 LR | Tue, Thu | build fatigue resistance |
-| 11 | 2026-10-12 | 48 | +2 | 13 LR | Tue, Thu | consolidate upper-40s mileage |
-| 12 | 2026-10-19 | 42 | -6 | 11 LR | Tue, Thu | down week before peak-specific work |
+| 10 | 2026-10-05 | 40 | +5 | 12 LR | Tue, Thu | build fatigue resistance, smoothed ramp off week 9 |
+| 11 | 2026-10-12 | 45 | +5 | 13 LR | Tue, Thu | consolidate upper-40s mileage, smoothed ramp |
+| 12 | 2026-10-19 | 42 | -3 | 11 LR | Tue, Thu | down week before peak-specific work |
 | 13 | 2026-10-26 | 50 | +8 | 14 LR | Tue, Thu | start the peak phase |
 | 14 | 2026-11-02 | 52 | +2 | 14 LR | Tue, Thu | extend strength while holding recovery quality |
 | 15 | 2026-11-09 | 54 | +2 | 15 LR | Tue, Thu | peak week if decision gates are green |
