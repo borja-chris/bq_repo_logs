@@ -32,6 +32,8 @@ On demand: `sources/03_hanson_half_marathon_framework.md` (Hanson plan);
   Claude as owner for anything Claude can execute (sync-only scripts, doc refreshes,
   greps). Assign the operator only a step that needs operator-only input
   (dropping a `.fit` file, a real-world observation, a subjective call).
+- **Regeneration**: After editing a plan week file, run `bash scripts/ingest.sh --sync-only` —
+  it is the only complete path (README current-week block, `STATUS.md`, `BLOCK_OVERVIEW.md`).
 - **Diff generation**: Build review-package diffs with a direct `git diff ... > file` redirect,
   never piped or grouped — the RTK hook silently truncates diff output in
   compound commands.

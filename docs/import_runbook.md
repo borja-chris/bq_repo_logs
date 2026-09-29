@@ -116,15 +116,22 @@ Then confirm the run landed where you expect by reading
 `logs/weekly/week_YYYY-MM-DD.md` for the **activity's** Monday-dated week. Import
 date ≠ activity date; files arrive days or months late.
 
+`ingest.sh` regenerates all three derived files — the root `README.md` current-week
+block, `STATUS.md`, and `plans/2026-half-marathon/BLOCK_OVERVIEW.md` — so there is
+nothing to run afterwards. The same holds for `bash scripts/ingest.sh --sync-only`,
+which is the command to use after hand-editing a plan week file with no new `.fit`
+data. Do not call `status_digest.py` or `block_overview.py` directly; a partial
+regen is what leaves a stale file behind.
+
 ## 6. Verify
 
 ```bash
 .venv/bin/python -m pytest tests/ -q \
-  && .venv/bin/python scripts/check_markdown_links.py \
-  && .venv/bin/python scripts/status_digest.py
+  && .venv/bin/python scripts/check_markdown_links.py
 ```
 
-Once, after ingest. Read the touched weekly log once and check the day blocks
+Once, after ingest. `status_digest.py` is not repeated here — step 5's `ingest.sh`
+already ran it, along with the other two generators. Read the touched weekly log once and check the day blocks
 against the `querySportRecords` output you already have — distance, duration,
 pace, date.
 
@@ -135,7 +142,8 @@ Stage explicit paths. Never `git add -A` / `git add .` — untracked local tooli
 A typical import touches:
 
 ```text
-README.md STATUS.md data/coros_fetch_ledger.json
+README.md STATUS.md plans/2026-half-marathon/BLOCK_OVERVIEW.md
+data/coros_fetch_ledger.json
 data/coros_exports/COROS_export_YYYY-MM-DD
 data/processed/coros_export_YYYY-MM-DD_summary.jsonl
 logs/weekly/week_YYYY-MM-DD.md

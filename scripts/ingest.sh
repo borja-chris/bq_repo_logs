@@ -38,5 +38,12 @@ if ! "${venv_python}" -c "import sys; sys.path.insert(0, '${repo_root}/scripts')
   exit 1
 fi
 
+# Every derived file is regenerated here, so one entry point leaves the repo
+# fully consistent: ingest_coros_fit.py rewrites README.md's current-week block
+# (--sync-only included), status_digest.py rewrites STATUS.md, and
+# block_overview.py rewrites plans/2026-half-marathon/BLOCK_OVERVIEW.md. All
+# three fail loud under set -e -- block_overview.py's only error is "No week
+# files found", which is real corruption rather than an in-progress edit.
 "${venv_python}" "${ingest_script}" "$@"
 "${venv_python}" "${repo_root}/scripts/status_digest.py"
+"${venv_python}" "${repo_root}/scripts/block_overview.py"
