@@ -30,7 +30,7 @@ Week of `2026-09-28`
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
 | Monday | 4 mi easy | 3.69 mi run | 38:40 at 10:29/mi. |
-| Tuesday | 6 mi total with 3 x 1 mi strength | x | x |
+| Tuesday | 6 mi total with 3 x 1 mi strength @ 8:28/mi | x | x |
 | Wednesday | Off | x | x |
 | Thursday | 7 mi total with 4 mi near HMP | x | x |
 | Friday | 5 mi easy | x | x |
