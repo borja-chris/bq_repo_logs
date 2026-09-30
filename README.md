@@ -29,13 +29,13 @@ Week of `2026-09-28`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 4 mi easy | 3.69 mi run | 38:40 at 10:29/mi. |
-| Tuesday | 6 mi total with 3 x 1 mi strength @ 8:28/mi, 400m jog recovery (~2:50) between reps | 7.00 mi run | 1:09:54 at 9:59/mi. Felt great, really put the hammer down on the intervals. |
-| Wednesday | 4 mi easy | x | x |
-| Thursday | 7 mi total with 4 mi near HMP | x | x |
+| Monday | 4 mi recovery @ 11:00-11:45/mi | 3.69 mi run | 38:40 at 10:29/mi. |
+| Tuesday | 6 mi total with 3 x 1 mi strength @ 8:28/mi, 400m jog recovery (~2:50) between reps, easy miles @ 10:30-11:30/mi | 7.00 mi run | 1:09:54 at 9:59/mi. Felt great, really put the hammer down on the intervals. |
+| Wednesday | 4 mi easy @ 10:30-11:30/mi | x | x |
+| Thursday | 7 mi total with 4 mi @ HMP 8:33-8:43/mi, easy miles @ 10:30-11:30/mi | x | x |
 | Friday | Off | x | x |
-| Saturday | 5 mi easy | x | x |
-| Sunday | 9 mi with last 2 mi steady | x | x |
+| Saturday | 5 mi easy @ 10:30-11:30/mi | x | x |
+| Sunday | 9 mi long @ 9:30-11:00/mi, last 2 mi steady (no faster than ~9:15/mi) | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
