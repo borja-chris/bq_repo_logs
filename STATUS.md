@@ -2,15 +2,15 @@
 
 # Training Status
 
-Updated 2026-09-30. Regenerate: `.venv/bin/python scripts/status_digest.py`.
+Updated 2026-10-01. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 
 ## Current Week (week of 2026-09-28)
 
 - Target mileage: `about 35`
-- Actual mileage so far: `10.69`
-- Status: `Tuesday run logged`
+- Actual mileage so far: `21.45`
+- Status: `Thursday run logged`
 - Primary purpose: reintroduce SOS work with a moderated mileage ramp off week 8
-- Days: Mon 3.69mi @10:29/mi | Tue 7.00mi @9:59/mi
+- Days: Mon 3.69mi @10:29/mi | Tue 7.00mi @9:59/mi | Wed 3.51mi @11:03/mi | Thu 7.25mi @9:16/mi
 - Warnings: none logged
 
 ## Block Position
@@ -25,4 +25,4 @@ Updated 2026-09-30. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 | 2026-09-07 | `about 30` | `23.20` | `Sunday run logged` |
 | 2026-09-14 | `about 42` | `7.40` | `Wednesday off logged` |
 | 2026-09-21 | `about 36` | `28.27` | `Sunday run logged` |
-| 2026-09-28 | `about 35` | `10.69` | `Tuesday run logged` |
+| 2026-09-28 | `about 35` | `21.45` | `Thursday run logged` |
