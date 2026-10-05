@@ -2,27 +2,27 @@
 
 # Training Status
 
-Updated 2026-10-01. Regenerate: `.venv/bin/python scripts/status_digest.py`.
+Updated 2026-10-05. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 
-## Current Week (week of 2026-09-28)
+## Current Week (week of 2026-10-05)
 
-- Target mileage: `about 35`
-- Actual mileage so far: `21.45`
-- Status: `Thursday run logged`
-- Primary purpose: reintroduce SOS work with a moderated mileage ramp off week 8
-- Days: Mon 3.69mi @10:29/mi | Tue 7.00mi @9:59/mi | Wed 3.51mi @11:03/mi | Thu 7.25mi @9:16/mi
+- Target mileage: `about 40`
+- Actual mileage so far: `0.00`
+- Status: `No days logged yet`
+- Primary purpose: build fatigue resistance, smoothed ramp off week 9
+- Days: none yet
 - Warnings: none logged
 
 ## Block Position
 
-- 2026 half-marathon block: week 9 of 18 (starts 2026-08-03, race 2026-12-06)
+- 2026 half-marathon block: week 10 of 18 (starts 2026-08-03, race 2026-12-06)
 - Grid: `plans/2026-half-marathon/BLOCK_OVERVIEW.md`; facts/rules: `sources/00_canonical_context.md`
 
 ## Recent Weeks
 
 | Week of | Target | Actual | Status |
 | --- | --- | --- | --- |
-| 2026-09-07 | `about 30` | `23.20` | `Sunday run logged` |
 | 2026-09-14 | `about 42` | `7.40` | `Wednesday off logged` |
 | 2026-09-21 | `about 36` | `28.27` | `Sunday run logged` |
-| 2026-09-28 | `about 35` | `21.45` | `Thursday run logged` |
+| 2026-09-28 | `about 35` | `35.62` | `Sunday run logged` |
+| 2026-10-05 | `about 40` | `0.00` | `No days logged yet` |

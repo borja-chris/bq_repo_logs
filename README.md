@@ -18,24 +18,24 @@ The active weekly log lives in `logs/weekly/week_YYYY-MM-DD.md`; daily entries a
 ## Current Week
 
 <!-- current-week:start -->
-Source: [week_2026-09-28.md](plans/2026-half-marathon/weeks/week_2026-09-28.md)
+Source: [week_2026-10-05.md](plans/2026-half-marathon/weeks/week_2026-10-05.md)
 
-Week of `2026-09-28`
+Week of `2026-10-05`
 
-- Target mileage: `about 35`
-- Actual mileage so far: `21.45`
-- Primary purpose: reintroduce SOS work with a moderated mileage ramp off week 8
-- Week status: `Thursday run logged`
+- Target mileage: `about 40`
+- Actual mileage so far: `0.00`
+- Primary purpose: build fatigue resistance, smoothed ramp off week 9
+- Week status: `No days logged yet`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 4 mi recovery @ 11:00-11:45/mi | 3.69 mi run | 38:40 at 10:29/mi. |
-| Tuesday | 6 mi total with 3 x 1 mi strength @ 8:28/mi, 400m jog recovery (~2:50) between reps, easy miles @ 10:30-11:30/mi | 7.00 mi run | 1:09:54 at 9:59/mi. Felt great, really put the hammer down on the intervals. |
-| Wednesday | 4 mi easy @ 10:30-11:30/mi | 3.51 mi run | 38:48 at 11:03/mi. |
-| Thursday | 7 mi total with 4 mi @ HMP 8:33-8:43/mi, easy miles @ 10:30-11:30/mi | 7.25 mi run | 1:07:09 at 9:16/mi. |
-| Friday | Off | x | x |
-| Saturday | 5 mi easy @ 10:30-11:30/mi | x | x |
-| Sunday | 9 mi long @ 9:30-11:00/mi, last 2 mi steady (no faster than ~9:15/mi) | x | x |
+| Monday | 3 mi easy | x | x |
+| Tuesday | 8 mi total with 3 x 1.5 mi strength | x | x |
+| Wednesday | Off | x | x |
+| Thursday | 9 mi total with 2 x 3 mi near HMP | x | x |
+| Friday | 5 mi easy | x | x |
+| Saturday | 3 mi easy | x | x |
+| Sunday | 12 mi easy | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->

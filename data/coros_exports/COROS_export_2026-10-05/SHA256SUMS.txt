@@ -1,0 +1,2 @@
+88ea010b8aaf061a0dde71f47a62d9dfc9b811cb1514f5fa16d7ce85cc9c7ded  data/coros_exports/COROS_export_2026-10-05/480783341358972931.fit
+1ba23eb1b37e4e54cba6a4f67a4cdddab078a140b05721f30f109a0133e84ff3  data/coros_exports/COROS_export_2026-10-05/480801661011394765.fit
