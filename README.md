@@ -23,13 +23,13 @@ Source: [week_2026-10-05.md](plans/2026-half-marathon/weeks/week_2026-10-05.md)
 Week of `2026-10-05`
 
 - Target mileage: `about 40`
-- Actual mileage so far: `0.00`
+- Actual mileage so far: `3.50`
 - Primary purpose: build fatigue resistance, smoothed ramp off week 9
-- Week status: `No days logged yet`
+- Week status: `Monday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 3 mi recovery @ 11:00-11:45/mi | x | x |
+| Monday | 3 mi recovery @ 11:00-11:45/mi | 3.50 mi run | 39:01 at 11:09/mi. Felt easy, as it should. |
 | Tuesday | 8 mi total with 3 x 1.5 mi strength @ 12:42-12:57 per rep (8:28-8:38/mi), 600m jog recovery (~4:15) between reps, easy miles @ 10:30-11:30/mi | x | x |
 | Wednesday | Off | x | x |
 | Thursday | 9 mi total with 2 x 3 mi @ HMP 8:33-8:43/mi, 400-800m jog recovery between reps, easy miles @ 10:30-11:30/mi | x | x |
