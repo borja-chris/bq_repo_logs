@@ -40,6 +40,24 @@ Week of `2026-10-05`
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
 
+## Pace Reference
+
+<!-- pace-reference:start -->
+Source: [03_framework.md](plans/2026-half-marathon/03_framework.md#pace-guide)
+
+| Run Type | Pace |
+| --- | --- |
+| Recovery | 11:00-11:45/mi |
+| Easy aerobic | 10:30-11:30/mi |
+| Long run | 9:30-11:00/mi |
+| Half-marathon pace (HMP) | 8:33-8:43/mi |
+| Threshold (~1-hr effort) | 8:15-8:38/mi |
+| Strength reps | 8:28-8:38/mi |
+| Speed reps | 7:36-8:05/mi |
+
+Hansons tempo runs are run at HMP. Rep target times and recovery jogs: see the source.
+<!-- pace-reference:end -->
+
 ## Workflow
 
 See [docs/repo_workflow.md](docs/repo_workflow.md) for the operating loop, COROS import steps, and archive rules. Keep tooling AI-tool-agnostic.

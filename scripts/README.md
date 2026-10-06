@@ -92,6 +92,7 @@ instead of silently leaving weather fields blank.
 - creating daily-entry stubs for past skipped planned run days so manual context has a place to live
 - refreshing `logs/weekly/`
 - refreshing the managed current-week block in `README.md`
+- refreshing the managed `## Pace Reference` block in `README.md`, generated from the Pace Guide table in `plans/2026-half-marathon/03_framework.md`
 - writing the batch manifest
 
 `summarize_coros_fit.py` reads FIT files from an import directory and writes a newline-delimited JSON (`.jsonl`) summary to `data/processed/` with stable machine-oriented fields such as the import batch, repo-relative source path, FIT activity ID, and SHA-256 hash.

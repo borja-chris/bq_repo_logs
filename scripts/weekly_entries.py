@@ -13,6 +13,9 @@ README_PATH = REPO_ROOT / "README.md"
 WEEKLY_TEMPLATE = REPO_ROOT / "templates" / "weekly_log_template.md"
 README_START = "<!-- current-week:start -->"
 README_END = "<!-- current-week:end -->"
+FRAMEWORK_PATH = REPO_ROOT / "plans" / "2026-half-marathon" / "03_framework.md"
+PACE_START = "<!-- pace-reference:start -->"
+PACE_END = "<!-- pace-reference:end -->"
 WEEKLY_START = "<!-- auto-summary:start -->"
 WEEKLY_END = "<!-- auto-summary:end -->"
 IMPORT_NOTE_PREFIX = "- Imported from `"
@@ -489,7 +492,14 @@ def build_week_rows(
     return rows, total_miles, status
 
 
-def ensure_markers(text: str, start_marker: str, end_marker: str, heading: str, body: str) -> str:
+def ensure_markers(
+    text: str,
+    start_marker: str,
+    end_marker: str,
+    heading: str,
+    body: str,
+    insert_before: str | None = None,
+) -> str:
     if start_marker in text and end_marker in text:
         pattern = re.compile(
             rf"{re.escape(start_marker)}.*?{re.escape(end_marker)}",
@@ -502,6 +512,10 @@ def ensure_markers(text: str, start_marker: str, end_marker: str, heading: str, 
     replacement = f"## {heading}\n\n{start_marker}\n{body}\n{end_marker}\n\n"
     if section_pattern.search(text):
         return section_pattern.sub(replacement, text, count=1)
+    if insert_before is not None:
+        anchor = re.search(rf"(?m)^## {re.escape(insert_before)}\n", text)
+        if anchor:
+            return text[: anchor.start()] + replacement + text[anchor.start() :]
     raise SystemExit(f"Could not find ## {heading} section for managed update.")
 
 
@@ -527,6 +541,60 @@ def update_readme(week_plan: WeekPlan, rows: list[str], total_miles: float, stat
     text = README_PATH.read_text()
     body = build_readme_current_week(week_plan, rows, total_miles, status)
     updated = ensure_markers(text, README_START, README_END, "Current Week", body)
+    README_PATH.write_text(updated)
+
+
+def parse_pace_table(framework_text: str) -> list[tuple[str, str]]:
+    """Return (Run Type, Pace) rows from the first table under ## Pace Guide."""
+    section = re.search(r"(?ms)^## Pace Guide\n(.*?)(?=^## |\Z)", framework_text)
+    if not section:
+        raise SystemExit("Pace Guide section not found in framework file.")
+    rows: list[tuple[str, str]] = []
+    in_table = False
+    for line in section.group(1).splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            if in_table:
+                break
+            continue
+        cells = [c.strip() for c in stripped.strip("|").split("|")]
+        if not in_table:
+            if cells[:2] != ["Run Type", "Pace"]:
+                raise SystemExit("First Pace Guide table must start with 'Run Type | Pace' columns.")
+            in_table = True
+            continue
+        if all(set(c) <= set("-: ") for c in cells):
+            continue
+        if len(cells) < 2 or not cells[0] or not cells[1]:
+            raise SystemExit(f"Unparseable Pace Guide row: {line}")
+        rows.append((cells[0], cells[1]))
+    if not rows:
+        raise SystemExit("No Pace Guide table rows found in framework file.")
+    return rows
+
+
+def build_pace_reference(framework_text: str) -> str:
+    rows = parse_pace_table(framework_text)
+    lines = [
+        f"Source: [{FRAMEWORK_PATH.name}](plans/2026-half-marathon/{FRAMEWORK_PATH.name}#pace-guide)",
+        "",
+        "| Run Type | Pace |",
+        "| --- | --- |",
+        *(f"| {run_type} | {pace} |" for run_type, pace in rows),
+        "",
+        "Hansons tempo runs are run at HMP. Rep target times and recovery jogs: see the source.",
+    ]
+    return "\n".join(lines)
+
+
+def update_pace_reference() -> None:
+    if not FRAMEWORK_PATH.exists():
+        raise SystemExit(f"Framework file not found: {FRAMEWORK_PATH}")
+    body = build_pace_reference(FRAMEWORK_PATH.read_text(encoding="utf-8"))
+    text = README_PATH.read_text()
+    updated = ensure_markers(
+        text, PACE_START, PACE_END, "Pace Reference", body, insert_before="Workflow"
+    )
     README_PATH.write_text(updated)
 
 

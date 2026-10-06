@@ -50,6 +50,7 @@ from weekly_entries import (
     replace_heading_section,
     seed_missing_planned_day_entries,
     has_placeholder_planned_value,
+    update_pace_reference,
     update_readme,
     upsert_weekly_log,
 )
@@ -341,6 +342,7 @@ def sync_week(
         weekly_path = upsert_weekly_log(week_plan, rows, total_miles, status, day_entries)
     if update_readme_flag:
         update_readme(week_plan, rows, total_miles, status)
+        update_pace_reference()
     return {
         "week_plan": week_plan,
         "weekly_path": weekly_path,
