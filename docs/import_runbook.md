@@ -133,7 +133,8 @@ regen is what leaves a stale file behind.
 Once, after ingest. `status_digest.py` is not repeated here — step 5's `ingest.sh`
 already ran it, along with the other two generators. Read the touched weekly log once and check the day blocks
 against the `querySportRecords` output you already have — distance, duration,
-pace, date.
+pace, date. SOS (workout) days also show a `Laps:` managed note with per-lap
+splits and HR, taken from the FIT file.
 
 ## 7. Commit and push
 

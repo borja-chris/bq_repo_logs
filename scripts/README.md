@@ -122,6 +122,8 @@ Weekly logs use a mixed-source model:
 - Manual weekly notes and follow-up items stay in the same top summary section.
 - `## Daily Entries` contains per-day blocks where objective fields are updated and manual notes stay attached to that day.
 
+Per-lap splits (distance, time, pace, avg/max HR) are stored as `laps` in each processed row and shown as a `Laps:` managed note on days whose plan purpose starts with `SOS`, or whose laps are not the watch's automatic 1-mile pattern. Rows imported before this feature get their laps via `.venv/bin/python scripts/backfill_laps.py` (adds only the `laps` field, verifies the FIT sha256, then re-syncs affected weekly logs; `--sync-only` alone only re-syncs the current week).
+
 ## FIT Archiving
 
 `archive_coros_export.py` packs the loose FIT files in one export batch into `fit_files.tar.gz`, updates the matching processed JSONL sidecar with archive metadata, verifies archive membership, and then removes the loose `.fit` files.

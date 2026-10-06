@@ -30,6 +30,22 @@ def parse_start_time(value: str) -> datetime:
     return parsed
 
 
+def pace_label(distance_mi: float, duration_s: int) -> str:
+    if distance_mi <= 0 or duration_s <= 0:
+        return ""
+    pace_seconds = round(duration_s / distance_mi)
+    minutes, seconds = divmod(pace_seconds, 60)
+    return f"{minutes}:{seconds:02d}/mi"
+
+
+def duration_label(seconds: int) -> str:
+    hours, remainder = divmod(seconds, 3600)
+    minutes, secs = divmod(remainder, 60)
+    if hours:
+        return f"{hours}:{minutes:02d}:{secs:02d}"
+    return f"{minutes}:{secs:02d}"
+
+
 @dataclass
 class Activity:
     row: dict[str, str]
@@ -53,20 +69,11 @@ class Activity:
 
     @property
     def pace_label(self) -> str:
-        if self.distance_mi <= 0 or self.duration_s <= 0:
-            return ""
-        pace_seconds = round(self.duration_s / self.distance_mi)
-        minutes, seconds = divmod(pace_seconds, 60)
-        return f"{minutes}:{seconds:02d}/mi"
+        return pace_label(self.distance_mi, self.duration_s)
 
     @property
     def time_label(self) -> str:
-        seconds = self.duration_s
-        hours, remainder = divmod(seconds, 3600)
-        minutes, secs = divmod(remainder, 60)
-        if hours:
-            return f"{hours}:{minutes:02d}:{secs:02d}"
-        return f"{minutes}:{secs:02d}"
+        return duration_label(self.duration_s)
 
     @property
     def fit_note(self) -> str:

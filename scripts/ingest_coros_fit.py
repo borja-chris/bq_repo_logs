@@ -39,6 +39,7 @@ from weekly_entries import (
     WeeklyDayEntry,
     build_week_rows,
     build_managed_notes_lines,
+    build_managed_notes_lines_with_laps,
     create_weekly_day_entry,
     ensure_markers,
     merge_legacy_entry,
@@ -163,14 +164,18 @@ def aggregate_completed_label(activities: list[weather.Activity], total_distance
     return f"{total_distance:.2f} mi total ({len(activities)} {activity_noun})"
 
 
-def build_managed_notes_lines_for_activities(activities: list[weather.Activity]) -> list[str]:
+def build_managed_notes_lines_for_activities(
+    activities: list[weather.Activity], purpose: str = ""
+) -> list[str]:
     managed_lines: list[str] = []
     for activity in sorted(activities, key=lambda activity: activity.local_start):
-        managed_lines.extend(build_managed_notes_lines(activity))
+        managed_lines.extend(build_managed_notes_lines_with_laps(activity, purpose))
     return managed_lines
 
 
-def upsert_activity_entries(entry: WeeklyDayEntry, activities: list[weather.Activity]) -> None:
+def upsert_activity_entries(
+    entry: WeeklyDayEntry, activities: list[weather.Activity], purpose: str = ""
+) -> None:
     ordered_activities = sorted(activities, key=lambda activity: activity.local_start)
     total_distance = sum(activity.distance_mi for activity in ordered_activities)
     total_duration_s = sum(activity.duration_s for activity in ordered_activities)
@@ -186,7 +191,7 @@ def upsert_activity_entries(entry: WeeklyDayEntry, activities: list[weather.Acti
         entry.pace = ""
     if not entry.effort or entry.effort in {"off", "rest"}:
         entry.effort = "imported"
-    entry.managed_notes_lines = build_managed_notes_lines_for_activities(ordered_activities)
+    entry.managed_notes_lines = build_managed_notes_lines_for_activities(ordered_activities, purpose)
 
 
 def parse_args() -> argparse.Namespace:
@@ -307,6 +312,7 @@ def sync_week(
         if activities is None:
             activities = weather.load_processed_activities_for_week(week_start)
         planned_by_date = {day_plan.day_date: day_plan.planned for day_plan in week_plan.day_plans}
+        purpose_by_date = {day_plan.day_date: day_plan.purpose for day_plan in week_plan.day_plans}
         activities_by_date: dict[date, list[weather.Activity]] = defaultdict(list)
         for activity in activities:
             if not (week_start <= activity.local_date <= week_end):
@@ -322,7 +328,7 @@ def sync_week(
                 day_entries[activity_date] = entry
             elif has_placeholder_planned_value(entry.planned):
                 entry.planned = planned_by_date.get(activity_date, "")
-            upsert_activity_entries(entry, dated_activities)
+            upsert_activity_entries(entry, dated_activities, purpose_by_date.get(activity_date, ""))
             synced_entry_dates.append(activity_date)
         if subjective_updates:
             # Only apply notes dated inside this week; a note for another week is

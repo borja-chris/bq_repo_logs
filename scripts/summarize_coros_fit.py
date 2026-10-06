@@ -71,8 +71,12 @@ OUTPUT_FIELDS = [
 ERROR_FIELDS = ["parse_error", "weather_fetch_error"]
 
 
-def slim_row(row: dict[str, str]) -> dict[str, str]:
+def slim_row(row: dict[str, Any]) -> dict[str, Any]:
     out = {key: row.get(key, "") for key in OUTPUT_FIELDS}
+    # Per-lap splits are a list (not a string) and only present once extracted;
+    # an absent key means "not yet backfilled", an empty list means "no laps".
+    if "laps" in row:
+        out["laps"] = row["laps"]
     for key in ERROR_FIELDS:
         value = row.get(key, "").strip()
         if value:
@@ -222,6 +226,38 @@ def miles(meters: Any) -> str:
     return f"{float(meters) / 1609.344:.2f}"
 
 
+def lap_miles(meters: Any) -> str:
+    # Three decimals so per-lap pace derived from the stored distance stays
+    # within ~1 s/mi of the watch value (2 decimals can skew a 1.00 mi rep).
+    if meters in (None, ""):
+        return ""
+    return f"{float(meters) / 1609.344:.3f}"
+
+
+def lap_from_values(values: dict[str, Any]) -> dict[str, str]:
+    return {
+        "distance_mi": lap_miles(values.get("total_distance")),
+        "duration_s": preferred_duration_seconds(values),
+        "avg_hr": str(values.get("avg_heart_rate", "") or ""),
+        "max_hr": str(values.get("max_heart_rate", "") or ""),
+    }
+
+
+def extract_laps(path: Path) -> list[dict[str, str]]:
+    """Return compact lap dicts from the FIT `lap` messages (fitdecode)."""
+    laps: list[dict[str, str]] = []
+    if FITDECODE is None:
+        return laps
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        with FITDECODE.FitReader(str(path)) as fit_file:
+            for frame in fit_file:
+                if frame.frame_type != FITDECODE.FIT_FRAME_DATA or frame.name != "lap":
+                    continue
+                laps.append(lap_from_values({f.name: f.value for f in frame.fields}))
+    return laps
+
+
 def seconds(value: Any) -> str:
     if value in (None, ""):
         return ""
@@ -261,12 +297,14 @@ def build_row(path: Path) -> dict[str, str]:
     row["source_relpath"] = repo_relpath(path)
     row["source_sha256"] = sha256(path)
     row["activity_id"] = path.stem
+    row["laps"] = []
     return row
 
 
 def parse_fit(path: Path, row: dict[str, str] | None = None) -> dict[str, str]:
     row = build_row(path) if row is None else row
     raw_start_time: Any = ""
+    laps: list[dict[str, str]] = []
 
     def apply_start_time() -> None:
         (
@@ -293,6 +331,8 @@ def parse_fit(path: Path, row: dict[str, str] | None = None) -> dict[str, str]:
         row["max_hr"] = str(values.get("max_heart_rate", "") or "")
         row["ascent_m"] = str(values.get("total_ascent", "") or "")
         row["parser"] = parser_name
+        # Lap messages precede the session message in the FIT stream.
+        row["laps"] = list(laps)
         if not row["start_lat"] or not row["start_lon"]:
             apply_position(
                 values.get("start_position_lat"),
@@ -313,7 +353,9 @@ def parse_fit(path: Path, row: dict[str, str] | None = None) -> dict[str, str]:
             fit_file = FITPARSE_FILE(str(path))
             for message in fit_file.get_messages():
                 values = field_map(message)
-                if message.name == "session":
+                if message.name == "lap":
+                    laps.append(lap_from_values(values))
+                elif message.name == "session":
                     apply_values(values, "fitparse")
                 elif message.name == "record" and not row["start_lat"]:
                     apply_position(
@@ -324,6 +366,7 @@ def parse_fit(path: Path, row: dict[str, str] | None = None) -> dict[str, str]:
                     break
         except Exception as exc:
             fitparse_exc = exc
+            laps.clear()
 
     if not row["parser"]:
         if FITDECODE is None:
@@ -341,7 +384,9 @@ def parse_fit(path: Path, row: dict[str, str] | None = None) -> dict[str, str]:
                         if frame.frame_type != FITDECODE.FIT_FRAME_DATA:
                             continue
                         values = {field.name: field.value for field in frame.fields}
-                        if frame.name == "session":
+                        if frame.name == "lap":
+                            laps.append(lap_from_values(values))
+                        elif frame.name == "session":
                             apply_values(values, "fitdecode")
                         elif frame.name == "record" and not row["start_lat"]:
                             apply_position(

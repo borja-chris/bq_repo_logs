@@ -6,6 +6,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+from ingest_coros_fit_weather import duration_label, pace_label
 from weekly_plan import WeekPlan
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -180,6 +181,56 @@ def build_managed_notes_lines(activity: Any) -> list[str]:
     elif row.get("weather_temp_f", "").strip():
         parts.append(f"{row['weather_temp_f']}°F")
     return [f"  - {' | '.join(parts)}"]
+
+
+AUTO_LAP_MILE_TOLERANCE = 0.02
+
+
+def laps_are_auto_mile(laps: list[dict[str, str]]) -> bool:
+    """True for the watch's automatic 1-mile lap pattern (or a single lap).
+
+    lap_trigger is None in COROS FITs, so manual laps are detected by shape:
+    every lap but the last is 1.00 mi (+/-0.02) and the last is <= 1.02 mi.
+    """
+    if len(laps) <= 1:
+        return True
+    for lap in laps[:-1]:
+        if abs(float(lap["distance_mi"] or 0) - 1.0) > AUTO_LAP_MILE_TOLERANCE:
+            return False
+    return float(laps[-1]["distance_mi"] or 0) <= 1.0 + AUTO_LAP_MILE_TOLERANCE
+
+
+def should_render_laps(laps: list[dict[str, str]], purpose: str) -> bool:
+    if not laps:
+        return False
+    if purpose.strip().startswith("SOS"):
+        return True
+    return not laps_are_auto_mile(laps)
+
+
+def build_lap_lines(laps: list[dict[str, str]]) -> list[str]:
+    lines = ["  - Laps:"]
+    for index, lap in enumerate(laps, start=1):
+        distance = float(lap["distance_mi"] or 0)
+        duration = int(float(lap["duration_s"] or 0))
+        parts = [
+            f"{distance:.2f} mi",
+            duration_label(duration),
+            pace_label(distance, duration) or "-",
+        ]
+        avg_hr = (lap.get("avg_hr") or "").strip()
+        if avg_hr:
+            parts.append(f"HR {avg_hr}/{(lap.get('max_hr') or '').strip() or '?'}")
+        lines.append(f"    {index}. {' | '.join(parts)}")
+    return lines
+
+
+def build_managed_notes_lines_with_laps(activity: Any, purpose: str = "") -> list[str]:
+    lines = build_managed_notes_lines(activity)
+    laps = activity.row.get("laps") or []
+    if should_render_laps(laps, purpose):
+        lines.extend(build_lap_lines(laps))
+    return lines
 
 
 def parse_weekly_day_entry(day_date: date, block_lines: list[str]) -> WeeklyDayEntry:
