@@ -31,8 +31,8 @@ Week of `2026-10-05`
 | --- | --- | --- | --- |
 | Monday | 3 mi recovery @ 11:00-11:45/mi | 3.50 mi run | 39:01 at 11:09/mi. Felt easy, as it should. |
 | Tuesday | 8 mi total with 3 x 1.5 mi strength @ 12:42-12:57 per rep (8:28-8:38/mi), 600m jog recovery (~4:15) between reps, easy miles @ 10:30-11:30/mi | 8.65 mi run | 1:24:41 at 9:47/mi. Felt manageable. Ran to paces and tried to cruise: cruised the first 2 reps; on the last rep cruised the first 3 track laps, then ticked it up for the last 3 track laps. |
-| Wednesday | Off | 3.00 mi run | 35:02 at 11:41/mi. |
-| Thursday | 9 mi total with 2 x 3 mi @ HMP 8:33-8:43/mi, 400-800m jog recovery between reps, easy miles @ 10:30-11:30/mi | 9.60 mi run | 1:31:44 at 9:33/mi. |
+| Wednesday | Off | 3.00 mi run | 35:02 at 11:41/mi. Easy day. No problems. |
+| Thursday | 9 mi total with 2 x 3 mi @ HMP 8:33-8:43/mi, 400-800m jog recovery between reps, easy miles @ 10:30-11:30/mi | 9.60 mi run | 1:31:44 at 9:33/mi. Workout day. Definitely a workout; will benefit from the higher mileage weeks coming up. |
 | Friday | 5 mi easy @ 10:30-11:30/mi | x | x |
 | Saturday | 3 mi easy @ 10:30-11:30/mi | x | x |
 | Sunday | 12 mi long @ 9:30-11:00/mi | x | x |
