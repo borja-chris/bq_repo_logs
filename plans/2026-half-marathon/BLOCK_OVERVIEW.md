@@ -19,7 +19,7 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 | 7 | 2026-09-14 | 4 ez | **8 str** | Off | **8 stam** | 6 ez | 4 ez | 12 LR | 42 |
 | 8 | 2026-09-21 | 3 ez | 7 ez | Off | 7 ez | 5 ez | 4 ez | 10 LR | 36 |
 | 9 | 2026-09-28 | 4 ez | **6 str** | 4 ez | **7 HMP** | Off | 5 ez | 9 LR | 35 |
-| 10 | 2026-10-05 | 3 ez | **8 str** | Off | **9 HMP** | 5 ez | 3 ez | 12 LR | 40 |
+| 10 | 2026-10-05 | 3 ez | **8 str** | 3 ez | **9 HMP** | 5 ez | Off | 12 LR | 40 |
 | 11 | 2026-10-12 | 3 ez | **9 str** | Off | **9 HMP** | 6 ez | 5 ez | 13 LR | 45 |
 | 12 | 2026-10-19 | 4 ez | **8 SOS** | Off | **7 thr** | 6 ez | 6 ez | 11 LR | 42 |
 | 13 | 2026-10-26 | 4 ez | **9 str** | Off | **10 HMP** | 7 ez | 6 ez | 14 LR | 50 |
