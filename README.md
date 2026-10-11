@@ -23,9 +23,9 @@ Source: [week_2026-10-05.md](plans/2026-half-marathon/weeks/week_2026-10-05.md)
 Week of `2026-10-05`
 
 - Target mileage: `about 40`
-- Actual mileage so far: `24.75`
+- Actual mileage so far: `30.50`
 - Primary purpose: build fatigue resistance, smoothed ramp off week 9
-- Week status: `Thursday run logged`
+- Week status: `Saturday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
@@ -34,7 +34,7 @@ Week of `2026-10-05`
 | Wednesday | 3 mi easy @ 10:30-11:30/mi (moved from Saturday, NYCC) | 3.00 mi run | 35:02 at 11:41/mi. Easy day. No problems. |
 | Thursday | 9 mi total with 2 x 3 mi @ HMP 8:33-8:43/mi, 400-800m jog recovery between reps, easy miles @ 10:30-11:30/mi | 9.60 mi run | 1:31:44 at 9:33/mi. Workout day. Definitely a workout; will benefit from the higher mileage weeks coming up. |
 | Friday | 5 mi easy @ 10:30-11:30/mi | x | x |
-| Saturday | Off | x | x |
+| Saturday | Off | 5.75 mi run | 1:03:05 at 10:58/mi. Easy run, kept very easy. |
 | Sunday | 12 mi long @ 9:30-11:00/mi | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
