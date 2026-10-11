@@ -72,6 +72,11 @@ Optional flags:
 when weather is enabled, which makes it the repair path after a transient API or DNS
 failure during the original import.
 
+Each sync prints one `Plan check <date> (<day>): planned "..." | actual N mi  [...]`
+line per date with activities, comparing the plan file's Run cell to the imported
+miles. Tags: `[ok]`, `[no planned distance]`, or `[FLAG: ...]` (planned Off/Rest, distance
+off by 1 mi or more, no plan row). Stdout only; nothing is written to logs.
+
 When the user gives subjective context in the same turn as a FIT ingest request, pass
 that context through the ingest command instead of relying on a separate manual edit
 later. `--manual-note` appends bullet notes under `- Manual Notes:`. `--sleep`,

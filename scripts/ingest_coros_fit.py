@@ -17,6 +17,7 @@ changes remain manual.
 from __future__ import annotations
 
 import argparse
+import re
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
@@ -283,6 +284,35 @@ def monday_of(target: date) -> date:
     return target - timedelta(days=target.weekday())
 
 
+def plan_check_lines(week_plan, activities_by_date) -> list[str]:
+    """Plan-vs-actual lines for each date with activities (pure; stdout only)."""
+    plans = {dp.day_date: dp for dp in week_plan.day_plans}
+    lines: list[str] = []
+    for day, acts in sorted(activities_by_date.items()):
+        if not acts:
+            continue
+        actual = sum(a.distance_mi for a in acts)
+        dp = plans.get(day)
+        if dp is None:
+            name, planned, tag = day.strftime("%A"), "", "[FLAG: no plan row]"
+        else:
+            name, planned = dp.day_name, dp.planned.strip()
+            norm = planned.lower()
+            match = re.search(r"(\d+(?:\.\d+)?)\s*mi", planned)
+            if norm in ("off", "rest"):
+                tag = f"[FLAG: planned {norm.capitalize()}]"
+            elif match is None:
+                tag = "[no planned distance]"
+            else:
+                diff = actual - float(match.group(1))
+                tag = f"[FLAG: distance {diff:+.2f} mi]" if abs(diff) >= 1.0 else "[ok]"
+        shown = planned if len(planned) <= 60 else planned[:57] + "..."
+        lines.append(
+            f'Plan check {day.isoformat()} ({name}): planned "{shown}" | actual {actual:.2f} mi  {tag}'
+        )
+    return lines
+
+
 def sync_week(
     week_start: date,
     today: date,
@@ -324,6 +354,8 @@ def sync_week(
             if not (week_start <= activity.local_date <= week_end):
                 continue
             activities_by_date[activity.local_date].append(activity)
+        for line in plan_check_lines(week_plan, activities_by_date):
+            print(line)
         for activity_date, dated_activities in sorted(activities_by_date.items()):
             entry = day_entries.get(activity_date)
             if entry is None:

@@ -655,5 +655,68 @@ class SummarizeCorosFitSlimRowTest(unittest.TestCase):
         assert slim["heat_load_sum"] == "92"
 
 
+class PlanCheckLinesTest(unittest.TestCase):
+    def _plan(self, rows):
+        days = [
+            m.DayPlan(day_name=n, planned=pl, purpose="", notes="", day_date=d)
+            for n, pl, d in rows
+        ]
+        return SimpleNamespace(day_plans=days)
+
+    def _acts(self, d, *miles):
+        return {d: [SimpleNamespace(distance_mi=x) for x in miles]}
+
+    def test_planned_off_flagged(self) -> None:
+        d = date(2026, 10, 10)
+        lines = m.plan_check_lines(self._plan([("Saturday", "Off", d)]), self._acts(d, 5.75))
+        self.assertEqual(len(lines), 1)
+        self.assertIn("FLAG: planned Off", lines[0])
+        self.assertIn("5.75 mi", lines[0])
+        self.assertIn("2026-10-10 (Saturday)", lines[0])
+
+    def test_planned_rest_flagged(self) -> None:
+        d = date(2026, 10, 9)
+        lines = m.plan_check_lines(self._plan([("Friday", "rest", d)]), self._acts(d, 3.0))
+        self.assertIn("FLAG: planned Rest", lines[0])
+
+    def test_distance_ok_and_flags(self) -> None:
+        d = date(2026, 10, 8)
+        plan = self._plan([("Thursday", "8 mi total with strides", d)])
+        self.assertIn("[ok]", m.plan_check_lines(plan, self._acts(d, 8.65))[0])
+        plan = self._plan([("Thursday", "3 mi easy", d)])
+        self.assertIn("FLAG: distance +2.75 mi", m.plan_check_lines(plan, self._acts(d, 5.75))[0])
+        self.assertIn("FLAG: distance -1.50 mi", m.plan_check_lines(plan, self._acts(d, 1.5))[0])
+
+    def test_sums_multiple_activities(self) -> None:
+        d = date(2026, 10, 8)
+        plan = self._plan([("Thursday", "6 mi easy", d)])
+        line = m.plan_check_lines(plan, self._acts(d, 3.0, 3.25))[0]
+        self.assertIn("actual 6.25 mi", line)
+        self.assertIn("[ok]", line)
+
+    def test_no_plan_row(self) -> None:
+        d = date(2026, 10, 8)
+        line = m.plan_check_lines(self._plan([]), self._acts(d, 4.0))[0]
+        self.assertIn("FLAG: no plan row", line)
+
+    def test_no_number(self) -> None:
+        d = date(2026, 10, 8)
+        line = m.plan_check_lines(self._plan([("Thursday", "Strength", d)]), self._acts(d, 4.0))[0]
+        self.assertIn("[no planned distance]", line)
+        self.assertNotIn("FLAG", line)
+
+    def test_dates_without_activities_skipped(self) -> None:
+        d = date(2026, 10, 8)
+        plan = self._plan([("Thursday", "Off", d)])
+        self.assertEqual(m.plan_check_lines(plan, {}), [])
+        self.assertEqual(m.plan_check_lines(plan, {d: []}), [])
+
+    def test_long_planned_truncated(self) -> None:
+        d = date(2026, 10, 8)
+        plan = self._plan([("Thursday", "9 mi total with " + "x" * 100, d)])
+        line = m.plan_check_lines(plan, self._acts(d, 9.6))[0]
+        self.assertNotIn("x" * 70, line)
+
+
 if __name__ == "__main__":
     unittest.main()

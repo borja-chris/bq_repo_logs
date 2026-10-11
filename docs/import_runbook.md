@@ -136,6 +136,10 @@ against the `querySportRecords` output you already have — distance, duration,
 pace, date. SOS (workout) days also show a `Laps:` managed note with per-lap
 splits and HR, taken from the FIT file.
 
+Also read the `Plan check` lines in the ingest output. Report any `FLAG` to the
+operator verbatim, with the plan file's Run cell, before any commentary. Planned
+comes from the plan file, never from the log `Planned:` line.
+
 ## 7. Commit and push
 
 Stage explicit paths. Never `git add -A` / `git add .` — untracked local tooling
