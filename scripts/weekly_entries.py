@@ -445,7 +445,10 @@ def seed_missing_planned_day_entries(
     entries: dict[date, WeeklyDayEntry],
     week_plan: WeekPlan,
     today: date,
+    activity_dates: set[date] | None = None,
 ) -> list[date]:
+    # activity_dates: dates with a known activity. When None, activity absence
+    # cannot be proven, so auto-filled off/rest values are never reset.
     seeded_dates: list[date] = []
     for day_plan in week_plan.day_plans:
         entry = entries.get(day_plan.day_date)
@@ -453,10 +456,19 @@ def seed_missing_planned_day_entries(
             entries[day_plan.day_date] = create_weekly_day_entry(day_plan.day_date, day_plan.planned)
             seeded_dates.append(day_plan.day_date)
             entry = entries[day_plan.day_date]
-        if has_placeholder_planned_value(entry.planned):
-            entry.planned = day_plan.planned
+        entry.planned = day_plan.planned
+        planned_lower = day_plan.planned.strip().lower()
+        if (
+            activity_dates is not None
+            and day_plan.day_date not in activity_dates
+            and planned_lower not in {"off", "rest"}
+        ):
+            # Plan day is no longer Off/Rest: undo the auto-filled value only.
+            if entry.completed in {"off", "rest day"}:
+                if entry.effort in {"off", "rest"}:
+                    entry.effort = ""
+                entry.completed = ""
         if day_plan.day_date <= today and not entry.completed:
-            planned_lower = day_plan.planned.strip().lower()
             if planned_lower == "off":
                 entry.completed = "off"
                 entry.effort = entry.effort or "off"

@@ -502,6 +502,103 @@ class IngestCorosFitHelpersTest(unittest.TestCase):
         sync_records.assert_not_called()
 
 
+class PlannedLineRefreshTest(unittest.TestCase):
+    WEEK_START = date(2026, 9, 28)
+
+    def _run_sync(self, plan_rows, entries, activities=None, today=date(2026, 10, 3)):
+        week_plan = m.WeekPlan(
+            source_relpath="plans/2026-half-marathon/weeks/week_2026-09-28.md",
+            week_start=self.WEEK_START,
+            target_mileage="30",
+            primary_purpose="base",
+            day_plans=[
+                m.DayPlan("Day", planned, "p", "", day) for day, planned in plan_rows
+            ],
+        )
+        weekly_calls: list[tuple] = []
+        with patch.object(m, "load_week_plan", return_value=week_plan), patch.object(
+            m, "parse_weekly_day_entries", return_value=entries
+        ), patch.object(
+            m, "parse_legacy_daily_log_entry", return_value=None
+        ), patch.object(
+            m.weather, "load_processed_activities_for_week", return_value=activities or []
+        ), patch.object(
+            m,
+            "upsert_weekly_log",
+            side_effect=lambda *args: weekly_calls.append(args) or Path("/tmp/x.md"),
+        ), patch.object(m, "update_readme"):
+            m.sync_records(today, update_logs=True, update_readme_flag=False)
+        return weekly_calls[0][4]
+
+    def _entry(self, day, planned, completed="", effort=""):
+        return m.WeeklyDayEntry(
+            day_date=day,
+            planned=planned,
+            completed=completed,
+            effort=effort,
+            managed_notes_lines=["  - "],
+            manual_notes_lines=["  - "],
+        )
+
+    def test_planned_updated_to_off(self) -> None:
+        d = date(2026, 10, 2)
+        out = self._run_sync([(d, "Off")], {d: self._entry(d, "3 mi easy")})
+        self.assertEqual(out[d].planned, "Off")
+
+    def test_off_becomes_run_clears_auto_completed(self) -> None:
+        d = date(2026, 9, 30)
+        out = self._run_sync(
+            [(d, "4 mi easy @ 10:30-11:30/mi")],
+            {d: self._entry(d, "Off", completed="off", effort="off")},
+        )
+        self.assertEqual(out[d].planned, "4 mi easy @ 10:30-11:30/mi")
+        self.assertEqual(out[d].completed, "")
+        self.assertEqual(out[d].effort, "")
+
+    def test_distance_edit_updates(self) -> None:
+        d = date(2026, 9, 29)
+        out = self._run_sync([(d, "5 mi easy")], {d: self._entry(d, "3 mi easy")})
+        self.assertEqual(out[d].planned, "5 mi easy")
+
+    def test_activity_day_planned_updates_completed_untouched(self) -> None:
+        d = date(2026, 9, 29)
+        activity = m.weather.Activity(
+            row={
+                "distance_mi": "5.0",
+                "duration_s": "1800",
+                "sport": "running",
+                "source_relpath": "data/coros_exports/x/example.fit",
+                "start_time": "2026-09-29T06:00:00-04:00",
+                "avg_hr": "143",
+                "max_hr": "158",
+            },
+            local_start=datetime.fromisoformat("2026-09-29T06:00:00-04:00"),
+            local_date=d,
+            timezone_name="America/New_York",
+        )
+        # completed "off" with a real activity must not be cleared by the reset
+        entry = self._entry(d, "3 mi easy", completed="off", effort="off")
+        out = self._run_sync([(d, "5 mi easy")], {d: entry}, activities=[activity])
+        self.assertEqual(out[d].planned, "5 mi easy")
+        self.assertEqual(out[d].completed, "5.0 mi run")
+
+    def test_activity_day_with_real_completed_untouched(self) -> None:
+        d = date(2026, 9, 29)
+        entry = self._entry(d, "3 mi easy", completed="5.0 mi run", effort="easy")
+        out = self._run_sync([(d, "5 mi easy")], {d: entry})
+        self.assertEqual(out[d].completed, "5.0 mi run")
+        self.assertEqual(out[d].effort, "easy")
+
+    def test_second_sync_is_noop(self) -> None:
+        d = date(2026, 9, 30)
+        rows = [(d, "4 mi easy")]
+        entries = {d: self._entry(d, "Off", completed="off", effort="off")}
+        self._run_sync(rows, entries)
+        snapshot = m.render_weekly_day_entry(entries[d])
+        self._run_sync(rows, entries)
+        self.assertEqual(m.render_weekly_day_entry(entries[d]), snapshot)
+
+
 class IngestCorosFitSectionHelpersTest(unittest.TestCase):
     def test_ensure_markers_replaces_existing_section(self) -> None:
         text = (

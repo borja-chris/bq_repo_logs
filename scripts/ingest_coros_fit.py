@@ -50,7 +50,6 @@ from weekly_entries import (
     render_weekly_day_entry,
     replace_heading_section,
     seed_missing_planned_day_entries,
-    has_placeholder_planned_value,
     update_pace_reference,
     update_readme,
     upsert_weekly_log,
@@ -307,10 +306,17 @@ def sync_week(
 
     synced_entry_dates: list[date] = []
     if update_logs:
-        synced_entry_dates.extend(seed_missing_planned_day_entries(day_entries, week_plan, today))
         activities = recent_activities
         if activities is None:
             activities = weather.load_processed_activities_for_week(week_start)
+        synced_entry_dates.extend(
+            seed_missing_planned_day_entries(
+                day_entries,
+                week_plan,
+                today,
+                activity_dates={a.local_date for a in activities},
+            )
+        )
         planned_by_date = {day_plan.day_date: day_plan.planned for day_plan in week_plan.day_plans}
         purpose_by_date = {day_plan.day_date: day_plan.purpose for day_plan in week_plan.day_plans}
         activities_by_date: dict[date, list[weather.Activity]] = defaultdict(list)
@@ -326,8 +332,8 @@ def sync_week(
                     planned=planned_by_date.get(activity_date, ""),
                 )
                 day_entries[activity_date] = entry
-            elif has_placeholder_planned_value(entry.planned):
-                entry.planned = planned_by_date.get(activity_date, "")
+            elif activity_date in planned_by_date:
+                entry.planned = planned_by_date[activity_date]
             upsert_activity_entries(entry, dated_activities, purpose_by_date.get(activity_date, ""))
             synced_entry_dates.append(activity_date)
         if subjective_updates:
