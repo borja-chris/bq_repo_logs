@@ -46,7 +46,8 @@ Unverified (not yet traced):
 
 ## Recovery and Warning Signs
 
-- None logged. Unplanned 5.75 mi on a planned full-rest day, kept very easy
+- None logged. 5.75 mi on Saturday was a planned Friday->Saturday swap (operator
+  confirmed 2026-10-12) that had not been recorded in the plan file; kept very easy
   (avg HR 134), during the return-to-run ramp (shin splint since 2026-08-12).
   Week 10 total is 30.50 mi against a target of about 40. Watch shins; the
   58-60 mpw gate is not in play.
@@ -54,7 +55,8 @@ Unverified (not yet traced):
 ## Next Adjustment
 
 - Operator call: whether the Saturday run was a deliberate swap that needs a
-  `decisions/` record, or a one-off to leave unrecorded.
+  `decisions/` record, or a one-off to leave unrecorded. Resolved 2026-10-12:
+  planned Fri->Sat swap; see `decisions/2026-10-12_week10_friday_run_to_saturday.md`.
 - Prose has failed twice, so the fix goes into scripts, not memory.
 
 ## Action Items
@@ -78,3 +80,4 @@ Unverified (not yet traced):
    - Action: say whether 2026-10-10 needs a decision record.
    - Success condition: a `decisions/` record exists, or the operator confirms
      none is needed.
+   - Status: Closed 2026-10-12 — the run was a planned Fri->Sat swap; recorded in `decisions/2026-10-12_week10_friday_run_to_saturday.md`.
