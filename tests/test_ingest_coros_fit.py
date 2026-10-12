@@ -470,6 +470,60 @@ class IngestCorosFitHelpersTest(unittest.TestCase):
             ],
         )
 
+    def test_past_weeks_with_plan_and_log_lists_only_complete_past_weeks(self) -> None:
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            plans = Path(tmp) / "plans"
+            logs = Path(tmp) / "logs"
+            plans.mkdir()
+            logs.mkdir()
+            for name in ("2026-09-28", "2026-10-05", "2026-10-12", "2026-10-19"):
+                (plans / f"week_{name}.md").write_text("x")
+            for name in ("2026-09-28", "2026-10-12", "2026-10-19", "2026-09-21"):
+                (logs / f"week_{name}.md").write_text("x")
+            weeks = m.past_weeks_with_plan_and_log(date(2026, 10, 12), plans, logs)
+        self.assertEqual(weeks, {date(2026, 9, 28)})
+
+    def test_sync_records_refreshes_older_week_with_plan_and_log(self) -> None:
+        clock_week = date(2026, 10, 12)
+        old_week = date(2026, 10, 5)
+        plans = {
+            w: m.WeekPlan(
+                source_relpath="x",
+                week_start=w,
+                target_mileage="1",
+                primary_purpose="p",
+                day_plans=[m.DayPlan("Monday", "Off", "Recovery", "", w)],
+            )
+            for w in (clock_week, old_week)
+        }
+        weekly_calls: list[date] = []
+        readme_calls: list[date] = []
+        with patch.object(
+            m, "past_weeks_with_plan_and_log", return_value={old_week}
+        ), patch.object(
+            m, "load_week_plan", side_effect=lambda ws: plans[ws]
+        ), patch.object(
+            m, "parse_weekly_day_entries", side_effect=lambda ws: {}
+        ), patch.object(
+            m, "parse_legacy_daily_log_entry", return_value=None
+        ), patch.object(
+            m.weather, "load_processed_activities_for_week", return_value=[]
+        ), patch.object(
+            m,
+            "upsert_weekly_log",
+            side_effect=lambda week_plan, *rest: (
+                weekly_calls.append(week_plan.week_start)
+                or Path(f"/tmp/week_{week_plan.week_start.isoformat()}.md")
+            ),
+        ), patch.object(
+            m, "update_readme", side_effect=lambda week_plan, *rest: readme_calls.append(week_plan.week_start)
+        ):
+            m.sync_records(clock_week, update_logs=True, update_readme_flag=True)
+        self.assertEqual(sorted(weekly_calls), [old_week, clock_week])
+        self.assertEqual(readme_calls, [clock_week])
+
     def test_main_aborts_when_parser_dependencies_are_missing(self) -> None:
         captured: list[list[Path]] = []
         fake_args = SimpleNamespace(

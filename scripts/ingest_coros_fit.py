@@ -53,9 +53,10 @@ from weekly_entries import (
     seed_missing_planned_day_entries,
     update_pace_reference,
     update_readme,
+    weekly_log_path,
     upsert_weekly_log,
 )
-from weekly_plan import DayPlan, WeekPlan, load_week_plan
+from weekly_plan import WEEKS_DIR, DayPlan, WeekPlan, load_week_plan
 
 @dataclass
 class SubjectiveUpdate:
@@ -396,6 +397,25 @@ def sync_week(
     }
 
 
+def past_weeks_with_plan_and_log(
+    clock_week: date,
+    plans_dir: Path = WEEKS_DIR,
+    logs_dir: Path | None = None,
+) -> set[date]:
+    """Week starts before clock_week that have both a plan file and a weekly log."""
+    if logs_dir is None:
+        logs_dir = weekly_log_path(clock_week).parent
+    weeks: set[date] = set()
+    for plan_path in plans_dir.glob("week_????-??-??.md"):
+        try:
+            week_start = date.fromisoformat(plan_path.stem.removeprefix("week_"))
+        except ValueError:
+            continue
+        if week_start < clock_week and (logs_dir / plan_path.name).exists():
+            weeks.add(week_start)
+    return weeks
+
+
 def sync_records(
     today: date,
     update_logs: bool,
@@ -413,6 +433,9 @@ def sync_records(
         target_weeks.add(monday_of(activity.local_date))
     for day_date in subjective_updates or {}:
         target_weeks.add(monday_of(day_date))
+    # Plan files for older weeks can be edited after the fact; sync is idempotent,
+    # so refresh every past week that has both a plan and a log.
+    target_weeks |= past_weeks_with_plan_and_log(clock_week)
 
     # The clock week syncs first and is the only week allowed to touch README, so
     # correcting an old week never rolls the current-week block backward.
