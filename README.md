@@ -23,17 +23,17 @@ Source: [week_2026-10-12.md](plans/2026-half-marathon/weeks/week_2026-10-12.md)
 Week of `2026-10-12`
 
 - Target mileage: `about 45`
-- Actual mileage so far: `0.00`
+- Actual mileage so far: `13.72`
 - Primary purpose: consolidate upper-40s mileage, smoothed ramp
-- Week status: `No days logged yet`
+- Week status: `Friday off logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 3 mi recovery @ 11:00-11:45/mi | x | x |
-| Tuesday | 9 mi total with 2 x 2 mi + 1 x 1 mi strength @ 8:28-8:38/mi (2 mi in 16:56-17:16, 1 mi in 8:28-8:38), 400-800m jog recovery between reps, easy miles @ 10:30-11:30/mi | x | x |
-| Wednesday | 4 mi easy @ 10:30-11:30/mi | x | x |
+| Monday | 3 mi recovery @ 11:00-11:45/mi | 3.02 mi run | 36:03 at 11:56/mi. Treadmill run (indoor), Irvine, CA. |
+| Tuesday | 9 mi total with 2 x 2 mi + 1 x 1 mi strength @ 8:28-8:38/mi (2 mi in 16:56-17:16, 1 mi in 8:28-8:38), 400-800m jog recovery between reps, easy miles @ 10:30-11:30/mi | 7.55 mi run | 1:14:28 at 9:52/mi. Treadmill run (indoor), Irvine, CA. |
+| Wednesday | 4 mi easy @ 10:30-11:30/mi | 3.15 mi run | 35:07 at 11:09/mi. Treadmill run (indoor), Irvine, CA. |
 | Thursday | 9 mi total with 6 mi continuous @ HMP 8:33-8:43/mi, easy miles @ 10:30-11:30/mi | x | x |
-| Friday | Off | x | x |
+| Friday | Off | off | x |
 | Saturday | 7 mi easy @ 10:30-11:30/mi | x | x |
 | Sunday | 13 mi long @ 9:30-11:00/mi; steady only if fresh (no faster than ~9:15/mi) | x | x |
 
