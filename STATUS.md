@@ -7,10 +7,10 @@ Updated 2026-10-17. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 ## Current Week (week of 2026-10-12)
 
 - Target mileage: `about 45`
-- Actual mileage so far: `13.72`
-- Status: `Friday off logged`
+- Actual mileage so far: `22.14`
+- Status: `Saturday run logged`
 - Primary purpose: consolidate upper-40s mileage, smoothed ramp
-- Days: Mon 3.02mi @11:56/mi | Tue 7.55mi @9:52/mi | Wed 3.15mi @11:09/mi | Fri off
+- Days: Mon 3.02mi @11:56/mi | Tue 7.55mi @9:52/mi | Wed 3.15mi @11:09/mi | Thu 4.00mi @12:29/mi | Fri off | Sat 4.42mi @11:51/mi
 - Warnings: none logged
 
 ## Block Position
@@ -25,4 +25,4 @@ Updated 2026-10-17. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 | 2026-09-21 | `about 36` | `28.27` | `Sunday run logged` |
 | 2026-09-28 | `about 35` | `35.62` | `Sunday run logged` |
 | 2026-10-05 | `about 40` | `43.75` | `Sunday run logged` |
-| 2026-10-12 | `about 45` | `13.72` | `Friday off logged` |
+| 2026-10-12 | `about 45` | `22.14` | `Saturday run logged` |
