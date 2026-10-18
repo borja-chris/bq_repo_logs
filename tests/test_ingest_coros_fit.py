@@ -748,6 +748,13 @@ class PlanCheckLinesTest(unittest.TestCase):
         self.assertIn("actual 6.25 mi", line)
         self.assertIn("[ok]", line)
 
+    def test_provisional_distance_is_not_flagged(self) -> None:
+        d = date(2026, 10, 17)
+        plan = self._plan([("Saturday", "7 mi easy @ 10:30-11:30/mi (provisional)", d)])
+        line = m.plan_check_lines(plan, self._acts(d, 4.42))[0]
+        self.assertIn("[provisional distance -2.58 mi]", line)
+        self.assertNotIn("FLAG", line)
+
     def test_no_plan_row(self) -> None:
         d = date(2026, 10, 8)
         line = m.plan_check_lines(self._plan([]), self._acts(d, 4.0))[0]

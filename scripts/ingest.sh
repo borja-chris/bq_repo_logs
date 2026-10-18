@@ -47,3 +47,7 @@ fi
 "${venv_python}" "${ingest_script}" "$@"
 "${venv_python}" "${repo_root}/scripts/status_digest.py"
 "${venv_python}" "${repo_root}/scripts/block_overview.py"
+
+# Regeneration is local only. State what has not reached GitHub so a sync is
+# never reported as published.
+bash "${repo_root}/scripts/git_publish_state.sh"

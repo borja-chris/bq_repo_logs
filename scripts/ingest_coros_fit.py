@@ -306,7 +306,10 @@ def plan_check_lines(week_plan, activities_by_date) -> list[str]:
                 tag = "[no planned distance]"
             else:
                 diff = actual - float(match.group(1))
-                tag = f"[FLAG: distance {diff:+.2f} mi]" if abs(diff) >= 1.0 else "[ok]"
+                if "provisional" in norm:
+                    tag = f"[provisional distance {diff:+.2f} mi]"
+                else:
+                    tag = f"[FLAG: distance {diff:+.2f} mi]" if abs(diff) >= 1.0 else "[ok]"
         shown = planned if len(planned) <= 60 else planned[:57] + "..."
         lines.append(
             f'Plan check {day.isoformat()} ({name}): planned "{shown}" | actual {actual:.2f} mi  {tag}'

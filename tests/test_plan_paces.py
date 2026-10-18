@@ -5,6 +5,7 @@ is the operator's in-week landing page, so labels like "easy" or "near HMP"
 without a /mi pace are not enough.
 """
 
+import re
 import sys
 from datetime import date, timedelta
 from pathlib import Path
@@ -30,3 +31,14 @@ def test_open_weeks_have_numeric_paces():
             if "/mi" not in day.planned:
                 missing.append(f"{path.name} {day.day_name}: {day.planned}")
     assert not missing, "Run cells without a numeric pace:\n" + "\n".join(missing)
+
+
+def test_placeholder_distances_are_marked_in_run_cell():
+    """A hedge in Notes is invisible: README and the Plan check read only the Run cell."""
+    hedged = []
+    for path in sorted(weekly_plan.WEEKS_DIR.glob("week_*.md")):
+        plan = weekly_plan.parse_week_file(date.fromisoformat(path.stem.removeprefix("week_")))
+        for day in plan.day_plans:
+            if re.search(r"placeholder|provisional|tbd", day.notes, re.I) and "provisional" not in day.planned.lower():
+                hedged.append(f"{path.name} {day.day_name}: {day.notes}")
+    assert not hedged, "mark the Run cell '(provisional)' instead:\n" + "\n".join(hedged)

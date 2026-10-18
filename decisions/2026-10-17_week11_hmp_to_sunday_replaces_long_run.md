@@ -45,3 +45,7 @@ costs one week of long-run stimulus.
 ## Final Call
 
 Applied as described above. Update Thursday and Saturday after the import.
+
+## Correction (2026-10-17)
+
+Thursday's 4 mi and Saturday's 7 mi were placeholder distances inserted during the plan edit; the operator never set them. Both Run cells are now marked `(provisional)`, so the Plan check reports a provisional distance instead of a FLAG (Saturday ran 4.42 mi against the placeholder 7 mi).
