@@ -13,9 +13,9 @@ long run.
   32.14 actual, 42 planned).
 - Longest block run to date: 13.25 mi (Week 10); the 14 mi long run adds
   ~0.75 mi.
-- Week 12 already dropped Thursday threshold
-  (`decisions/2026-10-19_week12_threshold_to_easy_keep_tuesday_trial.md`), so
-  Weeks 12-13 carry only the Tuesday 5K trial as quality.
+- Week 12 keeps the Tuesday 5K trial and Thursday threshold (the threshold
+  drop in `decisions/2026-10-19_week12_threshold_to_easy_keep_tuesday_trial.md`
+  was reversed), so Week 13's quality gap is a single week.
 - Flight is Wednesday 2026-10-28 (already the off day); landing Thursday,
   run that evening.
 

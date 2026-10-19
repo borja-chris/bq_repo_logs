@@ -32,7 +32,7 @@ Week of `2026-10-19`
 | Monday | 4 mi recovery @ 11:00-11:45/mi | x | x |
 | Tuesday | 8 mi total: 2 mi warmup @ 10:30-11:30/mi + 4 x 20s strides, 5K time trial (3.1 mi) at even effort, first mile ~7:45-7:50/mi then run by feel, 2.9 mi cooldown @ 11:00-11:45/mi | x | x |
 | Wednesday | Off | x | x |
-| Thursday | 7 mi easy @ 10:30-11:30/mi | x | x |
+| Thursday | 7 mi total with 4 mi threshold @ 8:15-8:38/mi, easy miles @ 10:30-11:30/mi | x | x |
 | Friday | 6 mi easy @ 10:30-11:30/mi | x | x |
 | Saturday | 6 mi easy @ 10:30-11:30/mi | x | x |
 | Sunday | 11 mi long @ 9:30-11:00/mi | x | x |

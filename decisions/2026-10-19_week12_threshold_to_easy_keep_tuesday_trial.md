@@ -50,3 +50,11 @@ Option 2 applied. Regenerated via `bash scripts/ingest.sh --sync-only`.
 - Owner: Claude. After the Tuesday trial is imported, re-derive the pace
   table and propose Week 13-18 pace updates. Success: proposed paces
   presented to operator before Week 13 Tuesday (2026-10-27).
+
+## Reversal (2026-10-19)
+
+Operator moved Thursday back to the original 7 mi with 4 mi threshold
+@ 8:15-8:38/mi, with the original fallback (cut to 3 mi threshold if legs are
+still heavy from Tuesday's trial). Tuesday's 5K trial is unchanged and is
+still treated as a floor. Week 12 again has three quality days in five
+(Sun 10K, Tue trial, Thu threshold); the Week 13 gate above still applies.
