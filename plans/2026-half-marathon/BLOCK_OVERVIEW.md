@@ -22,7 +22,7 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 | 10 | 2026-10-05 | 3 ez | **8 str** | 3 ez | **9 HMP** | Off | 5 ez | 12 LR | 40 |
 | 11 | 2026-10-12 | 3 ez | **9 str** | 4 ez | 4 ez | Off | 7 ez | **About 10-11 mi total: ~3 mi warmup @ 10:30-11:30/mi, 10K (6.2 mi) continuous at HMP effort (reference 8:33-8:43/mi), ~1-2 mi easy cooldown @ 10:30-11:30/mi HMP** | 45 |
 | 12 | 2026-10-19 | 4 ez | **8 SOS** | Off | 7 ez | 6 ez | 6 ez | 11 LR | 42 |
-| 13 | 2026-10-26 | 5 ez | 8 ez | Off | 8 ez | 7 ez | 8 ez | 14 LR | 50 |
+| 13 | 2026-10-26 | 8 ez | 8 ez | Off | 5 ez | 7 ez | 8 ez | 14 LR | 50 |
 | 14 | 2026-11-02 | 4 ez | **10 str** | Off | **10 HMP** | 7 ez | 7 ez | 14 LR | 52 |
 | 15 | 2026-11-09 | 4 ez | **10 str** | Off | **10 HMP** | 8 ez | 7 ez | 15 LR | 54 |
 | 16 | 2026-11-16 | 4 ez | **8 str** | Off | **9 HMP** | 8 ez | 7 ez | 12 LR | 48 |

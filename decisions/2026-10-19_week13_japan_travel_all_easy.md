@@ -32,7 +32,8 @@ unfamiliar pavement remain. 58-60 mpw gate not triggered.
 
 ## Adaptation
 
-- Mon 5 recovery, Tue 8 easy + 6 x 20s strides, Wed off, Thu 8 easy,
+- Mon 8 easy, Tue 8 easy + 6 x 20s strides, Wed off (flight), Thu 5
+  recovery (evening after landing; flipped with Monday at operator request),
   Fri 7 easy, Sat 8 easy, Sun 14 long (all easy, no steady finish) = 50 mi.
 - Week 13 gate from the Week 12 decision still applies: start only if there's
   no shin pain during or 48h after any run, the Achilles shoe rub stays
@@ -51,5 +52,5 @@ Applied. Regenerated via `bash scripts/ingest.sh --sync-only`.
   the flight day and redistribute its miles so the week stays about 50.
   Success: Week 13 plan file has its rest day on the travel day before
   2026-10-26. Done 2026-10-19: flight is Wednesday, already the off day; no
-  redistribution needed. Thursday post-landing run may cut to 5 mi if legs
-  are stiff (week then lands ~47).
+  redistribution needed. Monday and Thursday miles then flipped so the
+  post-landing run is the short one (Mon 8, Thu 5).
