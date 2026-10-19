@@ -18,24 +18,24 @@ The active weekly log lives in `logs/weekly/week_YYYY-MM-DD.md`; daily entries a
 ## Current Week
 
 <!-- current-week:start -->
-Source: [week_2026-10-12.md](plans/2026-half-marathon/weeks/week_2026-10-12.md)
+Source: [week_2026-10-19.md](plans/2026-half-marathon/weeks/week_2026-10-19.md)
 
-Week of `2026-10-12`
+Week of `2026-10-19`
 
-- Target mileage: `about 45`
-- Actual mileage so far: `22.14`
-- Primary purpose: consolidate upper-40s mileage, smoothed ramp
-- Week status: `Saturday run logged`
+- Target mileage: `about 42`
+- Actual mileage so far: `0.00`
+- Primary purpose: down week before peak-specific work
+- Week status: `No days logged yet`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 3 mi recovery @ 11:00-11:45/mi | 3.02 mi run | 36:03 at 11:56/mi. Treadmill run (indoor), Irvine, CA. |
-| Tuesday | 9 mi total with 2 x 2 mi + 1 x 1 mi strength @ 8:28-8:38/mi (2 mi in 16:56-17:16, 1 mi in 8:28-8:38), 400-800m jog recovery between reps, easy miles @ 10:30-11:30/mi | 7.55 mi run | 1:14:28 at 9:52/mi. Treadmill run (indoor), Irvine, CA. |
-| Wednesday | 4 mi easy @ 10:30-11:30/mi | 3.15 mi run | 35:07 at 11:09/mi. Treadmill run (indoor), Irvine, CA. |
-| Thursday | 4 mi easy @ 10:30-11:30/mi (provisional) | 4.00 mi run | 49:55 at 12:29/mi. Treadmill run (indoor). |
-| Friday | Off | off | x |
-| Saturday | 7 mi easy @ 10:30-11:30/mi (provisional) | 4.42 mi run | 52:24 at 11:51/mi. |
-| Sunday | About 10-11 mi total: ~3 mi warmup @ 10:30-11:30/mi, 10K (6.2 mi) continuous at HMP effort (reference 8:33-8:43/mi), ~1-2 mi easy cooldown @ 10:30-11:30/mi | x | x |
+| Monday | 4 mi recovery @ 11:00-11:45/mi | x | x |
+| Tuesday | 8 mi total: 2 mi warmup @ 10:30-11:30/mi + 4 x 20s strides, 5K time trial (3.1 mi) at even effort, first mile ~7:45-7:50/mi then run by feel, 2.9 mi cooldown @ 11:00-11:45/mi | x | x |
+| Wednesday | Off | x | x |
+| Thursday | 7 mi total with 4 mi threshold @ 8:15-8:38/mi, easy miles @ 10:30-11:30/mi | x | x |
+| Friday | 6 mi easy @ 10:30-11:30/mi | x | x |
+| Saturday | 6 mi easy @ 10:30-11:30/mi | x | x |
+| Sunday | 11 mi long @ 9:30-11:00/mi | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
