@@ -16,7 +16,8 @@ long run.
 - Week 12 already dropped Thursday threshold
   (`decisions/2026-10-19_week12_threshold_to_easy_keep_tuesday_trial.md`), so
   Weeks 12-13 carry only the Tuesday 5K trial as quality.
-- Flight days not yet known.
+- Flight is Wednesday 2026-10-28 (already the off day); landing Thursday,
+  run that evening.
 
 ## Preference
 
@@ -49,4 +50,6 @@ Applied. Regenerated via `bash scripts/ingest.sh --sync-only`.
 - Owner: Claude. When the operator shares flight days, move the off day to
   the flight day and redistribute its miles so the week stays about 50.
   Success: Week 13 plan file has its rest day on the travel day before
-  2026-10-26.
+  2026-10-26. Done 2026-10-19: flight is Wednesday, already the off day; no
+  redistribution needed. Thursday post-landing run may cut to 5 mi if legs
+  are stiff (week then lands ~47).
