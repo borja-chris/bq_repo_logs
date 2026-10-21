@@ -484,5 +484,23 @@
     "longitude": -73.954002,
     "sha256": "2f01fc5b0c24876a2d09d031abf8813ff14b3c216dc5ced650d5c3244fab0069",
     "sportType": 100
+  },
+  "481157964512657813": {
+    "date": "2026-10-19",
+    "fetched_at": "2026-10-21T09:04:34-04:00",
+    "filename": "481157964512657813.fit",
+    "latitude": 40.814999,
+    "longitude": -73.949997,
+    "sha256": "77919350694f8a07461ac5a77fd67a17265231152a179d5a3c7f04cecd1f1fc9",
+    "sportType": 100
+  },
+  "481183741572579529": {
+    "date": "2026-10-20",
+    "fetched_at": "2026-10-21T09:04:34-04:00",
+    "filename": "481183741572579529.fit",
+    "latitude": 40.813,
+    "longitude": -73.950996,
+    "sha256": "4db9e45281be56ee0ad1d7f1bc2e7a6aa87175a8d693848a5b2e94009ad23bef",
+    "sportType": 100
   }
 }

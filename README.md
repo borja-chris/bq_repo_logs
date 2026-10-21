@@ -23,15 +23,15 @@ Source: [week_2026-10-19.md](plans/2026-half-marathon/weeks/week_2026-10-19.md)
 Week of `2026-10-19`
 
 - Target mileage: `about 42`
-- Actual mileage so far: `0.00`
+- Actual mileage so far: `10.57`
 - Primary purpose: down week before peak-specific work
-- Week status: `No days logged yet`
+- Week status: `Wednesday off logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 4 mi recovery @ 11:00-11:45/mi | x | x |
-| Tuesday | 8 mi total: 2 mi warmup @ 10:30-11:30/mi + 4 x 20s strides, 5K time trial (3.1 mi) at even effort, first mile ~7:45-7:50/mi then run by feel, 2.9 mi cooldown @ 11:00-11:45/mi | x | x |
-| Wednesday | Off | x | x |
+| Monday | 4 mi recovery @ 11:00-11:45/mi | 4.05 mi run | 52:13 at 12:54/mi. |
+| Tuesday | 8 mi total: 2 mi warmup @ 10:30-11:30/mi + 4 x 20s strides, 5K time trial (3.1 mi) at even effort, first mile ~7:45-7:50/mi then run by feel, 2.9 mi cooldown @ 11:00-11:45/mi | 6.52 mi run | 1:05:04 at 9:59/mi. |
+| Wednesday | Off | off | x |
 | Thursday | 7 mi total with 4 mi threshold @ 8:15-8:38/mi, easy miles @ 10:30-11:30/mi | x | x |
 | Friday | 6 mi easy @ 10:30-11:30/mi | x | x |
 | Saturday | 6 mi easy @ 10:30-11:30/mi | x | x |
