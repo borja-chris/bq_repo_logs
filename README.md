@@ -50,10 +50,10 @@ Source: [03_framework.md](plans/2026-half-marathon/03_framework.md#pace-guide)
 | Recovery | 11:00-11:45/mi |
 | Easy aerobic | 10:30-11:30/mi |
 | Long run | 9:30-11:00/mi |
-| Half-marathon pace (HMP) | 8:33-8:43/mi |
-| Threshold (~1-hr effort) | 8:15-8:38/mi |
-| Strength reps | 8:28-8:38/mi |
-| Speed reps | 7:36-8:05/mi |
+| Half-marathon pace (HMP) | 8:10-8:20/mi |
+| Threshold (~1-hr effort) | 7:53-8:15/mi |
+| Strength reps | 8:05-8:15/mi |
+| Speed reps | 7:15-7:44/mi |
 
 Hansons tempo runs are run at HMP. Rep target times and recovery jogs: see the source.
 <!-- pace-reference:end -->

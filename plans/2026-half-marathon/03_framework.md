@@ -10,7 +10,7 @@ Baseline dates, mileage targets, and framework are in [`sources/00_canonical_con
 
 Plan-specific:
 
-- Anchor pace: about 8:38/mi HMP, derived from measured 5K fitness (provisional — see `decisions/2026-08-07_pace_anchor_recalibration.md`)
+- Anchor pace: about 8:15/mi HMP, derived from the measured 5K time trial (23:30, 2026-10-20 — see `decisions/2026-10-21_pace_anchor_23_30_time_trial.md`)
 - Weekly rhythm: 6 running days/week
 - Normal off day: Wednesday
 - Monday, Wednesday, and Friday are flexible recovery/easy slots when scheduling requires a swap
@@ -31,20 +31,19 @@ Plan-specific:
 ## Pace Guide
 
 All paces are anchored on **current measured fitness**, not on goal pace: a
-~24:35 5K equivalency (HMP ~8:38/mi, ~1:53 half). Race-effort references below
-are equivalents for that fitness, not separate goals. This anchor is provisional
-pending an evenly-paced 5K/10K time trial in weeks 3-4. Re-derive this table
-whenever the fitness estimate is re-measured — not when the goal changes.
+23:30 5K time trial (2026-10-20, track; HMP ~8:15/mi, ~1:48 half). Race-effort
+references below are equivalents for that fitness, not separate goals. Re-derive
+this table whenever the fitness estimate is re-measured — not when the goal changes.
 
 | Run Type | Pace | Basis |
 | --- | --- | --- |
 | Recovery | 11:00-11:45/mi | Slow end of easy and slower; deliberately loose |
 | Easy aerobic | 10:30-11:30/mi | Hansons easy band; matches logged easy runs (10:24-11:17/mi) |
 | Long run | 9:30-11:00/mi | Mostly easy; any steady finish no faster than ~9:15/mi |
-| Half-marathon pace (HMP) | 8:33-8:43/mi | Current-fitness race pace (8:38 anchor) |
-| Threshold (~1-hr effort) | 8:15-8:38/mi | Sustained, controlled hard |
-| Strength reps | 8:28-8:38/mi | HMP - 10s, toward 10K effort; controlled, not all-out |
-| Speed reps | 7:36-8:05/mi | 5K-10K effort; faster for shorter reps, relaxed form |
+| Half-marathon pace (HMP) | 8:10-8:20/mi | Current-fitness race pace (8:15 anchor) |
+| Threshold (~1-hr effort) | 7:53-8:15/mi | Sustained, controlled hard |
+| Strength reps | 8:05-8:15/mi | HMP - 10s, toward 10K effort; controlled, not all-out |
+| Speed reps | 7:15-7:44/mi | 5K-10K effort; faster for shorter reps, relaxed form |
 
 ### Speed reps — target rep times
 
@@ -52,21 +51,21 @@ Run the shorter reps nearer 5K effort, the longer reps nearer 10K effort.
 
 | Rep | Target time | ~Pace |
 | --- | --- | --- |
-| 400m | 1:53-1:57 | 7:36-7:50/mi |
-| 600m | 2:52-2:57 | 7:40-7:55/mi |
-| 800m | 3:51-3:59 | 7:45-8:00/mi |
-| 1000m | 4:52-5:01 | 7:50-8:05/mi |
-| 1200m | 5:52-6:03 | 7:52-8:07/mi |
-| 1 mile | 7:55-8:15 | 7:55-8:15/mi |
+| 400m | 1:48-1:52 | 7:15-7:29/mi |
+| 600m | 2:44-2:49 | 7:19-7:34/mi |
+| 800m | 3:41-3:48 | 7:24-7:39/mi |
+| 1000m | 4:39-4:48 | 7:29-7:44/mi |
+| 1200m | 5:36-5:47 | 7:31-7:46/mi |
+| 1 mile | 7:34-7:54 | 7:34-7:54/mi |
 
-### Strength reps — target rep times (at ~8:28-8:38/mi)
+### Strength reps — target rep times (at ~8:05-8:15/mi)
 
 | Rep | Target time |
 | --- | --- |
-| 1 mi | 8:28-8:38 |
-| 1.5 mi | 12:42-12:57 |
-| 2 mi | 16:56-17:16 |
-| 3 mi | 25:24-25:54 |
+| 1 mi | 8:05-8:15 |
+| 1.5 mi | 12:08-12:23 |
+| 2 mi | 16:10-16:30 |
+| 3 mi | 24:15-24:45 |
 
 ## Rep Recovery Guide
 

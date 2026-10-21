@@ -11,7 +11,7 @@ link, not restate.
 - Working assumption: this cycle is a foundation step in the marathon arc
 - Goal A: half marathon 2026-12-06; sub-1:50 primary, sub-1:45 stretch
 - Arc checkpoint: sub-1:33 half, deferred beyond this block
-- Measured anchor: 5K ~24:35 equivalent (2026-07-11 parkrun, split-repaired); HMP ~8:38/mi
+- Measured anchor: 5K 23:30 (2026-10-20 track time trial); HMP ~8:15/mi
 - 18-week block start: 2026-08-03; framework: Hanson-inspired
 
 ## Current Training Assumptions
