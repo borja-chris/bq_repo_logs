@@ -23,7 +23,7 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 | 11 | 2026-10-12 | 3 ez | **9 str** | 4 ez | 4 ez | Off | 7 ez | **About 10-11 mi total: ~3 mi warmup @ 10:30-11:30/mi, 10K (6.2 mi) continuous at HMP effort (reference 8:33-8:43/mi), ~1-2 mi easy cooldown @ 10:30-11:30/mi HMP** | 45 |
 | 12 | 2026-10-19 | 4 ez | **8 SOS** | Off | **7 thr** | 6 ez | 6 ez | 11 LR | 42 |
 | 13 | 2026-10-26 | 8 ez | 8 ez | Off | 5 ez | 7 ez | 8 ez | 14 LR | 50 |
-| 14 | 2026-11-02 | 4 ez | **10 str** | 7 ez | **10 HMP** | 7 ez | 14 LR | Off | 52 |
+| 14 | 2026-11-02 | 4 ez | **11 str** | 7 ez | **10 HMP** | 7 ez | 14 LR | Off | 53 |
 | 15 | 2026-11-09 | 4 ez | **10 str** | Off | **10 HMP** | 8 ez | 7 ez | 15 LR | 54 |
 | 16 | 2026-11-16 | 4 ez | **8 str** | Off | **9 HMP** | 8 ez | 7 ez | 12 LR | 48 |
 | 17 | 2026-11-23 | 3 ez | **7 spd** | Off | **7 HMP** | 6 ez | 7 ez | 10 LR | 40 |
@@ -46,8 +46,8 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 | 11 | 2026-10-12 | 45 | +5 | - | Tue, Sun | consolidate upper-40s mileage, smoothed ramp |
 | 12 | 2026-10-19 | 42 | -3 | 11 LR | Tue, Thu | down week before peak-specific work |
 | 13 | 2026-10-26 | 50 | +8 | 14 LR | - | Japan travel week; hold volume, all easy, no SOS |
-| 14 | 2026-11-02 | 52 | +2 | 14 LR | Tue, Thu | extend strength while holding recovery quality; return flight Saturday evening |
-| 15 | 2026-11-09 | 54 | +2 | 15 LR | Tue, Thu | peak week if decision gates are green |
+| 14 | 2026-11-02 | 53 | +3 | 14 LR | Tue, Thu | extend strength while holding recovery quality; return flight Saturday evening |
+| 15 | 2026-11-09 | 54 | +1 | 15 LR | Tue, Thu | peak week if decision gates are green |
 | 16 | 2026-11-16 | 48 | -6 | 12 LR | Tue, Thu | begin sharpening while reducing load |
 | 17 | 2026-11-23 | 40 | -8 | 10 LR | Tue, Thu | taper while keeping touch with pace |
 | 18 | 2026-11-30 | 28-32 | -10 | race | Tue | arrive fresh and sharp for race day |
