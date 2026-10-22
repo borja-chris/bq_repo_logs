@@ -32,7 +32,7 @@ Week of `2026-10-19`
 | Monday | 4 mi recovery @ 11:00-11:45/mi | 4.05 mi run | 52:13 at 12:54/mi. |
 | Tuesday | 8 mi total: 2 mi warmup @ 10:30-11:30/mi + 4 x 20s strides, 5K time trial (3.1 mi) at even effort, first mile ~7:45-7:50/mi then run by feel, 2.9 mi cooldown @ 11:00-11:45/mi | 6.52 mi run | 1:05:04 at 9:59/mi. Track 5K time trial. Felt good overall; threw down the last mile. Race-day shoes still cutting into the skin at both Achilles despite KT tape over it — skin abrasion, letting it heal. |
 | Wednesday | Off | off | x |
-| Thursday | 7 mi total with 4 mi threshold @ 8:15-8:38/mi, easy miles @ 10:30-11:30/mi | 7.00 mi run | 1:08:40 at 9:49/mi. Felt pretty good. Getting dark earlier — hesitant toward the end since visibility was poor. |
+| Thursday | 7 mi total with 4 mi threshold @ 8:15-8:38/mi, easy miles @ 10:30-11:30/mi | 7.00 mi run | 1:08:40 at 9:49/mi. Felt pretty good. Getting dark earlier — hesitant toward the end since visibility was poor. Forgot to lap the cooldown; final ~0.72 mi not split (threshold = lap 2, 4.00 mi). |
 | Friday | 6 mi easy @ 10:30-11:30/mi | x | x |
 | Saturday | 6 mi easy @ 10:30-11:30/mi | x | x |
 | Sunday | 11 mi long @ 9:30-11:00/mi | x | x |
