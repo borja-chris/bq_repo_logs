@@ -2,15 +2,15 @@
 
 # Training Status
 
-Updated 2026-10-22. Regenerate: `.venv/bin/python scripts/status_digest.py`.
+Updated 2026-10-25. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 
 ## Current Week (week of 2026-10-19)
 
 - Target mileage: `about 42`
-- Actual mileage so far: `17.57`
-- Status: `Thursday run logged`
+- Actual mileage so far: `34.23`
+- Status: `Sunday run logged`
 - Primary purpose: down week before peak-specific work
-- Days: Mon 4.05mi @12:54/mi | Tue 6.52mi @9:59/mi | Wed off | Thu 7.00mi @9:49/mi
+- Days: Mon 4.05mi @12:54/mi | Tue 6.52mi @9:59/mi | Wed off | Thu 7.00mi @9:49/mi | Fri 5.63mi @10:48/mi | Sat logged | Sun 11.03mi @9:57/mi
 - Warnings: none logged
 
 ## Block Position
@@ -25,4 +25,4 @@ Updated 2026-10-22. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 | 2026-09-28 | `about 35` | `35.62` | `Sunday run logged` |
 | 2026-10-05 | `about 40` | `43.75` | `Sunday run logged` |
 | 2026-10-12 | `about 45` | `32.14` | `Sunday run logged` |
-| 2026-10-19 | `about 42` | `17.57` | `Thursday run logged` |
+| 2026-10-19 | `about 42` | `34.23` | `Sunday run logged` |

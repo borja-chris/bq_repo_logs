@@ -23,9 +23,9 @@ Source: [week_2026-10-19.md](plans/2026-half-marathon/weeks/week_2026-10-19.md)
 Week of `2026-10-19`
 
 - Target mileage: `about 42`
-- Actual mileage so far: `17.57`
+- Actual mileage so far: `34.23`
 - Primary purpose: down week before peak-specific work
-- Week status: `Thursday run logged`
+- Week status: `Sunday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
@@ -33,9 +33,9 @@ Week of `2026-10-19`
 | Tuesday | 8 mi total: 2 mi warmup @ 10:30-11:30/mi + 4 x 20s strides, 5K time trial (3.1 mi) at even effort, first mile ~7:45-7:50/mi then run by feel, 2.9 mi cooldown @ 11:00-11:45/mi | 6.52 mi run | 1:05:04 at 9:59/mi. Track 5K time trial. Felt good overall; threw down the last mile. Race-day shoes still cutting into the skin at both Achilles despite KT tape over it — skin abrasion, letting it heal. |
 | Wednesday | Off | off | x |
 | Thursday | 7 mi total with 4 mi threshold @ 8:15-8:38/mi, easy miles @ 10:30-11:30/mi | 7.00 mi run | 1:08:40 at 9:49/mi. Felt pretty good. Getting dark earlier — hesitant toward the end since visibility was poor. Forgot to lap the cooldown; final ~0.72 mi not split (threshold = lap 2, 4.00 mi). |
-| Friday | 6 mi easy @ 10:30-11:30/mi | x | x |
+| Friday | 6 mi easy @ 10:30-11:30/mi | 5.63 mi run | 1:00:46 at 10:48/mi. |
 | Saturday | 6 mi easy @ 10:30-11:30/mi | x | x |
-| Sunday | 11 mi long @ 9:30-11:00/mi | x | x |
+| Sunday | 11 mi long @ 9:30-11:00/mi | 11.03 mi run | 1:49:45 at 9:57/mi. 11-mile long run; felt good with the effort. |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
