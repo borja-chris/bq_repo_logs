@@ -18,24 +18,24 @@ The active weekly log lives in `logs/weekly/week_YYYY-MM-DD.md`; daily entries a
 ## Current Week
 
 <!-- current-week:start -->
-Source: [week_2026-10-19.md](plans/2026-half-marathon/weeks/week_2026-10-19.md)
+Source: [week_2026-10-26.md](plans/2026-half-marathon/weeks/week_2026-10-26.md)
 
-Week of `2026-10-19`
+Week of `2026-10-26`
 
-- Target mileage: `about 42`
-- Actual mileage so far: `34.23`
-- Primary purpose: down week before peak-specific work
-- Week status: `Sunday run logged`
+- Target mileage: `about 50`
+- Actual mileage so far: `7.39`
+- Primary purpose: Japan travel week; hold volume, all easy, no SOS
+- Week status: `Thursday run logged`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 4 mi recovery @ 11:00-11:45/mi | 4.05 mi run | 52:13 at 12:54/mi. |
-| Tuesday | 8 mi total: 2 mi warmup @ 10:30-11:30/mi + 4 x 20s strides, 5K time trial (3.1 mi) at even effort, first mile ~7:45-7:50/mi then run by feel, 2.9 mi cooldown @ 11:00-11:45/mi | 6.52 mi run | 1:05:04 at 9:59/mi. Track 5K time trial. Felt good overall; threw down the last mile. Race-day shoes still cutting into the skin at both Achilles despite KT tape over it — skin abrasion, letting it heal. |
+| Monday | 8 mi easy @ 10:30-11:30/mi | x | x |
+| Tuesday | 8 mi easy @ 10:30-11:30/mi + 6 x 20s strides | x | x |
 | Wednesday | Off | off | x |
-| Thursday | 7 mi total with 4 mi threshold @ 8:15-8:38/mi, easy miles @ 10:30-11:30/mi | 7.00 mi run | 1:08:40 at 9:49/mi. Felt pretty good. Getting dark earlier — hesitant toward the end since visibility was poor. Forgot to lap the cooldown; final ~0.72 mi not split (threshold = lap 2, 4.00 mi). |
-| Friday | 6 mi easy @ 10:30-11:30/mi | 5.63 mi run | 1:00:46 at 10:48/mi. |
-| Saturday | 6 mi easy @ 10:30-11:30/mi | x | x |
-| Sunday | 11 mi long @ 9:30-11:00/mi | 11.03 mi run | 1:49:45 at 9:57/mi. 11-mile long run; felt good with the effort. |
+| Thursday | 5 mi recovery @ 11:00-11:45/mi | 7.39 mi run | 1:13:51 at 10:00/mi. Spicy run: lots of other runners on the route, and running in Japan (Tokyo). |
+| Friday | 7 mi easy @ 10:30-11:30/mi | x | x |
+| Saturday | 8 mi easy @ 10:30-11:30/mi | x | x |
+| Sunday | 14 mi long @ 9:30-11:00/mi | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
