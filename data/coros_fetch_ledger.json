@@ -538,5 +538,86 @@
     "longitude": 139.761002,
     "sha256": "09e7a752e9c5beba2f7bfc48373d3d47749101cc1b7fa1726768be124eff6128",
     "sportType": 100
+  },
+  "481437481527443860": {
+    "date": "2026-10-30",
+    "fetched_at": "2026-11-14T16:39:26-05:00",
+    "filename": "481437481527443860.fit",
+    "latitude": 34.696999,
+    "longitude": 135.487,
+    "sha256": "9cbabde5f9865ab6cdd6865bb164e0228984b041c161e917999b6af5d59de301",
+    "sportType": 100
+  },
+  "481437481527443862": {
+    "date": "2026-11-01",
+    "fetched_at": "2026-11-14T16:39:26-05:00",
+    "filename": "481437481527443862.fit",
+    "latitude": 34.696999,
+    "longitude": 135.487,
+    "sha256": "94858f496ffc3d1e6161239923e5fcf3f9aa43996fff6d640d3c20657020d97b",
+    "sportType": 100
+  },
+  "481462075586019429": {
+    "date": "2026-11-02",
+    "fetched_at": "2026-11-14T16:39:26-05:00",
+    "filename": "481462075586019429.fit",
+    "latitude": 34.966999,
+    "longitude": 135.770996,
+    "sha256": "cf13c1912c7e7b224c0cdabd54ac83f1a96b5ef71e35644460ebc0d568664351",
+    "sportType": 104
+  },
+  "481530589441196534": {
+    "date": "2026-11-05",
+    "fetched_at": "2026-11-14T16:39:26-05:00",
+    "filename": "481530589441196534.fit",
+    "latitude": 35.712002,
+    "longitude": 139.809006,
+    "sha256": "f4d27e6f0a2a07a51a134c5ff2789425fa3708d5b32ce9f0652905ce0e25d8b8",
+    "sportType": 100
+  },
+  "481703316382843383": {
+    "date": "2026-11-09",
+    "fetched_at": "2026-11-14T16:39:26-05:00",
+    "filename": "481703316382843383.fit",
+    "latitude": 40.811001,
+    "longitude": -73.952003,
+    "sha256": "7e83980c285641c3b7a26da96b300e2b29230a6eb0a79b1e4caf3861598b7607",
+    "sportType": 100
+  },
+  "481703316382843384": {
+    "date": "2026-11-09",
+    "fetched_at": "2026-11-14T16:39:26-05:00",
+    "filename": "481703316382843384.fit",
+    "latitude": 40.806999,
+    "longitude": -73.945,
+    "sha256": "1bc5f555e726a71be7c7109ec91abe77ed8b60af1180ede80120fbb8e87ea3fc",
+    "sportType": 100
+  },
+  "481703316382843385": {
+    "date": "2026-11-09",
+    "fetched_at": "2026-11-14T16:39:26-05:00",
+    "filename": "481703316382843385.fit",
+    "latitude": 40.805,
+    "longitude": -73.945,
+    "sha256": "8f6c4eb4a659d0860142e03032bf9fdc68df37e8fe706f3999a4b7b543348b78",
+    "sportType": 100
+  },
+  "481737156421779761": {
+    "date": "2026-11-13",
+    "fetched_at": "2026-11-14T16:39:26-05:00",
+    "filename": "481737156421779761.fit",
+    "latitude": null,
+    "longitude": null,
+    "sha256": "510e339942fcb5d145a3cc3a7fac804268c0f2cc98ced8a1f05f514fb13aba04",
+    "sportType": 101
+  },
+  "481754811153285222": {
+    "date": "2026-11-14",
+    "fetched_at": "2026-11-14T16:39:26-05:00",
+    "filename": "481754811153285222.fit",
+    "latitude": 41.085999,
+    "longitude": -73.856003,
+    "sha256": "1d4197f7d1d469f3b3ceb45551dc92b790d7e8f442ce7e992fa55eea0ad67197",
+    "sportType": 100
   }
 }

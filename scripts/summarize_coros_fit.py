@@ -127,6 +127,9 @@ def infer_timezone_name(latitude: str, longitude: str) -> tuple[str, str]:
             return "America/Denver", "gps_inferred"
         return "America/Los_Angeles", "gps_inferred"
 
+    if 24.0 <= lat <= 46.0 and 122.0 <= lon <= 154.0:
+        return "Asia/Tokyo", "gps_inferred"
+
     return DEFAULT_TIMEZONE, "default_fallback"
 
 def normalize_start_time(
