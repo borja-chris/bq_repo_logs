@@ -25,8 +25,8 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 | 13 | 2026-10-26 | 8 ez | 8 ez | Off | 5 ez | 7 ez | 8 ez | 14 LR | 50 |
 | 14 | 2026-11-02 | 4 ez | **11 str** | 7 ez | **10 HMP** | 7 ez | 14 LR | Off | 53 |
 | 15 | 2026-11-09 | 4 ez | **10 str** | Off | **10 HMP** | 8 ez | 7 ez | 10-11 LR | 25 |
-| 16 | 2026-11-16 | 4 ez | **8 str** | Off | **9 HMP** | 8 ez | 7 ez | 12 LR | 48 |
-| 17 | 2026-11-23 | 3 ez | **7 spd** | Off | **7 HMP** | 6 ez | 7 ez | 10 LR | 40 |
+| 16 | 2026-11-16 | 3 ez | **7 str** | Off | **8 HMP** | 4 ez | 4 ez | 11 LR | 37 |
+| 17 | 2026-11-23 | 3 ez | 5 ez | Off | **6 HMP** | 4 ez | 4 ez | 8 LR | 30 |
 | 18 | 2026-11-30 | 3 ez | **5 SOS** | Off | 4 strd | 4 ez | 2 ez | **RACE** | 28-32 |
 
 ## Block Arc
@@ -48,6 +48,6 @@ Cells show leading mileage plus a short tag (`LR` long run, `HMP` half-marathon 
 | 13 | 2026-10-26 | 50 | +8 | 14 LR | - | Japan travel week; hold volume, all easy, no SOS |
 | 14 | 2026-11-02 | 53 | +3 | 14 LR | Tue, Thu | extend strength while holding recovery quality; return flight Saturday evening |
 | 15 | 2026-11-09 | 25 | -28 | 10-11 LR | Tue, Thu | post-Japan re-entry; peak week dropped, long run trimmed to 10-11 mi |
-| 16 | 2026-11-16 | 48 | +23 | 12 LR | Tue, Thu | begin sharpening while reducing load |
-| 17 | 2026-11-23 | 40 | -8 | 10 LR | Tue, Thu | taper while keeping touch with pace |
-| 18 | 2026-11-30 | 28-32 | -10 | race | Tue | arrive fresh and sharp for race day |
+| 16 | 2026-11-16 | 37 | +12 | 11 LR | Tue, Thu | post-Japan re-entry with SOS restored; last full SOS week before cruise |
+| 17 | 2026-11-23 | 30 | -7 | 8 LR | Thu | cruise week; easy treadmill/deck running with one short HMP touch |
+| 18 | 2026-11-30 | 28-32 | 0 | race | Tue | arrive fresh and sharp for race day |
