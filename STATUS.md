@@ -6,10 +6,10 @@ Updated 2026-11-14. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 
 ## Current Week (week of 2026-11-09)
 
-- Target mileage: `about 54`
+- Target mileage: `about 25`
 - Actual mileage so far: `14.47`
 - Status: `Saturday run logged`
-- Primary purpose: peak week if decision gates are green
+- Primary purpose: post-Japan re-entry; peak week dropped, long run trimmed to 10-11 mi
 - Days: Mon 4.67mi @11:42/mi | Wed off | Fri 4.00mi @11:21/mi | Sat 5.80mi @10:27/mi
 - Warnings: none logged
 
@@ -25,4 +25,4 @@ Updated 2026-11-14. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 | 2026-10-19 | `about 42` | `34.23` | `Sunday run logged` |
 | 2026-10-26 | `about 50` | `19.45` | `Sunday run logged` |
 | 2026-11-02 | `about 53` | `10.90` | `Sunday off logged` |
-| 2026-11-09 | `about 54` | `14.47` | `Saturday run logged` |
+| 2026-11-09 | `about 25` | `14.47` | `Saturday run logged` |

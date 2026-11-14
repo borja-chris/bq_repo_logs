@@ -22,9 +22,9 @@ Source: [week_2026-11-09.md](plans/2026-half-marathon/weeks/week_2026-11-09.md)
 
 Week of `2026-11-09`
 
-- Target mileage: `about 54`
+- Target mileage: `about 25`
 - Actual mileage so far: `14.47`
-- Primary purpose: peak week if decision gates are green
+- Primary purpose: post-Japan re-entry; peak week dropped, long run trimmed to 10-11 mi
 - Week status: `Saturday run logged`
 
 | Day | Planned | Actual | Notes |
@@ -35,7 +35,7 @@ Week of `2026-11-09`
 | Thursday | 10 mi total with 8 mi continuous @ HMP 8:10-8:20/mi, easy miles @ 10:30-11:30/mi | x | x |
 | Friday | 8 mi easy @ 10:30-11:30/mi | 4.00 mi run | 45:24 at 11:21/mi. |
 | Saturday | 7 mi easy @ 10:30-11:30/mi | 5.80 mi run | 1:00:37 at 10:27/mi. |
-| Sunday | 15 mi long @ 9:30-11:00/mi, steady finish optional (no faster than ~9:15/mi) | x | x |
+| Sunday | 10-11 mi long @ 9:30-11:00/mi, all easy | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->
