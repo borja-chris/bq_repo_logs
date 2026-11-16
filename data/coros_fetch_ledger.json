@@ -619,5 +619,14 @@
     "longitude": -73.856003,
     "sha256": "1d4197f7d1d469f3b3ceb45551dc92b790d7e8f442ce7e992fa55eea0ad67197",
     "sportType": 100
+  },
+  "481784518108282981": {
+    "date": "2026-11-15",
+    "fetched_at": "2026-11-16T12:58:03-05:00",
+    "filename": "481784518108282981.fit",
+    "latitude": 40.812,
+    "longitude": -73.952003,
+    "sha256": "36dd0f776bd0e58f51bdfa29916b45142cd526e622adc1991bff50a5f21d03db",
+    "sportType": 100
   }
 }

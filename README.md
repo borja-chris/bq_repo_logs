@@ -18,24 +18,24 @@ The active weekly log lives in `logs/weekly/week_YYYY-MM-DD.md`; daily entries a
 ## Current Week
 
 <!-- current-week:start -->
-Source: [week_2026-11-09.md](plans/2026-half-marathon/weeks/week_2026-11-09.md)
+Source: [week_2026-11-16.md](plans/2026-half-marathon/weeks/week_2026-11-16.md)
 
-Week of `2026-11-09`
+Week of `2026-11-16`
 
-- Target mileage: `about 25`
-- Actual mileage so far: `14.47`
-- Primary purpose: post-Japan re-entry; peak week dropped, long run trimmed to 10-11 mi
-- Week status: `Saturday run logged`
+- Target mileage: `about 33-37`
+- Actual mileage so far: `0.00`
+- Primary purpose: post-Japan re-entry with SOS restored; last full SOS week before cruise
+- Week status: `No days logged yet`
 
 | Day | Planned | Actual | Notes |
 | --- | --- | --- | --- |
-| Monday | 4 mi recovery @ 11:00-11:45/mi | 4.67 mi total (3 runs) | 54:40 at 11:42/mi. |
-| Tuesday | 10 mi total with 2 x 3 mi strength @ 24:15-24:45 per rep (8:05-8:15/mi), 800m jog recovery (~5:40) between reps, easy miles @ 10:30-11:30/mi | x | x |
-| Wednesday | Off | off | x |
-| Thursday | 10 mi total with 8 mi continuous @ HMP 8:10-8:20/mi, easy miles @ 10:30-11:30/mi | x | x |
-| Friday | 8 mi easy @ 10:30-11:30/mi | 4.00 mi run | 45:24 at 11:21/mi. |
-| Saturday | 7 mi easy @ 10:30-11:30/mi | 5.80 mi run | 1:00:37 at 10:27/mi. |
-| Sunday | 10-11 mi long @ 9:30-11:00/mi, all easy | x | x |
+| Monday | 3 mi recovery @ 11:00-11:45/mi | x | x |
+| Tuesday | 7 mi total with 4 x 1 mi strength @ 8:05-8:15/mi, 400m jog recovery (~2:50) between reps, easy miles @ 10:30-11:30/mi | x | x |
+| Wednesday | Off | x | x |
+| Thursday | 8 mi total with 6 mi @ HMP 8:10-8:20/mi, easy miles @ 10:30-11:30/mi | x | x |
+| Friday | 4 mi easy @ 10:30-11:30/mi | x | x |
+| Saturday | 11 mi long @ 9:30-11:00/mi, all easy, by effort on hills | x | x |
+| Sunday | 4 mi easy @ 10:30-11:30/mi (optional), deck or treadmill; otherwise off | x | x |
 
 This block mirrors the active weekly log summary for the current week. Daily entries for the week live in `logs/weekly/week_YYYY-MM-DD.md`.
 <!-- current-week:end -->

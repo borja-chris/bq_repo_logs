@@ -2,27 +2,27 @@
 
 # Training Status
 
-Updated 2026-11-14. Regenerate: `.venv/bin/python scripts/status_digest.py`.
+Updated 2026-11-16. Regenerate: `.venv/bin/python scripts/status_digest.py`.
 
-## Current Week (week of 2026-11-09)
+## Current Week (week of 2026-11-16)
 
-- Target mileage: `about 25`
-- Actual mileage so far: `14.47`
-- Status: `Saturday run logged`
-- Primary purpose: post-Japan re-entry; peak week dropped, long run trimmed to 10-11 mi
-- Days: Mon 4.67mi @11:42/mi | Wed off | Fri 4.00mi @11:21/mi | Sat 5.80mi @10:27/mi
+- Target mileage: `about 33-37`
+- Actual mileage so far: `0.00`
+- Status: `No days logged yet`
+- Primary purpose: post-Japan re-entry with SOS restored; last full SOS week before cruise
+- Days: none yet
 - Warnings: none logged
 
 ## Block Position
 
-- 2026 half-marathon block: week 15 of 18 (starts 2026-08-03, race 2026-12-06)
+- 2026 half-marathon block: week 16 of 18 (starts 2026-08-03, race 2026-12-06)
 - Grid: `plans/2026-half-marathon/BLOCK_OVERVIEW.md`; facts/rules: `sources/00_canonical_context.md`
 
 ## Recent Weeks
 
 | Week of | Target | Actual | Status |
 | --- | --- | --- | --- |
-| 2026-10-19 | `about 42` | `34.23` | `Sunday run logged` |
 | 2026-10-26 | `about 50` | `19.45` | `Sunday run logged` |
 | 2026-11-02 | `about 53` | `10.90` | `Sunday off logged` |
-| 2026-11-09 | `about 25` | `14.47` | `Saturday run logged` |
+| 2026-11-09 | `about 25` | `23.91` | `Sunday run logged` |
+| 2026-11-16 | `about 33-37` | `0.00` | `No days logged yet` |
